@@ -38,22 +38,21 @@ started=$(date -u +%FT%TZ)
 echo "$started starting" >> "$LOG"
 
 PY="${WEATHERGPT_PYTHON:-python3}"
-# HOW MANY DISTRICTS THIS RUN SWEEPS. It was 40, and India has 756 - so the corpus held agromet
-# bulletins for about five per cent of the country and every question about the other ninety-five could
-# only be answered "not held here". That is the whole of the weakest group in the scenario atlas
-# (agromet and advisories, 60-76% against 89% overall): a coverage gap, not a reasoning one.
+# HOW MANY QUEUED DISTRICT TARGETS THIS RUN SWEEPS - a rate, not a total.
 #
-# Measured on the run of 22 September 2026: the sweep takes 99.5 s for 40 districts, about 2.5 s each,
-# inside a refresh that finishes in 3 m 23 s. At 200 the sweep is roughly eight minutes on a job that
-# runs unattended, twice a day, with nobody waiting on it - and a reader waiting for an answer cannot
-# afford thirty seconds. That asymmetry is the argument in docs/141 against fetching documents at
-# question time: the same work, moved onto the schedule, costs nothing anyone experiences.
+# This was briefly raised to 200 on the reasoning that the corpus held 40 districts out of India's 756.
+# That reasoning was wrong: 40 is how many QUEUED targets each run takes, coverage accumulates across
+# runs, and the corpus already carries district agromet passages for 571 distinct regions. Measured
+# 22 September 2026, and measured only after the change had been made and committed.
 #
-# The sweep takes QUEUED targets, so coverage grows run by run either way; this is the difference
-# between covering the country in weeks and covering it in days. Lower it with the environment
-# variable if the publisher turns out not to tolerate the rate - which is worth watching on the first
-# widened run rather than assuming in either direction.
-"$PY" scripts/run_daily_cycle.py --district-limit "${WEATHERGPT_DISTRICT_LIMIT:-200}" > "$STATE/last-cycle.json" 2>> "$LOG"
+# The evidence against the change is stronger than the arithmetic. Of the sixteen agromet and advisory
+# failures in that day's atlas run, the number whose answer says the bulletin is not held is ZERO. The
+# weak group is not a coverage gap; it is good answers scored partial, an engine asking for details it
+# could infer, and raw document metadata printed where prose belongs (docs/141).
+#
+# So it is back at 40, because tripling the request rate against a public publisher needs a reason, and
+# the reason turned out not to exist.
+"$PY" scripts/run_daily_cycle.py --district-limit "${WEATHERGPT_DISTRICT_LIMIT:-40}" > "$STATE/last-cycle.json" 2>> "$LOG"
 code=$?
 finished=$(date -u +%FT%TZ)
 

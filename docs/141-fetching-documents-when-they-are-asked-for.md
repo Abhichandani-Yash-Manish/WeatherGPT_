@@ -13,12 +13,38 @@ Written 22 September 2026, against a corpus of **661 documents and 8,286 passage
 
 ---
 
-## The problem it is aimed at is real
+## A correction, first
 
-Agromet and advisories are the weakest group in the scenario atlas — **60–76%** against 89% overall.
-Almost every failure in that group is the same shape: the reader asks about a district's bulletin and
-the corpus does not hold that district's bulletin. Not a reasoning failure, a coverage failure. So
-"have more data at hand" is diagnosing the right thing.
+An earlier version of this document said the corpus held agromet bulletins for about five per cent of
+India's districts, and recommended widening the daily sweep on that basis. **That was wrong, and the
+change it justified has been reverted.**
+
+The daily job passes `--district-limit 40`. I read that as total coverage. It is a RATE: how many
+queued targets each run takes, accumulating across runs. Measured against the index rather than
+inferred from a flag:
+
+| | |
+|---|---|
+| Documents held | 661 |
+| Passages held | 8,286 |
+| **Distinct regions with district agromet passages** | **571** |
+
+Three quarters of the country, not five per cent. And the decisive number, from the same day's atlas
+run: of the **sixteen** agromet and advisory failures, the count whose answer says the bulletin is not
+held is **zero**.
+
+So the weak group is not a coverage gap, and "have more data at hand" — however reasonable it sounds —
+would not have moved it. What the failures actually are, read one by one:
+
+| what happened | how many |
+|---|---|
+| A good answer scored `partial` — Rajkot's cotton advisory quoted correctly, Ujjain's "no rain, 0.0 mm over both days" | 6 |
+| The engine asked for a detail it could have inferred — one demanded an exact bulletin **date**; another asked which district, for a question naming Davangere | 5 |
+| Raw document metadata printed where prose belongs — *"Indexed published document: … document f558090eb98b"*, and an edition **diff** returned instead of the advisory | 2 |
+| Routed to conversation instead of retrieval | 3 |
+
+None of those is fixed by fetching more. Two of them are fixed by the engine asking less and printing
+better, which is the same intelligence-layer work as the rest of the chat repairs.
 
 ## Why fetching at question time is the wrong mechanism
 
@@ -64,9 +90,14 @@ provenance line no longer means one thing.
 
 ## What to do instead
 
-### Widen the scheduled refresh — this is the actual fix, and the numbers are not close
+### ~~Widen the scheduled refresh~~ — withdrawn
 
-The daily job sweeps **40 districts**. India has **756**.
+This was the first recommendation and it rested on the miscount corrected above. With 571 regions
+already held and no failure caused by a missing document, tripling the request rate against a public
+publisher buys nothing measurable. Reverted.
+
+The measurement that supported it is kept below, because the *cost* figures are real and are the
+argument against fetching at question time.
 
 That single line is the agromet coverage gap. It is not a reasoning failure and no amount of work on
 the intelligence layer will touch it — the corpus holds bulletins for about five per cent of the
@@ -132,9 +163,14 @@ folded in beside hash-verified, layout-reviewed passages as though it were the s
 
 ## Recommendation, in order
 
-1. **Widen the scheduled ingestion.** Largest coverage gain, zero risk, no latency. Do this first.
-2. **Name the gap and queue the request** when a document is missing. Small, safe, immediately useful.
-3. **Then** the consented single-document fetch, if the first two leave a gap worth the complexity.
+1. **Stop the engine asking for what it can infer.** Five of the sixteen failures are the engine
+   demanding a bulletin date or a district the question already named. This is the largest real gain
+   and it is intelligence-layer work, not ingestion work.
+2. **Print prose, not document metadata.** Two failures return an index record or an edition diff
+   where an advisory belongs.
+3. **Name the gap and queue the request** when a document genuinely is missing. Still worth doing —
+   it just turns out not to be the current bottleneck.
+4. **Then** the consented single-document fetch, if anything is left that justifies the complexity.
 
 What I would not do is make ordinary turns fetch documents. It trades a fast, verified, honest answer
 for a slow one with a weaker claim, and it does it at the moment the product is most needed.

@@ -131,9 +131,11 @@ refusals, 27 total — and which kind matters more than the count:
 
 **Most refusals are the publisher having nothing, not the product failing** — and the two are counted apart, because collapsing them would let a data gap quietly flatter the engineering.
 
-Weakest group, stated plainly: **agromet at 60%, advisories at 79%** against 89% overall. The cause is
-measured and it is not reasoning — the daily sweep covered 40 of India's 756 districts, so the corpus
-simply did not hold most districts' bulletins ([docs/141](docs/141-fetching-documents-when-they-are-asked-for.md)).
+Weakest group, stated plainly: **agromet at 60%, advisories at 79%** against 89% overall. Of those
+sixteen failures, the number caused by a missing document is **zero** — the corpus holds district
+agromet passages for 571 regions. They are good answers scored `partial`, an engine asking for a detail
+the question already gave, and raw index metadata printed where prose belongs
+([docs/141](docs/141-fetching-documents-when-they-are-asked-for.md)).
 
 **The atlas is 306 single questions, so it cannot tell you whether a conversation holds together.**
 That is measured separately: `node tools/conversation-probe.mjs` runs eight multi-turn threads where
