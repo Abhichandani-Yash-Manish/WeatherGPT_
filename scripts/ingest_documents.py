@@ -100,7 +100,7 @@ def run_district_sweep(store_root, runtime_root, targets=None, limit=None, state
         listed = [t for t in listed if t['district'].lower() in wanted]
     started = utcnow()
     day = started.astimezone(IST).date().isoformat()
-    held = lock.__enter__()
+    lock_held = lock.__enter__()
     document = sweep_manifest(day)
     sweep = document.get('district_sweep')
     if not sweep:
@@ -112,15 +112,32 @@ def run_district_sweep(store_root, runtime_root, targets=None, limit=None, state
                  'passes': [], 'targets': {}}
         document['district_sweep'] = sweep
     already = sweep['targets']
-    if retry_failed:
-        # Only the districts whose recorded outcome was an error. A held layout and a
-        # publisher's 'not issued' are answers, not failures, so retrying them would
-        # re-download the whole corpus to learn nothing new.
-        outstanding = [t for t in listed if (already.get(t['district']) or {}).get('outcome') == 'failed']
-    else:
-        outstanding = [t for t in listed if recheck or t['district'] not in already]
-    recorded_today = len(listed) - len(outstanding)
-    queue = outstanding[:limit] if limit else outstanding
+    # WHAT THIS RUN FETCHES, AND WHY IT IS NOT THE DAY'S MANIFEST ANY MORE.
+    #
+    # `already` is keyed to the DAY. Taking the outstanding targets from it meant every run
+    # began again at the top of the publisher's directory, so the job swept Anantpur to
+    # Kadapa twice a day and never once reached the rest of the country. Measured on three
+    # consecutive days (docs/142):
+    #
+    #     2026-09-20  40 swept, deferred_by_limit 658   31 fetched_new, 290 passages
+    #     2026-09-21  40 swept, deferred_by_limit 658   32 unchanged,     0 passages
+    #     2026-09-22  40 swept, deferred_by_limit 658   32 unchanged,     0 passages
+    #
+    # while 541 of 667 heads had not been re-checked since 14 September. The queue now comes
+    # from the INDEX, which is durable, and is ordered by what readers actually asked for and
+    # by how long each district has gone unread. The day manifest stays exactly as it was: it
+    # is this run's audit record, and it was never meant to be its memory.
+    from weathergpt_data.document_demand import DemandLedger, head_state, sweep_queue, freshness
+    ledger = DemandLedger(index.path.parent / 'demand.sqlite')
+    held = head_state(index)
+    outstanding = sweep_queue(listed, held, ledger.counts(), now=started,
+                              recheck=recheck, retry_failed=retry_failed)
+    ordered = outstanding[:limit] if limit else outstanding
+    reasons = {item['target']['district']: {k: item[k] for k in ('bucket', 'why', 'asked', 'last_read_utc')}
+               for item in ordered}
+    queue = [item['target'] for item in ordered]
+    corpus = freshness(listed, held, now=started)
+    recorded_today = corpus['read_today']
     free = free_space(store_root)
     if free < FREE_SPACE_FLOOR_BYTES:
         raise SystemExit('Refusing to sweep: %.1f GB free is below the %.1f GB floor. Prune document bodies first.'
@@ -129,6 +146,13 @@ def run_district_sweep(store_root, runtime_root, targets=None, limit=None, state
              'mode': 'retry_failed' if retry_failed else ('recheck_all' if recheck else 'resume'),
              'already_recorded_today': recorded_today, 'deferred_by_limit': len(outstanding) - len(queue),
              'free_bytes_at_start': free,
+             # The queue's own reasoning, so a reader of the manifest can see WHY these
+             # districts and not others, and the corpus state the order was computed from.
+             'queue_order': 'demanded-and-unheld, demanded-and-stale, never-held, stale-oldest-first',
+             'queued_by_bucket': {str(bucket): sum(1 for item in ordered if item['bucket'] == bucket)
+                                  for bucket in sorted({item['bucket'] for item in ordered})},
+             'queued_on_demand': sum(1 for item in ordered if item['asked']),
+             'corpus_freshness_at_start': corpus,
              'counts': {k: 0 for k in DISTRICT_OUTCOMES}, 'bytes_downloaded': 0, 'passages_indexed': 0,
              'quarantined_pages': 0, 'stopped_at': None}
     sweep['passes'].append(entry)
@@ -150,6 +174,7 @@ def run_district_sweep(store_root, runtime_root, targets=None, limit=None, state
             # Repeating them on all 698 rows adds nothing a reader cannot look up.
             already[target['district']] = {k: v for k, v in record.items()
                                            if k not in ('outcome_meaning', 'family', 'source_id')}
+            already[target['district']]['queued_because'] = reasons.get(target['district'])
             entry['counts'][record['outcome']] += 1
             entry['bytes_downloaded'] += record.get('bytes') or 0
             entry['passages_indexed'] += record.get('passages') or 0
@@ -164,8 +189,14 @@ def run_district_sweep(store_root, runtime_root, targets=None, limit=None, state
     entry['elapsed_s'] = round(time.time() - clock, 1)
     entry['finished_at_utc'] = stamp(utcnow())
     entry['completed'] = entry['stopped_at'] is None
+    # What the run actually moved. A sweep that downloads forty unchanged bodies and indexes
+    # nothing reads as a success on its exit code alone; counted against the corpus it is a
+    # run that did no work, and that went unnoticed for a week because nobody counted.
+    entry['corpus_freshness_at_end'] = freshness(listed, head_state(index), now=utcnow())
+    entry['still_unread_today'] = max(entry['corpus_freshness_at_end']['listed']
+                                      - entry['corpus_freshness_at_end']['read_today'], 0)
     path = write_sweep(day, document)
-    held.__exit__(None, None, None)
+    lock_held.__exit__(None, None, None)
     return {'day': day, 'manifest': str(path.relative_to(ROOT)), 'pass': entry,
             'recorded_targets': len(already), 'listed_targets': len(listed)}
 

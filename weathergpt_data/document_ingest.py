@@ -393,6 +393,28 @@ FAMILIES = {
         address='https://mausam.imd.gov.in/ahmedabad/mcdata/district.pdf', limit=1,
         issue_date=[('printed', r'(\d{1,2}\s+[A-Za-z]+\s+\d{4})')],
         times=[('issue_time', r'Time of Issue\s*:?\s*([\d:.]+\s*(?:AM|PM)?\s*IST)')]),
+    # THE CYCLONE PRODUCTS, AND WHICH OF THEM THIS PIPELINE CAN ACTUALLY READ.
+    #
+    # S43/S44/S45 (track, wind polygons, cone) sit behind the api.imd.gov.in key and the registry
+    # recorded them as having no substitute. RSMC New Delhi does publish cyclone material on the
+    # same public host whose sea-area and coastal bulletins this pipeline already ingests, so all
+    # three candidate addresses were probed on 22 September 2026. The result is one family, not
+    # three, and the two that were dropped are recorded here rather than shipped as coverage:
+    #
+    #   uploads/No Cyclone.pdf              discovered, 192 KB, NO TEXT LAYER - it is a map image
+    #   uploads/archive/73/..._splbltn.pdf  discovered, special bulletin, NO TEXT LAYER
+    #   uploads/archive/22/..._SAT_BLTN     discovered, extracted, 3 passages - kept below
+    #
+    # Discovery works for all three; extraction refuses the first two, which is the pipeline
+    # behaving correctly on an image-only PDF. A family that can never produce a passage is not
+    # coverage, so they are not registered. Reading them needs OCR, which is not in the reviewed
+    # path, and the cone geometry has no substitute at all and is not claimed.
+    'satellite_bulletin': dict(
+        family='satellite_bulletin', source_id='S67', label='RSMC New Delhi satellite bulletin',
+        scope='marine', region=None, language='en', issuer=['india meteorological department'],
+        markers=[], issuer_optional=True, marker_optional=True,
+        discovery='https://rsmcnewdelhi.imd.gov.in/track-forecast.php',
+        pattern=r'uploads/archive/22/[A-Za-z0-9_.-]+\.pdf', limit=2, discovery_only=True),
     'sea_area_bulletin': dict(
         family='sea_area_bulletin', source_id='S58', label='RSMC sea area bulletin',
         scope='marine', region=None, language='en', issuer=['india meteorological department'],
@@ -749,6 +771,26 @@ def ingest_district(store, index, state, district, now=None, fetch_ttl=0, encode
     def done(outcome, **extra):
         record.update(outcome=outcome, outcome_meaning=DISTRICT_OUTCOMES[outcome],
                       elapsed_s=round(time.time() - started, 3), **extra)
+        # EVERY TERMINAL OUTCOME RECORDS THAT THE DISTRICT WAS TRIED.
+        #
+        # Several of the paths below returned without writing a head at all - a selection step
+        # that could not resolve the district, a body that was not a PDF, a publisher that
+        # served nothing, a publish that raised. The district then stayed "never held", which
+        # is the TOP of the refresh queue, so the resident worker fetched it again, and again.
+        # Measured 22 September 2026, the first time the worker was left running: fourteen
+        # consecutive attempts on Kadapa, every one failed, no head written, and nothing else
+        # in the country reached. Under the old twice-daily sweep this only wasted a slot.
+        #
+        # The ok paths write their own head with the document attached and must not be
+        # overwritten here; this fills in only the outcomes that were leaving no trace. The
+        # outcome is the status, so `not_issued` - which the ingestion policy calls an answer
+        # rather than a failure - is not filed as one.
+        if outcome not in ('fetched_new', 'unchanged'):
+            try:
+                index.mark_document_attempted(spec['family'], district, stamp(now), outcome,
+                                              record.get('error') or record.get('stage') or '')
+            except (SourceError, ValueError, OSError):
+                pass  # a target that cannot record its own attempt must still report it
         return record
 
     try:
@@ -771,7 +813,13 @@ def ingest_district(store, index, state, district, now=None, fetch_ttl=0, encode
     if head and head.get('sha') == sha and head.get('status') == 'ok':
         # Measured: the publisher offers no conditional request, so the body is downloaded
         # to learn this. Skipping extraction is the only saving available.
-        return done('unchanged', head_checked_at=head.get('checked_at'))
+        #
+        # The read is still recorded. "The publisher served the same bytes today" is a fact
+        # about today, and a queue ordered by how long each district has gone unread cannot
+        # work if the commonest successful outcome leaves no trace of having happened.
+        previously = head.get('checked_at')
+        index.touch_document_head(spec['family'], district, stamp(now))
+        return done('unchanged', head_checked_at=stamp(now), previously_checked_at=previously)
     try:
         pages = pdf_pages(body)
     except SourceError as error:

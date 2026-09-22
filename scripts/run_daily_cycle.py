@@ -30,6 +30,20 @@ def step(name, command, timeout=1800):
     return {'step': name, 'ok': ok, 'seconds': round(time.time() - began, 2), 'tail': tail, 'error': error}
 
 
+def corpus_freshness():
+    """How much of the district family was read today, and how stale the rest is."""
+    try:
+        sys.path.insert(0, str(ROOT))
+        from weathergpt_data.bulletin_index import BulletinIndex, EXTRACTION_VERSION
+        from weathergpt_data.document_demand import head_state, freshness
+        from weathergpt_data.document_ingest import district_targets
+        index = BulletinIndex(ROOT / 'data' / 'runtime' / 'ingestion' / 'bulletins' / EXTRACTION_VERSION / 'index.sqlite')
+        targets, _ = district_targets(ROOT)
+        return freshness(targets, head_state(index))
+    except Exception as error:      # a report must never fail the cycle it is reporting on
+        return {'error': str(error)[:200]}
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     parser.add_argument('--families', action='append', default=None,
@@ -62,7 +76,12 @@ def main():
     summary = {'schema_version': 'daily-cycle-v1', 'foreground_only': True, 'daemon_installed': False,
                'scheduler_decision': 'manual_trigger_now_scheduler_later',
                'document_families': args.families or 'all registered', 'district_sweep_limit': args.district_limit,
-               'prune_applied': args.apply_prune, 'steps': steps, 'ok': all(item['ok'] for item in steps)}
+               'prune_applied': args.apply_prune, 'steps': steps, 'ok': all(item['ok'] for item in steps),
+               # What the corpus actually looks like after the run, not merely whether the run
+               # exited zero. Measured 22 September 2026: three consecutive cycles reported ok
+               # while indexing nothing and leaving 541 of 667 district heads unread since the
+               # 14th. A cycle that did no work must not be indistinguishable from one that did.
+               'corpus_freshness': corpus_freshness()}
     print(json.dumps(summary, indent=1, ensure_ascii=False))
     return 0 if summary['ok'] else 1
 

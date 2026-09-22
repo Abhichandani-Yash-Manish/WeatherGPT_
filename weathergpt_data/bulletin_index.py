@@ -301,6 +301,43 @@ class BulletinIndex:
         with self.connection() as db:
             db.row_factory=sqlite3.Row;r=db.execute('SELECT * FROM heads WHERE region=?',(self.document_key(family,region),)).fetchone()
         return dict(r) if r else None
+    def touch_document_head(self,family,region,checked_at):
+        """Record that this document was read again and found unchanged.
+
+        An unchanged body is a successful read, not a non-event: the publisher served the
+        same bytes, and that is a verified fact about today worth keeping. Until 22
+        September 2026 the unchanged branch returned without writing anything, so a district
+        serving a byte-identical PDF never recorded that it had been read - which is
+        invisible under a queue that restarts at the alphabet, and fatal under one ordered
+        by staleness, where those districts would sit at the head of the queue forever and
+        block the rest of the country behind them.
+        """
+        prior=self.document_head(family,region)
+        if not prior or not prior.get('sha'):return None
+        with self.connection() as db:
+            db.execute('UPDATE heads SET checked_at=?,status=?,error=? WHERE region=?',
+                       (checked_at,'ok','',self.document_key(family,region)))
+        return {**prior,'checked_at':checked_at,'status':'ok','error':''}
+    def mark_document_attempted(self,family,region,checked_at,outcome,detail=''):
+        """Record that this document was tried and what came back, whatever came back.
+
+        Several of ingest_district's terminal outcomes used to return without writing a head at
+        all - a selection step that could not resolve the district, a body that was not a PDF, a
+        publisher that served nothing. Under a twice-daily sweep that is invisible. Under the
+        resident worker it is a trap: the district stays "never held", so it stays at the head
+        of the queue, so the worker fetches it again, forever. Measured 22 September 2026, the
+        first time the worker was left running: fourteen consecutive attempts on Kadapa, every
+        one failed, no head written, nothing else in the country reached.
+
+        The outcome IS the status, so `not_issued` - which the ingestion policy calls an answer
+        rather than a failure - is not filed as a failure. Everything that gates on a healthy
+        document already tests for 'ok' explicitly, so a new value narrows nothing.
+        """
+        prior=self.document_head(family,region)
+        with self.connection() as db:
+            db.execute('INSERT OR REPLACE INTO heads VALUES (?,?,?,?,?)',
+                       (self.document_key(family,region),(prior or {}).get('sha'),checked_at,
+                        str(outcome),str(detail or '')[:500]))
     def mark_document_failed(self,family,region,checked_at,error):
         prior=self.document_head(family,region)
         with self.connection() as db:db.execute('INSERT OR REPLACE INTO heads VALUES (?,?,?,?,?)',(self.document_key(family,region),(prior or {}).get('sha'),checked_at,'failed',error))
@@ -331,9 +368,9 @@ class BulletinIndex:
         with self.connection() as db:
             rows=db.execute('SELECT DISTINCT region FROM passages WHERE document_sha=? ORDER BY region',(sha,)).fetchall()
         return [r[0] for r in rows if r[0]]
-    def stored_passages(self,family=None,scope=None,region=None):
+    def stored_passages(self,family=None,scope=None,region=None,document_sha=None):
         clause=[];args=[]
-        for column,value in (('family',family),('scope',scope),('region',region)):
+        for column,value in (('family',family),('scope',scope),('region',region),('document_sha',document_sha)):
             if value is not None:clause.append(column+'=?');args.append(value)
         sql='SELECT payload,payload_hash,embedding,embedding_hash,model_revision,document_sha FROM passages'
         if clause:sql+=' WHERE '+' AND '.join(clause)
@@ -363,10 +400,15 @@ class BulletinIndex:
         for family,scope,region,count in rows:
             families[family]={'scope':scope,'region':region,'passages':count,'head':self.document_head(family,region)}
         return families
-    def search_passages(self,query,family=None,scope=None,region=None,limit=8,encoder=embed):
-        """Whole-document retrieval over indexed passages; scores are ranks, never confidence."""
+    def search_passages(self,query,family=None,scope=None,region=None,limit=8,encoder=embed,document_sha=None):
+        """Whole-document retrieval over indexed passages; scores are ranks, never confidence.
+
+        `document_sha` narrows the search to one edition. That is what lets a retrieval which
+        matched only a superseded edition be tried again inside the CURRENT one, rather than
+        refusing while the current edition sits in the index (docs/144).
+        """
         if not isinstance(query,str) or not query.strip():raise SourceError('A retrieval query is required')
-        stored=self.stored_passages(family=family,scope=scope,region=region)
+        stored=self.stored_passages(family=family,scope=scope,region=region,document_sha=document_sha)
         if not stored:return [],{'mode':'whole_document','candidates':0,'scores_are_confidence':False}
         terms=set(re.findall(r'[a-z0-9]+',norm(query)));qvector=encoder([query],query=True)[0]
         tokens=[re.findall(r'[a-z0-9]+',norm(p['text']+' '+(p.get('section') or ''))) for p,_,_ in stored]

@@ -332,13 +332,34 @@ class DistrictOutcomeTests(unittest.TestCase):
         self.assertEqual(record['outcome'], 'layout_unrecognised')
         self.assertIn('marker', record['error'])
         head = self.index.document_head('district_agromet', 'Testpur')
-        self.assertEqual(head['status'], 'failed', 'A held edition must leave a recorded failure behind.')
+        # The recorded attempt keeps the outcome's OWN name. It used to be flattened to
+        # 'failed', which contradicts the standing vocabulary - not_issued is an answer,
+        # layout_unrecognised is held, and only transport or extraction errors are failures -
+        # and made a publisher's unreviewed layout indistinguishable from a broken fetch.
+        self.assertEqual(head['status'], 'layout_unrecognised',
+                         'A held edition must leave a recorded attempt behind, under its own name.')
+        self.assertNotEqual(head['status'], 'ok', 'A held edition must never read as healthy.')
 
     def test_a_failure_record_is_preserved_rather_than_cleaned_up(self):
         self.test_a_front_page_of_another_product_is_held_rather_than_indexed()
         head = self.index.document_head('district_agromet', 'Testpur')
         self.assertTrue(head['error'])
         self.assertEqual(head['checked_at'], stamp(NOW))
+
+    def test_every_terminal_outcome_records_that_the_district_was_tried(self):
+        """The trap the resident worker fell into on its first run.
+
+        A selection step that cannot resolve the district returned without writing a head, so
+        the district stayed "never held" - which is the top of the refresh queue - and the
+        worker fetched it again forever. Measured: fourteen consecutive attempts on Kadapa,
+        all failed, nothing else in the country reached.
+        """
+        record = self.run_one({'district_current_en_get.php': b'{"records": []}'})
+        self.assertNotIn(record['outcome'], ('fetched_new', 'unchanged'))
+        head = self.index.document_head('district_agromet', 'Testpur')
+        self.assertIsNotNone(head, 'a district that was tried must leave a head behind')
+        self.assertEqual(head['checked_at'], stamp(NOW))
+        self.assertEqual(head['status'], record['outcome'])
 
 
 

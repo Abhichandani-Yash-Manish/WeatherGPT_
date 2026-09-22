@@ -38,20 +38,33 @@ started=$(date -u +%FT%TZ)
 echo "$started starting" >> "$LOG"
 
 PY="${WEATHERGPT_PYTHON:-python3}"
-# HOW MANY QUEUED DISTRICT TARGETS THIS RUN SWEEPS - a rate, not a total.
+# HOW MANY DISTRICT TARGETS THIS RUN SWEEPS - a rate, not a total.
 #
-# This was briefly raised to 200 on the reasoning that the corpus held 40 districts out of India's 756.
-# That reasoning was wrong: 40 is how many QUEUED targets each run takes, coverage accumulates across
-# runs, and the corpus already carries district agromet passages for 571 distinct regions. Measured
-# 22 September 2026, and measured only after the change had been made and committed.
+# The number has been argued about twice and both arguments were wrong, so the history is kept here.
 #
-# The evidence against the change is stronger than the arithmetic. Of the sixteen agromet and advisory
-# failures in that day's atlas run, the number whose answer says the bulletin is not held is ZERO. The
-# weak group is not a coverage gap; it is good answers scored partial, an engine asking for details it
-# could infer, and raw document metadata printed where prose belongs (docs/141).
+# It was first raised to 200 on the reasoning that the corpus held 40 districts out of India's 756.
+# That was wrong: 40 is a RATE, and the corpus already carries district agromet passages for 571
+# distinct regions. It went back to 40 on the reasoning that coverage accumulates across runs, so the
+# rate only decides how fast the country is covered.
 #
-# So it is back at 40, because tripling the request rate against a public publisher needs a reason, and
-# the reason turned out not to exist.
+# That second reasoning was also wrong, and this is the one that cost something. Coverage did NOT
+# accumulate: the sweep read its "already done" set out of the DAY's manifest, so every run began
+# again at the top of the publisher's directory. Measured 22 September 2026 across three days:
+#
+#     2026-09-20  40 swept, deferred_by_limit 658   31 fetched_new, 290 passages
+#     2026-09-21  40 swept, deferred_by_limit 658   32 unchanged,     0 passages
+#     2026-09-22  40 swept, deferred_by_limit 658   32 unchanged,     0 passages
+#
+# Twice a day, the same forty districts, indexing nothing, while 541 of 667 heads had not been read
+# since the 14th and 399 of 662 held editions still carried the printed issue date 2026-09-11.
+#
+# The rate was never the problem and it stays at 40. What changed is the ORDER (docs/142): the queue
+# now comes from the corpus index rather than the day manifest, and takes the districts readers
+# actually asked for first, then the ones never held, then the ones longest unread. The query layer
+# fetches what a reader asks for on the turn itself, so this job is the tail nobody asked for. At 40
+# a run, twice a day, that tail is covered in about nine days and stays covered; before this it was
+# covered never. Raise WEATHERGPT_DISTRICT_LIMIT to go faster, watching the publisher's tolerance on
+# the first widened run rather than assuming it in either direction.
 "$PY" scripts/run_daily_cycle.py --district-limit "${WEATHERGPT_DISTRICT_LIMIT:-40}" > "$STATE/last-cycle.json" 2>> "$LOG"
 code=$?
 finished=$(date -u +%FT%TZ)
