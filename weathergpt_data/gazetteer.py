@@ -1,5 +1,5 @@
 """Indexed GeoNames India snapshot; source place points, never LGD crosswalks."""
-import csv,hashlib,io,json,sqlite3,unicodedata,zipfile,os,tempfile
+import csv,hashlib,io,json,re,sqlite3,unicodedata,zipfile,os,tempfile
 from pathlib import Path
 from datetime import datetime,timezone
 from .answers import ROOT
@@ -127,8 +127,21 @@ def preferred_match(matches):
     # villages sharing the name sit in districts that carry other names.
     import difflib
     target=norm(ranked[0].get('name') or '')
+    def bare(value):
+        """The district's own name, without the word that says it is a district.
+
+        GeoNames spells admin2 both ways - "Patna" and "Bikaner District" - and comparing the
+        second form against the town's name scores 0.64 where the threshold is 0.82, so the
+        rule below silently did nothing for every district written the long way. Measured 22
+        September 2026: "Is the heat a risk to my cattle in Bikaner?" offered a choice between
+        a village in Rewari District, Haryana and the town whose own district is Bikaner
+        District, Rajasthan, which is the case this rule exists to settle. 56 of the 806
+        admin2 values carry " District" and 5 carry " Division"; those 61 were the ones it
+        could never reach.
+        """
+        return norm(re.sub(r'\b(?:district|dist\.?|zil+a|division)\b','',str(value or ''),flags=re.I))
     def district_carries_the_name(match):
-        district=norm(match.get('admin2') or '')
+        district=bare(match.get('admin2'))
         if not district or not target:return False
         return district==target or difflib.SequenceMatcher(None,district,target).ratio()>=0.82
     same_district=[match for match in ranked if district_carries_the_name(match)]

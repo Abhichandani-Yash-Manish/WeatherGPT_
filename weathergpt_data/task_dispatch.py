@@ -118,6 +118,16 @@ def execute_plan(engine,result,plan,resolved,coordinates):
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
                 packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='needs_clarification',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
                 packet=execute_air_quality(engine,packet,sub,task,resolved,coordinates)
+            elif task['kind']=='nowcast':
+                from .nowcast_tasks import execute_nowcast
+                packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
+                packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='unavailable',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
+                packet=execute_nowcast(engine,packet,sub,task,resolved,coordinates)
+            elif task['kind']=='imd_forecast':
+                from .imd_forecast_tasks import execute_imd_forecast
+                packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
+                packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='unavailable',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
+                packet=execute_imd_forecast(engine,packet,sub,task,resolved,coordinates)
             elif task['kind']=='verification':
                 from .verification_tasks import execute_verification
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
@@ -142,6 +152,9 @@ def execute_plan(engine,result,plan,resolved,coordinates):
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
                 packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='needs_clarification',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
                 packet=execute_point_task(engine,packet,sub,task,resolved,coordinates)
+                if task['kind']=='forecast' and packet.get('facts') and not packet.get('choices'):
+                    from .crosscheck import corroborate_with_imd
+                    packet=corroborate_with_imd(engine,packet,sub,resolved,coordinates)
             elif task['kind']=='history':
                 packet=execute_history(plan,task)
             elif task['kind']=='warning':
@@ -170,6 +183,9 @@ def execute_plan(engine,result,plan,resolved,coordinates):
                         packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}})
                         packet.update(facts=[],citations=[],choices=[],notes=[],answer='',plan=sub,status='needs_clarification',follow_up=None,expires_at_utc=None,trace={'tools':[],'generation':None})
                         packet=engine.forecasts(packet,sub,resolved,coordinates)
+                        if packet['facts'] and not packet.get('choices'):
+                            from .crosscheck import corroborate_with_imd
+                            packet=corroborate_with_imd(engine,packet,sub,resolved,coordinates)
                         if packet['facts']:packet=engine.explain(packet)
             elif task['kind']=='explanation':
                 packet=copy.deepcopy({k:v for k,v in result.items() if k not in {'task_results','charts','calculations','passages','document_evidence','airport_reports','warning_evidence','pending_slots','retrieval_coverage'}});packet.update(facts=[],citations=[],notes=[],answer='General explanation, not retrieved local weather.',plan=sub,status='explanation',trace={'tools':[],'generation':None})
@@ -237,6 +253,13 @@ def execute_plan(engine,result,plan,resolved,coordinates):
             passage['citation_ids']=[tid+'-'+c for c in passage['citation_ids']];passage['task_id']=tid
             result.setdefault('passages',[]).append(passage)
         result.setdefault('document_evidence',[]).extend(packet.get('document_evidence',[]))
+        # The nowcast's evidence is neither a fact nor a passage - it is the publisher's own rows -
+        # so it needs its own merge line. Without one the records stayed on the task packet, the
+        # composer never saw them, and the single product whose answer is entirely the publisher's
+        # WORDS was the one product a model was never asked to write.
+        for row in packet.get('nowcast_records',[]):
+            result.setdefault('nowcast_records',[]).append({**row,'task_id':tid,
+                'citation_ids':[tid+'-'+c for c in (row.get('citation_ids') or [])]})
         # The corpus path describes how it read the edition; the page renders that reading,
         # so the description travels with the passages rather than staying on the task packet.
         if packet.get('whole_document'):result['whole_document']=packet['whole_document']

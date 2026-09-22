@@ -172,13 +172,41 @@ class RegionAbsenceTests(CorpusReachability):
         self.assertIn('Gujarat', result['answer'])
         self.assertNotIn('Which state', result['answer'])
 
-    def test_an_absent_district_names_the_indexed_spellings_without_substituting_one(self):
+    def test_the_publishers_own_spelling_of_a_real_district_is_read_and_disclosed(self):
+        """Changed deliberately in docs/142, and narrowed rather than loosened.
+
+        This used to refuse: Kendrapada was met with "no district agromet edition is indexed
+        under that name", the close spelling offered as a hint, and the reader asked to say
+        it again. The rule behind it was that a near name is a reason to ask rather than a
+        reason to answer for a district nobody named, and that rule still holds for a near
+        name in general.
+
+        What changed is where the nearness is judged. "Kendrapada" is not a different
+        district that happens to look similar - it is the publisher's own Kendrapara, and
+        the publisher's directory is the authority on that, not a string comparison against
+        whatever this corpus happens to hold. The same bounded match already resolved
+        Davangere to the directory's Davanagere one layer up, and refusing here meant a
+        district the engine had just identified was then reported as not held.
+
+        The disclosure is the price and it is not optional: the answer says which district
+        it was read as, and that no other district's edition was substituted.
+        """
         self.publish(document('district_agromet', 'district', 'Kendrapara', '2026-09-12',
                               'Apply light irrigation to the standing cotton crop.', state='Odisha'))
         plan = {'places': [{'name': 'Kendrapada', 'state': 'Odisha', 'district': 'Kendrapada', 'kind': 'district'}]}
         result = self.run_corpus(plan, {'query': 'cotton', 'family': 'district_agromet', 'scope': 'district'})
+        self.assertEqual(result['status'], 'answered')
+        self.assertTrue(result['passages'])
+        self.assertTrue(any('Kendrapara' in note and 'substituted' in note for note in result['notes']))
+
+    def test_a_district_the_publisher_does_not_list_is_still_an_absence(self):
+        # The bound that keeps the above honest. Nothing close enough sits in the publisher's
+        # directory, so no edition is read and the held names are offered as a hint.
+        self.publish(document('district_agromet', 'district', 'Kendrapara', '2026-09-12',
+                              'Apply light irrigation to the standing cotton crop.', state='Odisha'))
+        plan = {'places': [{'name': 'Zzzqqxville', 'state': 'Odisha', 'district': 'Zzzqqxville', 'kind': 'district'}]}
+        result = self.run_corpus(plan, {'query': 'cotton', 'family': 'district_agromet', 'scope': 'district'})
         self.assertEqual(result['status'], 'unavailable')
-        self.assertIn('Kendrapara', result['answer'])
         self.assertEqual(result['passages'], [])
 
 

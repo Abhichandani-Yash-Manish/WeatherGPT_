@@ -107,8 +107,20 @@ class EngineDocumentTests(unittest.TestCase):
   self.setup_document();self.model.value['tasks'][0].update(start_local='2026-09-20T00:00:00+05:30',end_local='2026-09-21T00:00:00+05:30');r=self.chat(question='cotton bulletin for September 20');self.assertEqual(r['status'],'unavailable');self.assertIn('outside',r['answer'])
  def test_decision_remains_partial_even_when_passages_exist(self):
   self.setup_document(mode='decision_support');r=self.chat(question='can I spray cotton?');self.assertEqual(r['status'],'partial');self.assertTrue(r['passages']);self.assertEqual(r['task_coverage']['completed'],0)
- def test_crop_clarification_before_source_calls(self):
-  doc,index=self.setup_document(crop='',mode='decision_support');r=self.chat(question='Can I spray?');self.assertEqual(r['status'],'needs_clarification');index.search.assert_not_called()
+ def test_missing_crop_asks_under_an_answer_rather_than_instead_of_one(self):
+  # Changed deliberately in docs/142. This used to assert needs_clarification with the source
+  # never consulted: "Is tomorrow morning good for spraying pesticide in Nashik?" was answered
+  # with "which crop and growth stage?" and the bulletin was never opened. A district
+  # bulletin's general and weather rows answer much of that without knowing the crop.
+  #
+  # What must still hold is everything that makes it safe: no crop is invented, the crop slot
+  # stays open, and no personal go/no-go is reached.
+  doc,index=self.setup_document(crop='',mode='decision_support');r=self.chat(question='Can I spray?')
+  self.assertEqual(r['status'],'partial')
+  index.search.assert_called()
+  self.assertEqual(index.search.call_args[0][3],'')               # no crop was invented to search with
+  self.assertIn('crop',[slot['field'] for slot in r['pending_slots']])
+  self.assertIn('go/no-go',r['answer'])
  def test_passages_do_not_leak_into_following_forecast_task(self):
   self.setup_document();p=self.model.value;self.model.value['tasks'].append(task(kind='forecast',years=[],parameters=['precipitation'],start_local=p['start_local'],end_local=p['end_local']));r=self.chat(question='cotton advisory and rain forecast')
   self.assertEqual(len(r['passages']),1);self.assertEqual(r['task_results'][1]['passage_ids'],[]);self.assertEqual(r['passages'][0]['task_id'],'t1');self.assertTrue(r['facts']);self.assertEqual(r['passages'][0]['citation_ids'],[r['citations'][0]['id']])

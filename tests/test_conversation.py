@@ -226,7 +226,9 @@ class AuthoredAnswerChecksTests(unittest.TestCase):
         """0.4 is in the evidence; 0.4 INCHES is not what the source said."""
         problem = self.engine().generated_answer_problem(
             'Ahmedabad is forecast 0.4 cm of rain.', ['f1'], self.result())
-        self.assertEqual(problem, 'a measurement does not match its source unit')
+        # The refusal names the measurement now: a reason nobody can debug is how the multi-source
+        # comparison turn spent half its runs falling to a template for an unnamed reason.
+        self.assertEqual(problem, 'a measurement does not match its source unit: 0.4 cm')
 
     def test_the_place_name_is_taken_from_the_label_not_the_whole_label(self):
         """An observation fact is placed at its station: "MUMBAI · 2.32 km from the requested point".
@@ -268,4 +270,26 @@ class AuthoredAnswerChecksTests(unittest.TestCase):
     def test_an_invented_certainty_is_refused(self):
         self.assertEqual(self.engine().generated_answer_problem(
             'Ahmedabad is forecast 0.4 mm of rain and it is definitely safe to travel.', ['f1'],
-            self.result()), 'it contained an unsupported link or certainty')
+            self.result()), 'it contained an unsupported certainty')
+
+    def test_an_invented_link_is_refused_and_named(self):
+        problem = self.engine().generated_answer_problem(
+            'Ahmedabad is forecast 0.4 mm of rain. See https://example.invalid/forecast for more.',
+            ['f1'], self.result())
+        self.assertIn('unsupported link', problem)
+        self.assertIn('https://example.invalid/forecast', problem)
+
+    def test_a_link_the_publisher_printed_is_quoted_not_invented(self):
+        """The counterpart of the acephate case above, for links rather than figures.
+
+        Measured 22 September 2026: the Guntur agromet bulletin prints Play Store addresses
+        for IMD's own Mausam, Meghdoot and Damini apps. The model quoted the passage verbatim,
+        as the passage rule requires, and the whole answer was refused for containing a link -
+        so the reader was handed the raw corpus floor instead. A link this product supplied is
+        being quoted, not manufactured.
+        """
+        passage = {'id': 'p1', 'text': 'Download Mausam: https://play.google.com/store/apps/details'}
+        result = self.result(facts=[], passages=[passage])
+        self.assertIsNone(self.engine().generated_answer_problem(
+            'The bulletin says: "Download Mausam: https://play.google.com/store/apps/details"',
+            ['p1'], result))

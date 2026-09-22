@@ -243,6 +243,19 @@ def document_only_plan(plan):
     return bool(tasks) and all(task.get('kind') == 'document' for task in tasks)
 
 
+def bulletin_district_plan(plan):
+    """True when every task reads a district agromet bulletin, which needs a district, not a point.
+
+    The distinction matters where a settlement name is ambiguous. A forecast has to know
+    WHICH Bikaner, because it is computed at coordinates. A district bulletin does not: it
+    is selected by the publisher's district name, and that directory lists each district
+    name once nationally.
+    """
+    tasks = plan.get('tasks') or []
+    return bool(tasks) and all(task.get('kind') == 'agriculture' and task.get('document_request')
+                               for task in tasks)
+
+
 class BoundedGate:
     """One active turn plus a bounded number of waiting turns.
 
@@ -760,6 +773,10 @@ class ConversationEngine:
         from .document_context import direct_reply
         document_reply=direct_reply(state,q) if not body.get('selection_id') else None
         from .dialogue import select_reply
+        # Bound before the planning branches, not inside one of them: the turn loop's later steps -
+        # the retrieval retry among them - need the conversation the planner saw, and a branch that
+        # short-circuits planning must not leave them reading an unbound name.
+        history=[]
         text_selection=select_reply(q,state.get('choices',[])) if not body.get('selection_id') else None
         resolved={};degraded=None
         if body.get('selection_id'):
@@ -783,7 +800,7 @@ class ConversationEngine:
             resolved=state.get('resolved_points',{})
         else:
             from .dialogue import context_message,reconcile
-            history=list(state['history'])
+            history[:]=list(state['history'])
             context=context_message(state)
             if context:history.append({'role':'assistant','content':'Structured conversation focus','context_state':context})
             home=getattr(self._local,'reader_home',None)
@@ -870,6 +887,7 @@ class ConversationEngine:
             from .task_dispatch import execute_plan
             self._checkpoint(request_id,'resolving')
             result=execute_plan(self,result,plan,resolved,body.get('coordinates'))
+            result=self.retry_retrieval_once(result,plan,q,history,resolved,body,request_id)
         elif plan['intent']=='history':
             try:
                 value=lookup_plan(plan);result.update(status=value['status'],answer=value['text'],facts=value['facts'],citations=value['citations'])
@@ -1397,6 +1415,25 @@ class ConversationEngine:
                         result['notes'].append('Place read as '+chosen['label']+' — '+why+'.')
                         points.append(chosen);resolved[p['name']]=chosen
                         continue
+                    district_only=bulletin_district_plan(plan)
+                    if district_only:
+                        # A district bulletin is keyed on the DISTRICT, and the publisher's
+                        # directory refuses a repeated district name, so one entry there
+                        # settles the question a list of same-named settlements cannot.
+                        # Measured 22 September 2026: "Is the heat a risk to my cattle in
+                        # Bikaner?" offered a choice between the Bikaner in Haryana and the
+                        # one in Rajasthan, when only one of the two is a district that
+                        # publishes an agromet bulletin - so the choice was between an
+                        # edition and nothing, presented as though it were between two
+                        # editions. The village is not what is being read.
+                        from .document_tools import directory_district
+                        state_of,spelled,why=directory_district([p.get('district'),p['name']])
+                        if spelled:
+                            result['notes'].append('Read as the published district '+str(spelled)+', '+str(state_of)+
+                                                   ' — '+str(why)+'. The district bulletin is keyed on the district, '
+                                                   'not on a settlement, and the publisher\'s directory lists this '
+                                                   'district name once.')
+                            continue
                     from .gazetteer import rank_matches as rank_places_for_choices
                     result.update(status='needs_selection',answer=f"I found {len(matches)} possible places for {p['name']}. Please confirm the intended location and spelling.",choices=rank_places_for_choices(matches)[:20],follow_up='Choose a place, or add its district and state.');return None
                 # A single match whose own name is not the name that was asked for is an ALIAS match,
@@ -1661,12 +1698,106 @@ class ConversationEngine:
     # intents that morning, exactly one answer in eleven was model-authored; the rest were templates.
     WRITTEN_ANSWER_INTENTS={'forecast','observation','marine','river','air_quality','ensemble','explanation',
                             'verification','aviation','history','warning','agriculture','document',
-                            'climate','comparison','research'}
+                            'climate','comparison','research','nowcast','imd_forecast'}
 
-    # A floor larger than this is not a turn whose prose needs improving, it is a transcript: a
-    # multi-task answer carrying several tables. Composing over it would cost more than it returns.
-    MAX_FLOOR_FOR_AUTHORING=7000
+    # A ceiling on what is worth composing over, not a judgement about which answers deserve prose.
+    # It used to be 7000, chosen when the whole floor travelled in the prompt and its length was a
+    # fair proxy for what composing would cost. It is not one any more: the payload is bounded
+    # independently (MAX_AUTHORED_PASSAGES in full, the rest by name, MAX_FLOOR_IN_PAYLOAD of the
+    # floor's own text), so a long floor costs no more to compose over than a short one.
+    #
+    # Measured 22 September 2026: the Gujarat state agromet turn retrieved 10 passages, its floor ran
+    # past 7000 characters, and it was handed to the reader as a table - a ten-passage transcript
+    # being exactly the answer most improved by prose.
+    MAX_FLOOR_FOR_AUTHORING=20000
     MAX_AUTHORED_PASSAGES=6
+    # How much of the tool-owned text travels in the prompt. It is there so the model can reuse the
+    # renderer's own phrasing and precision, not so it can read the whole transcript back: the
+    # passages travel separately and in full.
+    MAX_FLOOR_IN_PAYLOAD=3000
+
+    # What a turn must be missing before a second retrieval is even considered. Anything that
+    # produced evidence, asked the reader something, or offered a choice is a real outcome and is
+    # left exactly as it is.
+    RETRY_STATUSES={'unavailable','no_data'}
+
+    def retrieval_came_back_empty(self,result):
+        """Whether this turn retrieved nothing at all, so a different retrieval could still help.
+
+        Deliberately narrow. `needs_clarification` and `needs_selection` are answers - the reader
+        was asked something, and re-planning around them would talk over them. `partial` and
+        `stale` carry evidence. Only a turn that ended with nothing in its hands qualifies.
+        """
+        if result.get('status') not in self.RETRY_STATUSES:
+            return False
+        if any(result.get(key) for key in ('facts','passages','nowcast_records','airport_reports',
+                                           'warning_evidence','historical_evidence')):
+            return False
+        return bool((result.get('plan') or {}).get('tasks'))
+
+    def retry_retrieval_once(self,result,plan,question,history,resolved,body,request_id=None):
+        """Let the model look at what came back and ask differently, exactly once.
+
+        THE GAP THIS CLOSES. The engine planned once, before it had seen a single result. When that
+        plan was slightly wrong - a document family one notch too narrow, a district lookup for a
+        question about a state - the tools correctly reported an absence and the turn ended there,
+        telling the reader something was not held when it was the asking that was wrong.
+
+        THE GAP IT MUST NOT OPEN. This product's most important property is that an honest "the
+        publisher has not issued this" is a CORRECT answer, not a failure to work around. A loop
+        that retries until something comes back would trade that for the appearance of coverage. So:
+        the model is asked whether a different retrieval is warranted and is expected to say no when
+        the absence is real; the attempt happens at most once; the second plan goes through exactly
+        the same validation and the same governed tools as the first; and a retry that finds nothing
+        leaves the original answer untouched rather than replacing it with a second refusal.
+        """
+        if not self.retrieval_came_back_empty(result) or body.get('selection_id'):
+            return result
+        attempts=[{'kind':(task.get('plan') or {}).get('tasks',[{}])[0].get('kind') if task.get('plan') else None,
+                   'status':task.get('status'),
+                   'what_the_tool_said':str(task.get('answer') or '')[:400]}
+                  for task in (result.get('task_results') or [])] or [
+                  {'status':result.get('status'),'what_the_tool_said':str(result.get('answer') or '')[:400]}]
+        from .language import replan_after_empty
+        try:
+            second,meta=replan_after_empty(self.model.complete,question,self.workspace.clock(),history,plan,attempts)
+        except (SourceError,OSError,TimeoutError,ValueError) as exc:
+            result.setdefault('trace',{})['retrieval_retry']={'attempted':False,'why':str(exc)[:200]}
+            return result
+        if second is None:
+            # The model judged the absence real. That is the answer, and it stands.
+            result.setdefault('trace',{})['retrieval_retry']={'attempted':False,
+                                                              'why':(meta or {}).get('replan'),
+                                                              'judged_by':'model'}
+            return result
+        self._checkpoint(request_id,'resolving')
+        from .task_dispatch import execute_plan
+        retried=copy.deepcopy(result)
+        retried.update(facts=[],citations=[],notes=[],passages=[],charts=[],calculations=[],
+                       task_results=[],answer='',status='unavailable',plan=second,
+                       expires_at_utc=None,trace={'tools':[],'generation':None})
+        try:
+            retried=execute_plan(self,retried,second,resolved,body.get('coordinates'))
+        except (SourceError,OSError,ValueError) as exc:
+            result.setdefault('trace',{})['retrieval_retry']={'attempted':True,'kept':'first',
+                                                              'why':'the second retrieval raised: '+str(exc)[:160]}
+            return result
+        if self.retrieval_came_back_empty(retried) or not any(
+                retried.get(key) for key in ('facts','passages','nowcast_records','airport_reports')):
+            # Two honest absences are still one absence. The reader keeps the first answer rather
+            # than a second refusal that says the same thing in different words.
+            result.setdefault('trace',{})['retrieval_retry']={'attempted':True,'kept':'first',
+                                                              'why':'the second retrieval also returned nothing'}
+            return result
+        retried['trace']['retrieval_retry']={'attempted':True,'kept':'second',
+                                             'first_plan':[t.get('kind') for t in (plan.get('tasks') or [])],
+                                             'second_plan':[t.get('kind') for t in (second.get('tasks') or [])],
+                                             'why':(meta or {}).get('replan')}
+        retried.setdefault('notes',[]).append(
+            'The first retrieval for this question returned nothing, so it was asked again a different way '
+            'before answering. The place and the subject are unchanged; what changed is how this workspace '
+            'looked for them.')
+        return retried
 
     def written_answer_applies(self,result,text=None):
         """Whether a written answer may replace the deterministic text for this turn.
@@ -1681,12 +1812,29 @@ class ConversationEngine:
         """
         intent=str((result.get('plan') or {}).get('intent') or '')
         body=str(text if text is not None else result.get('answer') or '')
-        has_evidence=bool(result.get('facts') or result.get('passages'))
-        # The composer is given at most MAX_AUTHORED_PASSAGES passages. A turn with more cannot be
-        # written without quietly dropping the rest, so it keeps the floor, which carries them all.
-        within_passages=len(result.get('passages') or [])<=self.MAX_AUTHORED_PASSAGES
+        # A nowcast carries neither facts nor passages - its evidence is the publisher's own
+        # nowcast rows - and reading evidence as "facts or passages" left the one product whose
+        # answer is entirely the publisher's WORDS as the one product a model never wrote.
+        has_evidence=bool(result.get('facts') or result.get('passages') or result.get('nowcast_records'))
+        # THE RICHEST TURNS ARE NO LONGER THE ONES GUARANTEED TO STAY TEMPLATED.
+        #
+        # This also required len(passages) <= MAX_AUTHORED_PASSAGES, on the reasoning that a turn
+        # with more could not be written without quietly dropping the rest. That is the same
+        # backwards logic docs/132 removed from the LENGTH gate and left standing here, and it cost
+        # exactly the answers a reader most wants written. Measured 22 September 2026:
+        #
+        #     "What does the All India Weather Summary say today?"   12 passages -> TEMPLATE
+        #     "Summarise the extended range forecast"                 8 passages -> TEMPLATE
+        #     "What does the agromet advisory say for cotton in Rajkot?"  3 passages -> model
+        #
+        # The more evidence a turn gathered, the more certain the reader was handed a table.
+        #
+        # Nothing is dropped now, because nothing is hidden: the composer is given the leading
+        # passages in full and the REST BY NAME (authored_answer), so it can say what the rest of
+        # the document covers instead of pretending it does not exist. The receipt still carries
+        # every passage, and the floor still stands if the draft is refused.
         return (has_evidence and intent in self.WRITTEN_ANSWER_INTENTS
-                and within_passages and len(body)<=self.MAX_FLOOR_FOR_AUTHORING)
+                and len(body)<=self.MAX_FLOOR_FOR_AUTHORING)
 
     def written_answer(self,result,floor=None):
         """The reader's answer, written by the model from the retrieved facts, or the tool-owned text.
@@ -1714,6 +1862,26 @@ class ConversationEngine:
             problem=(self.generated_answer_problem(generated['answer'],generated['evidence_ids'],result,
                                                    supplied=generated.get('supplied'))
                      if generated else 'the model returned no usable narrative')
+            # A DRAFT THAT ONLY FORGOT TO CITE IS ASKED AGAIN, NOT DISCARDED.
+            #
+            # Citing nothing is a bookkeeping slip, not an unsafe answer: the prose itself passed
+            # every number, unit, place and language check. Throwing away a good answer over an
+            # empty id list and handing the reader a table is the worst trade available, and it is
+            # the commonest way a document turn - which carries passages and no facts at all - fell
+            # back. Measured 22 September 2026 on the flash flood and extended range bulletins.
+            #
+            # Only this one problem is retried, and the retry is judged by the same checks.
+            if generated and problem in ('it omitted every evidence reference',
+                                         'it cited no published passage on a turn whose evidence is a published document'):
+                try:
+                    again=self.authored_answer(result,shape={'measures_stated':0,'deepest':0,'uncited':True})
+                except (SourceError,OSError,TimeoutError):
+                    again=None
+                if again:
+                    second=self.generated_answer_problem(again['answer'],again['evidence_ids'],result,
+                                                         supplied=again.get('supplied'))
+                    if second is None:
+                        generated,problem=again,None
             if generated and problem is None:
                 # docs/117 §3.3: a retrieval is summarised, never recited. The first attempt is given
                 # the evidence and asked to answer; measured 21 September 2026, a turn holding nineteen
@@ -1770,8 +1938,16 @@ class ConversationEngine:
             # and it stays in the evidence list rather than being dumped into the prose. Restoring all
             # five turned a cotton advisory into a wall of bulletin header text on 21 September 2026.
             cited=set(generated.get('evidence_ids') or [])
+            # Only a passage whose TEXT this turn actually handed the model can be restored. A
+            # long document's remaining sections travel as names only (`further_passages`), and
+            # appending words the model never saw - because it cited a heading - would be putting
+            # them in its mouth, and would rebuild the wall of bulletin header text docs/132
+            # removed. The receipt carries every passage either way.
+            shown={str(p.get('id')) for p in ((generated.get('supplied') or {}).get('passages') or [])
+                   if isinstance(p,dict) and p.get('id')}
             for passage in result.get('passages') or []:
                 if not isinstance(passage,dict) or passage.get('id') not in cited:continue
+                if shown and str(passage.get('id')) not in shown:continue
                 quoted=str(passage.get('text') or '').strip()
                 if quoted and quoted not in answer:
                     answer=answer.rstrip()+chr(10)+chr(10)+quoted
@@ -1826,15 +2002,27 @@ class ConversationEngine:
         if stranger:return ('it introduced a number that is not in the retrieved facts: '
                              + ', '.join(stranger[:4]))
         unit_values=set()
+        def allow(value,unit):
+            """A measurement this product produced, and its magnitude.
+
+            A SIGNED quantity is stated by a person as a magnitude with a direction word: the
+            crosscheck computes a rainfall delta of -5.3 mm and the answer says "the two sources
+            differ by 5.3 mm". That is the same measurement, not an invented one, and refusing it
+            sent half of every multi-source comparison to the template - measured 22 September 2026,
+            the very turn where weighing two sources is the whole point.
+            """
+            if not unit:return
+            unit_values.add((value,unit))
+            unit_values.add((abs(value),unit))
         for fact in result['facts']:
             for value in re.findall(r'-?\d+(?:\.\d+)?',str(fact['value'])):
-                unit_values.add((Decimal(value),fact['unit']))
+                allow(Decimal(value),fact['unit'])
         # A derived total carries its own value and unit and is as tool-owned as a fact. Leaving it
         # out refused "1758.6 mm of rainfall in total" for a total this product itself computed.
         for calculation in result.get('calculations') or []:
             unit=(calculation or {}).get('unit')
             for value in re.findall(r'-?\d+(?:\.\d+)?',str((calculation or {}).get('value') or '')):
-                if unit:unit_values.add((Decimal(value),unit))
+                allow(Decimal(value),unit)
         # A published passage is quoted verbatim and enforced as such, so the publisher's own figures
         # are not the model's measurements. They are taken out of the text before it is scanned
         # rather than added to the allowed set: quoting a bulletin must not widen what may be said
@@ -1847,7 +2035,7 @@ class ConversationEngine:
             {'lead':result.get('lead') or '','limits':result.get('notes') or []},ensure_ascii=False)
         for match in re.finditer(r'(-?\d+(?:\.\d+)?)\s*(mm/day|km/h|m/s|°C|°F|hPa|mm|cm|mb|kt|km|m|%)(?!\w)',
                                  supplied_text):
-            unit_values.add((Decimal(match[1]),match[2]))
+            allow(Decimal(match[1]),match[2])
         scanned=text
         for passage in result.get('passages') or []:
             quoted=str((passage or {}).get('text') or '').strip()
@@ -1859,7 +2047,7 @@ class ConversationEngine:
             # facts at all - had an empty allowed set and every one was refused.
             for match in re.finditer(r'(-?\d+(?:\.\d+)?)\s*(mm/day|km/h|m/s|°C|°F|hPa|mm|cm|mb|kt|km|m|%)(?!\w)',
                                      quoted):
-                unit_values.add((Decimal(match[1]),match[2]))
+                allow(Decimal(match[1]),match[2])
         # This check exists to stop a RETRIEVED MEASUREMENT reaching a reader in a unit its source did
         # not use. A turn that retrieved no measurement has none to protect, and running the scan
         # anyway is a category error: measured 21 September 2026, every cotton advisory was refused
@@ -1878,7 +2066,12 @@ class ConversationEngine:
             for match in re.finditer(r'(-?\d+(?:\.\d+)?)(?:\s*[–-]\s*(-?\d+(?:\.\d+)?))?\s*('
                                      + ('|'.join(fact_units)+'|' if fact_units else '') + known + r')(?!\w)',scanned):
                 for value in [match[1],match[2]]:
-                    if value is not None and (Decimal(value),match[3]) not in unit_values:return 'a measurement does not match its source unit'
+                    # The refusal names the measurement. A reason a reader cannot act on is a reason
+                    # nobody can debug, and this one was silent while it was refusing half of every
+                    # multi-source comparison - the exact turn where two sources legitimately carry
+                    # two unit systems (IMD publishes wind in m/s, the global models in km/h).
+                    if value is not None and (Decimal(value),match[3]) not in unit_values:
+                        return ('a measurement does not match its source unit: '+str(value)+' '+str(match[3]))
         if (result['facts'] or result.get('passages')) and not ids:return 'it omitted every evidence reference'
         # On a turn whose evidence is a published bulletin, an answer that cites no passage has not
         # engaged with it - and since only cited passages are quoted back, it would also silently drop
@@ -1896,7 +2089,7 @@ class ConversationEngine:
             whole=((result.get('lead') or '')+' '+text).strip()
             if named and not self._names_the_place(named,whole,result):
                 return 'it did not name the place the facts belong to'
-        problem=self._non_measurement_problem(text,result)
+        problem=self._non_measurement_problem(text,result,supplied)
         if problem:return problem
         return None
 
@@ -1989,9 +2182,32 @@ class ConversationEngine:
         if fold(named) not in {m for m in mine if m}:return False
         return bool(self.OWN_PLACE.search(prose))
 
-    def _non_measurement_problem(self,text,result):
+    def _non_measurement_problem(self,text,result,supplied=None):
         """The checks that apply whether or not this turn retrieved a measurement."""
-        if re.search(r'https?://|\b(?:is|are|will be) guaranteed\b|\bdefinitely safe\b',text,re.I):return 'it contained an unsupported link or certainty'
+        if re.search(r'\b(?:is|are|will be) guaranteed\b|\bdefinitely safe\b',text,re.I):return 'it contained an unsupported certainty'
+        # A LINK THIS PRODUCT HANDED THE MODEL IS NOT AN INVENTED LINK.
+        #
+        # The rule exists to stop the model manufacturing a source address, and for that it is
+        # right. But it was reading every "https://" the same way, including the ones printed
+        # in the publisher's own bulletin. Measured 22 September 2026: the Guntur agromet
+        # advisory prints Play Store addresses for IMD's Mausam, Meghdoot and Damini apps, the
+        # model quoted the passage verbatim as it is required to, and the whole answer was
+        # refused - so the reader got the raw corpus floor instead, opening with "Indexed
+        # published document:" and an edition diff. The refusal is what put the metadata on
+        # the screen.
+        #
+        # This is the same mistake docs/132 recorded once already, when the measurement check
+        # refused every cotton advisory over "acephate 75 % SP" - a figure out of the
+        # publisher's own bulletin, policed as though the model had measured it. The fix has
+        # the same shape: an address that appears verbatim in what this turn supplied is being
+        # quoted, not invented. Anything else is still refused.
+        links=set(re.findall(r'https?://\S+',text))
+        if links:
+            allowed=json.dumps(supplied,ensure_ascii=False) if supplied else ''
+            allowed+=' '+' '.join(str((p or {}).get('text') or '') for p in (result.get('passages') or []))
+            allowed+=' '+' '.join(str(note) for note in (result.get('notes') or []))
+            stranger=sorted(link for link in links if link.strip('.,;:)"”\'') not in allowed and link not in allowed)
+            if stranger:return 'it contained an unsupported link: '+', '.join(stranger[:2])
         from .dialogue import language_gap
         if language_gap(text,result['plan']['language']):return 'it did not honour the requested output language'
         return None
@@ -2071,14 +2287,43 @@ class ConversationEngine:
             "station reported as a run of numbers. Three to five sentences, and at most six separate "
             "measures. The rest of the evidence is not lost - it is on the receipt under the answer, "
             "where a reader who wants it will find it - so the sentence does not have to carry it.\n\n"
+            "TWO SOURCES ARE AN ANSWER, NOT A SURVEY. Where the evidence carries both IMD's own "
+            "forecast (labelled \u00b7 IMD) and a global model, the reader still asked one question and "
+            "still gets one answer first. If the two broadly agree, give the answer once and say in a "
+            "clause that IMD and the global model agree - do not report the same measure twice. If they "
+            "DISAGREE in a way that changes what the reader would do, say so plainly and give both "
+            "figures, because a disagreement is information. Never average them, never rank them, never "
+            "call one correct, and never present agreement as proof: a blend and a global model can "
+            "share lineage.\n\n"
+            "A RANGE MUST COME FROM ONE SOURCE. Every fact row carries its own `source_id`, and the "
+            "sources do not supply the same shape: IMD may give many three-hourly steps where the "
+            "global model gives one figure for the day. Never take a minimum from one source and a "
+            "maximum from another and present the span as either source's range - that attributes a "
+            "number to a publisher that did not print it, which is the one error this product will "
+            "not make. Group the rows by `source_id` first, state each source's own figure, and only "
+            "then compare them.\n\n"
             "USE ONLY THE SUPPLIED EVIDENCE. Copy every number, unit, place label and window label "
             "EXACTLY as supplied - no arithmetic, no rounding, no unit conversion, no reformatting a "
-            "date or a place. If a number is not in the evidence, it does not go in the answer. Cite "
-            "the facts you used in evidence_ids.\n\n"
+            "date or a place. If a number is not in the evidence, it does not go in the answer. "
+            "ALWAYS put the id of every `facts` row AND every `passages` entry you used into "
+            "evidence_ids - a document turn carries passages and no facts at all, and an answer that "
+            "cites nothing is rejected and the reader gets a table instead.\n\n"
             "A PASSAGE IS THE PUBLISHER'S OWN WORDS. Where `passages` are supplied, quote each one "
-            "exactly and in full, inside quotation marks, at the point in your answer where it belongs. "
+            "exactly and in full, inside quotation marks, at the point in your answer where it belongs, "
+            "and put its id in evidence_ids. "
             "Never paraphrase, shorten, summarise or translate a passage: a reader is entitled to the "
             "words the publisher printed, not your account of them.\n\n"
+            "`nowcast` IS THE PUBLISHER'S VERY-SHORT-RANGE STATEMENT. Lead with what it says and when "
+            "it runs out - the printed issue and valid-to clock are the point of a nowcast. Quote its "
+            "message, impact and action verbatim where they are present. Its `hazard_category_codes` "
+            "have NO published legend: give the numbers if they help, never invent what a code means, "
+            "and never read them as the district warning product's hazards. Say plainly that it is a "
+            "nowcast rather than the five-day warning, and that an absence is not an all-clear.\n\n"
+            "`further_passages` IS THE REST OF THE DOCUMENT, BY NAME. Those sections were retrieved "
+            "and are on the receipt, but their words were not supplied to you. Use them to tell the "
+            "reader what else the document covers - 'it also carries sections on X and Y' - so a long "
+            "bulletin reads as the whole thing it is. Never quote one, never cite one in evidence_ids, "
+            "and never state anything about what one SAYS: you have its heading, not its text.\n\n"
             "ANSWER A 'WHICH' QUESTION WITH THE ONE THAT ANSWERS IT. If the reader asks which, when, "
             "the highest, the lowest, the wettest, the hottest, the first or the last, find the fact "
             "among those supplied that answers it and name it - its own label and its own value. A "
@@ -2101,7 +2346,13 @@ class ConversationEngine:
             "offering further help.\n\n"
             "Write in the supplied language code. Return JSON."
         )
-        if shape:
+        if shape and shape.get('uncited'):
+            system += ("\n\nYOUR PREVIOUS ATTEMPT WAS SENT BACK FOR ONE REASON ONLY: evidence_ids was "
+                       "empty. The prose itself was accepted. Write the same answer again and put in "
+                       "evidence_ids the id of every `facts` row and every `passages` entry you drew "
+                       "on. If this turn supplied passages and no facts, then the ids you need are "
+                       "the passage ids. An empty list sends the reader a table instead of your answer.")
+        elif shape:
             system += ("\n\nYOUR PREVIOUS ATTEMPT WAS SENT BACK. It named " + str(shape.get('measures_stated'))
                        + " separate measures" +
                        (" and recited " + str(shape.get('deepest')) + " values from one of them"
@@ -2112,8 +2363,24 @@ class ConversationEngine:
         plan=result.get('plan') or {}
         facts=result.get('facts') or []
         primary=(facts or [{}])[0]
+        held_passages=[p for p in (result.get('passages') or []) if isinstance(p,dict)]
         passages=[{k:v for k,v in p.items() if k in {'id','text','document','page','issued','district','state'}}
-                  for p in (result.get('passages') or [])[:self.MAX_AUTHORED_PASSAGES]]
+                  for p in held_passages[:self.MAX_AUTHORED_PASSAGES]]
+        # The rest of the document, named rather than hidden. A whole-document reading can hold
+        # twenty sections and only the leading few fit in a prompt; naming the others lets the
+        # answer say what else the bulletin covers, which is usually what the reader wanted to
+        # know, instead of the model writing as though the document ended at passage six.
+        #
+        # Named, and NOT quoted: no text travels, so the model cannot quote what it has not been
+        # shown, and the verbatim restoration below deliberately ignores these ids for the same
+        # reason - appending words it never saw would be putting them in its mouth.
+        further_passages=[{'id':p.get('id'),
+                           'section':p.get('section') or p.get('crop') or None,
+                           'stage':p.get('growth_stage') or p.get('stage') or None,
+                           'page':p.get('page') or p.get('physical_page'),
+                           'why':'held on this turn and on the receipt; named so you can say the document covers it, '
+                                 'but its words were not supplied, so do not quote or cite it'}
+                          for p in held_passages[self.MAX_AUTHORED_PASSAGES:][:24]] or None
         # The material, not the database. `facts` is what the sentence is written from and `further`
         # is what else this turn holds, named so the model knows it exists and can cite it if the
         # question turns out to be about it.
@@ -2125,7 +2392,11 @@ class ConversationEngine:
                  # "54.7 mm/decade" in the sentence and 54.654 in the calculation - and a check that
                  # allowed only the record refused the model for repeating this product's own
                  # sentence back at it (measured 21 September 2026, the Ahmedabad climate turn).
-                 'what_the_tools_already_state':composer_floor(result),
+                 'what_the_tools_already_state':(lambda floor:
+                     floor if not floor or len(floor)<=self.MAX_FLOOR_IN_PAYLOAD
+                     else floor[:self.MAX_FLOOR_IN_PAYLOAD].rsplit(chr(10),1)[0]
+                          +chr(10)+'… [the rest of the tool text is on the receipt; the passages you need are supplied above]'
+                     )(composer_floor(result)),
                  'place_label':str(primary.get('place') or '').split(',')[0].strip() or None,
                  'window_label':window_label(primary.get('start'),primary.get('end')) or None,
                  'facts':[composer_fact(f) for f in (material or facts)],
@@ -2133,6 +2404,15 @@ class ConversationEngine:
                                         'why':'retrieved and on the receipt; not needed in the sentence'}
                                        for f in further][:12] or None),
                  'passages':passages or None,
+                 'further_passages':further_passages,
+                 # The publisher's own nowcast rows: its message, impact and action verbatim, its
+                 # printed issue and validity clock, its colour. Category codes travel as codes
+                 # because no legend is published for them (adapters.nowcast).
+                 'nowcast':[{k:v for k,v in row.items()
+                             if k in {'district_label','state','issuing_centre','issue_date','time_of_issue',
+                                      'valid_until','colour','message','impact','action',
+                                      'hazard_category_codes','hazard_category_legend'}}
+                            for row in (result.get('nowcast_records') or [])[:6]] or None,
                  'calculations':[{k:v for k,v in c.items() if k in {'label','value','unit','method'}}
                                  for c in (result.get('calculations') or [])[:4]] or None,
                  'window':{'start_local':plan.get('start_local'),'end_local':plan.get('end_local')},

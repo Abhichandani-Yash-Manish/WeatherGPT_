@@ -1,12 +1,15 @@
 """Source-qualified district advisory retrieval through the existing IMD selector."""
 import json,re
 from datetime import timedelta
+from zoneinfo import ZoneInfo
 from .advisories import catalog,document
 from .bulletin_index import BulletinIndex,extract,crop_name,EXTRACTION_VERSION
 from .evidence_transport import evidence_store
 from .transport import SourceError,parsed,stamp,write_json,digest
 from .gazetteer import norm
 from .bulletin_context import parent_context,qualification_flags
+
+IST=ZoneInfo('Asia/Kolkata')
 
 
 def _closest(names, wanted):
@@ -25,6 +28,29 @@ def _closest(names, wanted):
         return best, ('the publisher directory spells it ' + str(best) +
                       ', the closest name and clearly ahead of the next')
     return None, 'no name in the publisher directory is close enough to the request'
+
+
+def directory_district(names, root=None):
+    """(state, the publisher's spelling, why) for the first name that is a district, or (None, None, why).
+
+    The publisher's directory refuses a repeated district name, so a district name alone
+    identifies its state nationally. This is the bounded match over that whole directory,
+    used when a reader names a district and no state: exact first, then close and clearly
+    ahead of the next, on the same thresholds match_publisher uses.
+    """
+    from .document_ingest import district_targets
+    from .foundation import ROOT as foundation_root
+    targets, _meta = district_targets(root or foundation_root)
+    listing = sorted({target['district'] for target in targets})
+    home = {target['district']: target['state'] for target in targets}
+    why = 'no name was supplied to match'
+    for name in names:
+        if not name:
+            continue
+        matched, why = _closest(listing, norm(name))
+        if matched:
+            return home.get(matched), matched, (why or 'the directory spells it as asked')
+    return None, None, why
 
 
 def match_publisher(state, district, root=None):
@@ -49,9 +75,121 @@ def match_publisher(state, district, root=None):
     return state_name, district_name, ', '.join(item for item in (why_state, why_district) if item) or 'the directory spells both names as asked'
 
 
-def sync(workspace,state,district,index):
-    now=workspace.clock();head=index.head(state,district)
-    if head and head['status']=='ok' and parsed(head['checked_at'])+timedelta(hours=1)>now:return index.document(head['sha'])
+# How long a reader's turn may wait for a district bulletin to be refreshed before it is
+# answered from the edition already held. Set at fifteen seconds on 22 September 2026 after
+# measuring four cold fetches end to end - fetch, extract, embed and index:
+#
+#     Davanagere 7.77s   Nashik 3.24s   Bhatinda 2.76s   Ludhiana 2.14s
+#
+# all four returning fetched_new, which is to say all four had a newer edition waiting that
+# the scheduled sweep was never going to reach. The budget covers every one of them with
+# room to spare, and what it buys when it is exceeded is not a failure: the turn falls back
+# to the held edition and says how old it is, while the refresh CONTINUES in the background
+# and lands in the index for the next question. A bounded wait, unbounded useful work.
+FETCH_BUDGET_SECONDS=15
+
+# The marker that separates "the fetch is still going" from "the fetch failed". They read the
+# same to a machine and not at all the same to a reader: one says ask again shortly, the other
+# says this district cannot be read here today.
+STILL_FETCHING='The first edition for this district was still being fetched'
+
+
+def bounded(work,seconds):
+    """Run `work()` and return its result, or None if it outruns the budget.
+
+    The worker is not cancelled on a timeout and is not joined: a district fetch that takes
+    eighteen seconds has still done real work, and throwing it away would mean the next
+    reader pays for it again. It finishes, writes its own index row under sqlite's lock, and
+    the only thing the slow turn loses is the chance to quote it.
+    """
+    import threading
+    box={}
+    def run():
+        try:box['value']=work()
+        except BaseException as error:box['error']=error
+    worker=threading.Thread(target=run,daemon=True,name='district-refresh')
+    worker.start();worker.join(seconds)
+    if worker.is_alive():return None
+    if 'error' in box:raise box['error']
+    return box.get('value')
+
+
+def read_today(head,now):
+    """Whether a head counts as already read for the day the reader is asking on.
+
+    IMD issues the district agromet bulletins once each morning, so a second fetch on the
+    same day downloads a body the publisher has not changed. Measured 21 and 22 September
+    2026: the scheduled sweep's forty targets returned 32 unchanged and indexed zero
+    passages on both days. The window used to be one hour, which bought nothing and cost a
+    download; the question that matters is whether today's edition has been read.
+    """
+    if not head or head.get('status')!='ok' or not head.get('checked_at'):return False
+    try:when=parsed(head['checked_at'])
+    except (ValueError,TypeError):return False
+    return when.astimezone(IST).date()>=now.astimezone(IST).date()
+
+
+def sync(workspace,state,district,index,budget=FETCH_BUDGET_SECONDS):
+    """The district's current bulletin: held if it was read today, refreshed if it was not.
+
+    This is the query layer doing the fetching, which is the point. A scheduled job cannot
+    know which two districts of six hundred and ninety-eight somebody will ask about this
+    evening; the question itself knows, and it arrives with the reader already waiting, so
+    the work is done where the demand is. What the schedule is left with is the tail nobody
+    asked for, in staleness order (weathergpt_data/document_demand.py).
+    """
+    now=workspace.clock()
+    # Every district asked about is recorded, including the ones answered perfectly from a
+    # held edition: the ledger is learning which districts this workspace is USED for, and
+    # only counting the failures would teach it the opposite.
+    try:demand_ledger(index).mark(state,district,now,reason='district bulletin question')
+    except (SourceError,OSError,ValueError):pass
+    head=index.head(state,district)
+    if read_today(head,now):return index.document(head['sha'])
+    held=bool(head and head['status']=='ok' and head.get('sha'))
+    # THE WAIT IS BOUNDED WHETHER OR NOT ANYTHING IS HELD.
+    #
+    # This first bounded only the case with a held edition to fall back to, on the reasoning
+    # that a refusal after fifteen seconds is worse than an answer after twenty. Measured on
+    # a district the corpus has never held: "What does the agromet bulletin advise for paddy
+    # in Lepa Rada?" took THIRTY-NINE SECONDS and refused anyway - the worst of both. The
+    # selection catalogue and the document are separate requests at 25 seconds each, so the
+    # unbounded path's ceiling is near a minute, and the reasoning only ever held if the
+    # extra wait bought an answer.
+    #
+    # It is bounded either way. What differs is what the caller is told, because the two
+    # outcomes are genuinely different: one falls back to a held edition, the other has
+    # nothing to fall back to and says the fetch is still running.
+    fresh=bounded(lambda:_refresh(workspace,state,district,index,now),budget)
+    if fresh is not None:return fresh
+    if held:
+        raise SourceError('The current edition was not retrieved within this turn\'s '+str(budget)+
+                          '-second refresh budget; the refresh is still running and the edition already '
+                          'held here is read instead')
+    raise SourceError(STILL_FETCHING+' within this turn\'s '+str(budget)+'-second budget, and no earlier '
+                      'edition is held here to read instead')
+
+
+def demand_ledger(index):
+    """The demand ledger that sits beside this corpus index."""
+    from .document_demand import DemandLedger
+    return DemandLedger(index.path.parent/'demand.sqlite')
+
+
+def _refresh(workspace,state,district,index,now=None,reader_waiting=True):
+    """Fetch, extract and index this district's current edition. Runs on the turn or off it.
+
+    `reader_waiting` raises a priority lease for as long as this takes, which is what makes
+    the resident refresh worker stand down while a question is being answered. The worker
+    passes False, because a worker deferring to itself would never fetch anything.
+    """
+    now=now or workspace.clock()
+    head=index.head(state,district)
+    lease=None
+    if reader_waiting:
+        from .refresh_lease import hold
+        from .foundation import ROOT as project_root
+        lease=hold(project_root,'district bulletin: '+str(district))
     try:
         with evidence_store(workspace,'imd_bulletins',index.path.parent/'raw') as store:
             states=catalog(store);matches=[r for r in states['records'] if norm(r['label'])==norm(state)]
@@ -71,6 +209,10 @@ def sync(workspace,state,district,index):
             index.publish(doc,provenance,stamp(now));return index.document(doc['sha256'])
     except (ValueError,OSError,ImportError) as e:
         index.mark_failed(state,district,stamp(now),str(e));raise SourceError('Bulletin retrieval is unavailable: '+str(e)) from e
+    finally:
+        # Dropped as soon as the publisher is done with, not when the turn ends: the rest of
+        # the turn is writing prose, and the worker has no reason to keep waiting for that.
+        if lease is not None:lease.release()
 
 
 def indexed_reading(engine,result,plan,task,district,query,reason):
@@ -91,9 +233,24 @@ def indexed_reading(engine,result,plan,task,district,query,reason):
     packet=execute_corpus(engine,result,plan,fallback)
     if not packet.get('passages'):
         return None
+    # How old the held edition is, said in days rather than left for the reader to subtract
+    # from a date. When the turn fell back because the refresh outran its budget, the age is
+    # the whole point: "read from the edition printed four days ago" is what actually
+    # happened, and a reader deciding whether to spray tomorrow needs it in those terms.
+    age=''
+    issued=next((str(item.get('issue_date') or '') for item in (packet.get('document_evidence') or [])
+                 if item.get('issue_date')),'')
+    if issued:
+        try:
+            days=(engine.workspace.clock().astimezone(IST).date()-parsed(issued+'T00:00:00+05:30').date()).days
+            age=(' It is the edition printed today.' if days<=0 else
+                 ' It is the edition printed yesterday.' if days==1 else
+                 ' It is the edition printed '+str(days)+' days ago, on '+issued+'.')
+        except (ValueError,TypeError):
+            age=' It is the edition printed '+issued+'.'
     disclosure=('The live district bulletin could not be verified ('+str(reason)+'), so this reading is the '+str(district)+
-                ' edition already indexed here, served with its printed issue date, physical page and saved document. '
-                'Crop and growth-stage annotation belongs to the live extractor and is not claimed for it.')
+                ' edition already held here, served with its printed issue date, physical page and saved document.'+age+
+                ' Crop and growth-stage annotation belongs to the live extractor and is not claimed for it.')
     packet.setdefault('notes',[]).append(disclosure)
     # The disclosure follows the advice rather than preceding it. docs/117 settled that an answer
     # opens with the answer, and this path was opening every advisory turn with two sentences of
@@ -143,8 +300,29 @@ def execute_document(engine,result,plan,task,resolved=None):
                 # asking the user to repeat it. A settlement name is never promoted to
                 # a district this way.
                 from .document_ingest import district_states
-                states=district_states(district)
-                if len(states)==1:state=states[0]
+                for candidate in candidates:
+                    states=district_states(candidate)
+                    if len(states)==1:
+                        state=states[0];district=candidate;break
+                else:
+                    # district_states is an EXACT lookup, and the publisher does not spell
+                    # every district the way a reader does. Measured 22 September 2026:
+                    # "fertilizer for maize in Davangere" was answered with "which district
+                    # and state should I look up?", because the directory spells it
+                    # Davanagere; the same for Bathinda, spelled Bhatinda. The question had
+                    # named the district. Asking for it again is the engine demanding what
+                    # it already has.
+                    #
+                    # The match is the same bounded rule match_publisher already applies one
+                    # step later - close, and clearly ahead of the next name - so nothing is
+                    # resolved here that would be refused there, and whichever name is taken
+                    # is disclosed on the answer rather than applied silently.
+                    named,taken,why=directory_district(candidates)
+                    if named:
+                        state=named;district=taken
+                        if taken not in candidates:candidates.insert(0,taken)
+                        result['notes'].append('Read as '+str(taken)+', '+str(named)+
+                                               ' in the publisher\'s district directory: '+str(why)+'.')
     if state and candidates:
         # The publisher's own spelling, resolved against the directory snapshot and disclosed.
         rejected=[]
@@ -183,16 +361,72 @@ def execute_document(engine,result,plan,task,resolved=None):
         result.update(status='needs_clarification',answer='Which source district and state should I check? A district bulletin cannot represent an entire state.');return result
     crop=request.get('crop','');stage=request.get('growth_stage','');mode=request.get('mode','source_lookup');query=request.get('query') or task.get('request_quote',result['question'])
     if mode=='decision_support' and not crop:
-        result['pending_slots']=[{'field':'crop','reason':'Crop is not yet supplied'}]
-        result.update(status='needs_clarification',answer='Which crop and growth stage are involved? I can retrieve the district bulletin and relevant weather, but those details determine which passages apply.',follow_up='Crop and growth stage');return result
-    if mode=='decision_support' and not stage:result['pending_slots']=[{'field':'growth_stage','reason':'Crop growth stage is not yet supplied'}]
+        # The crop is asked for as a REFINEMENT now, not as a gate. Measured 22 September
+        # 2026: "Is tomorrow morning good for spraying pesticide in Nashik?" was answered
+        # with "which crop and growth stage are you dealing with?" and nothing else - the
+        # bulletin was never opened. But a district bulletin's general and weather sections
+        # answer a good deal of that question without knowing the crop: whether to postpone
+        # foliar spray during the forecast rain, whether wind is expected. Withholding the
+        # published guidance until the reader supplies a field the bulletin may not even
+        # turn on is the engine asking for what it does not need yet.
+        #
+        # Nothing is loosened: no crop is invented, no crop-specific passage is attributed,
+        # and the answer still says a personal go/no-go is unresolved. The question comes
+        # back UNDER an answer instead of INSTEAD of one.
+        result['pending_slots']=[{'field':'crop','reason':'Crop is not yet supplied; general bulletin guidance is served meanwhile'}]
+        result['notes'].append('No crop was named, so this reads the bulletin\'s general and weather guidance for the '
+                               'district rather than any crop-specific row. Naming the crop and its growth stage '
+                               'narrows it to the passages that apply to that field.')
+        result['follow_up']='Which crop and growth stage? That narrows this to the rows that apply to your field.'
+    # Appended, not assigned: with no crop named there are now two open slots, and the crop is
+    # the one that narrows the reading, so it stays first.
+    if mode=='decision_support' and not stage:
+        result.setdefault('pending_slots',[]).append({'field':'growth_stage','reason':'Crop growth stage is not yet supplied'})
     index=BulletinIndex(engine.workspace.service.raw_root.parent/'bulletins'/EXTRACTION_VERSION/'index.sqlite')
     try:
         doc=sync(engine.workspace,state,district,index)
     except SourceError as error:
         fallback=indexed_reading(engine,result,plan,task,district,query,error)
         if fallback is not None:return fallback
-        raise
+        # NOTHING LIVE AND NOTHING HELD: NAME THE GAP, AND QUEUE IT.
+        #
+        # This used to re-raise, and the dispatcher's catch-all turned it into "The task
+        # could not retrieve verified evidence: Bulletin retrieval is unavailable: Printed
+        # district could not be verified with the supported layout rules; the layout may be
+        # unsupported or the selected district may differ" - an internal diagnostic handed to
+        # a farmer who asked about maize. The refusal is right; the sentence was not written
+        # for anybody.
+        #
+        # What the reader is owed is the district, the family, that it was not held at THIS
+        # read, and what happens next. The request is recorded so the next scheduled refresh
+        # takes it before the districts nobody asked about (docs/142).
+        queued=False
+        try:
+            demand_ledger(index).mark(state,district,engine.workspace.clock(),
+                                      reason='asked for; neither the live fetch nor a held edition could be read')
+            queued=True
+        except (SourceError,OSError,ValueError):pass
+        result['retrieval_coverage']={'family':'district_agromet','region':district,'state':state,
+                                      'returned':0,'held_at_this_read':False,'queued_for_refresh':queued,
+                                      'reason':str(error),
+                                      'scope':'The live edition could not be read and no held edition answered this question.'}
+        if STILL_FETCHING in str(error):
+            # Not a failure. The fetch is running and will land in the index; what this turn
+            # lacks is the time to wait for it, and saying so tells the reader the one useful
+            # thing - that asking again shortly will work.
+            answer=('No edition of the '+str(district)+' district agromet bulletin ('+str(state)+') is held here yet, '
+                    'and the first fetch of it did not finish inside this turn. It is still running in the background, '
+                    'so asking again shortly should reach it. Nothing has been quoted from another district\'s bulletin '
+                    'and nothing has been inferred from one.')
+        else:
+            answer=('The '+str(district)+' district agromet bulletin ('+str(state)+') is not readable here at this read. '
+                    'The publisher\'s current edition could not be verified — '+str(error).replace('Bulletin retrieval is unavailable: ','')+
+                    ' — and no earlier edition held here answers this question either. '
+                    'No other district\'s bulletin has been substituted and nothing has been inferred from one.')
+        if queued:
+            answer+=(' The request has been recorded, and the next scheduled refresh fetches '+str(district)+
+                     ' before the districts nobody has asked about.')
+        result.update(status='unavailable',answer=answer);return result
     today=engine.workspace.clock().astimezone(__import__('zoneinfo').ZoneInfo('Asia/Kolkata')).date().isoformat()
     if today>doc['forecast_end'] or today<doc['issue_date']:
         # The bulletin's forecast window has passed. A question about the published text ("what does the
@@ -222,7 +456,35 @@ def execute_document(engine,result,plan,task,resolved=None):
     result['document_evidence']=[{k:doc[k] for k in ['district','state','issue_date','forecast_start','forecast_end','advice_valid_until','sha256','family','scope']}]
     result['trace']['tools'].append({'name':'district_bulletin_retrieval','source_id':'S57',**trace,'document_sha256':doc['sha256']})
     if not hits:
-        result.update(status='unavailable',answer=f"The {district} bulletin dated {doc['issue_date']} has no indexed passage matching "+(crop or 'the requested crop')+((' at '+stage) if stage else '')+(' for '+request.get('topic','general') if request.get('topic','general')!='general' else '')+'. No passage for another crop, stage or topic has been substituted.');return result
+        # NAME WHAT THE EDITION DOES CARRY.
+        #
+        # "The Ludhiana bulletin dated 2026-09-22 has no indexed passage matching wheat" is
+        # true and nearly useless. Wheat is a rabi crop and this is a September edition; the
+        # reader's next question is inevitably "well, what IS in it?", and this tool knows.
+        # Measured 22 September 2026: that bare negative was the whole answer to "What does
+        # the agromet advisory say for wheat in Ludhiana?".
+        #
+        # The crops are read off the edition's own indexed rows, so this names what the
+        # publisher printed rather than a guess about what a September bulletin ought to
+        # contain. Nothing is substituted: the asked-for crop is still absent and still said
+        # to be absent.
+        from .corpus_tools import label_text_only
+        carried=[]
+        for chunk in doc.get('chunks') or []:
+            name=str(chunk.get('crop') or '').strip()
+            if name and name not in carried and not label_text_only(name):carried.append(name)
+        asked=(crop or 'the requested crop')+((' at '+stage) if stage else '')
+        topic=request.get('topic','general')
+        answer=(f"The {district} bulletin dated {doc['issue_date']} carries no passage for "+asked+
+                (' on '+topic if topic!='general' else '')+'. No passage for another crop, stage or topic has been '
+                'substituted.')
+        if carried:
+            answer+=(' That edition does carry guidance for '+', '.join(carried[:12])+
+                     ('and others' if len(carried)>12 else '')+' — ask about one of those and I will read it.')
+        else:
+            answer+=' The edition holds no crop-labelled rows at all under the reviewed extraction rules.'
+        result['retrieval_coverage']['crops_in_edition']=carried
+        result.update(status='unavailable',answer=answer);return result
     context,context_coverage=parent_context(doc)
     context=[c for c in context if c.get('source_chunk_id') not in {h['id'] for h in hits}]
     conflicts=qualification_flags(hits,context)
@@ -236,7 +498,31 @@ def execute_document(engine,result,plan,task,resolved=None):
     if conflicts:
         pieces.append('Source guidance needs reconciliation: different passages contain permission and restriction wording for '+', '.join(c['activity'] for c in conflicts)+'. Their conditions and time scopes may differ. Both are retained below; no personal go/no-go conclusion has been made.')
     if context_coverage['status'] in {'partial','unavailable'}:
-        incomplete=('Bulletin context is incomplete: '+('; '.join(x['section']+' — '+x['reason'] for x in context_coverage['omitted_sections']) or context_coverage.get('reason','unavailable'))+'. The crop excerpts do not establish complete bulletin guidance.')
+        # SAID ONCE, IN WORDS, WITH THE SECTIONS NAMED.
+        #
+        # This paired every omitted section with its own copy of the extractor's reason, so a
+        # Shimla apple advisory ended: "Weather Warnings (Valid Till 08:30 IST of the next
+        # day) — Empty, unreadable or oversized section; source review required; Likely
+        # impacts of weather warnings on Agriculture and associated Agromet advisories —
+        # Empty, unreadable or oversized section; source review required; General Advisory: —
+        # Empty, unreadable or oversized section; source review required; SMS Advisory: —
+        # Empty, unreadable or oversized section; source review required". One diagnostic,
+        # four times, in an answer about apples.
+        #
+        # The sections are grouped under the reason they share. Nothing is dropped - every
+        # section is still named and every distinct reason still given - and the clause stays
+        # held, because a reader acting on crop excerpts as though they were the whole
+        # bulletin is the harm it exists to prevent.
+        grouped={}
+        for item in context_coverage['omitted_sections']:
+            grouped.setdefault(str(item['reason']).rstrip('.'),[]).append(str(item['section']).rstrip(':').strip())
+        def listed(names):
+            return names[0] if len(names)==1 else ', '.join(names[:-1])+' and '+names[-1]
+        clauses=[listed(sections)+' ('+str(len(sections))+' sections): '+reason if len(sections)>1
+                 else listed(sections)+': '+reason for reason,sections in grouped.items()]
+        incomplete=('Bulletin context is incomplete — '+('; '.join(clauses) if clauses else
+                    str(context_coverage.get('reason','unavailable')))+
+                    '. The crop excerpts do not establish complete bulletin guidance.')
         pieces.append(incomplete)
         # Held: a reader acting on crop excerpts as though they were the whole bulletin is the harm
         # this sentence prevents, so it survives a rewrite of the prose around it.

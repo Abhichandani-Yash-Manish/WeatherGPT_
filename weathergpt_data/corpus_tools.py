@@ -292,6 +292,83 @@ def printed_validity(document):
         return None
 
 
+def retry_within_current_edition(index, query, family, scope, region, retired, views):
+    """Search the current edition when every match was retired as superseded, or None.
+
+    The general shape of this is worth stating, because it is the one thing the engine could
+    not previously do: when a retrieval comes back with nothing servable, ask again somewhere
+    better rather than reporting an absence. Here "somewhere better" is exactly defined - the
+    newer edition of the same product and region, which is the edition a present-tense question
+    meant - so this widens nothing and substitutes nothing.
+    """
+    if not retired:
+        return None
+    earlier = views.get(retired[0]) or {}
+    family = family or earlier.get('family')
+    region = region if region is not None else earlier.get('region')
+    if not family:
+        return None
+    try:
+        head = index.document_head(family, region)
+    except (SourceError, ValueError, OSError):
+        return None
+    if not head or not head.get('sha') or head['sha'] in retired:
+        return None
+    try:
+        hits, method = index.search_passages(query, family=family, scope=scope or None, region=region,
+                                             limit=10, document_sha=head['sha'])
+    except (SourceError, ValueError, OSError):
+        return None
+    tokens = query_tokens(query)
+    supported = [hit for hit in hits if lexically_supported(hit, tokens)]
+    if not supported:
+        # The current edition genuinely does not carry this. Refusing is then the honest
+        # outcome, and the caller says so naming both editions.
+        return None
+    try:
+        document = index.passage_document(head['sha'])
+    except (SourceError, ValueError, OSError):
+        return None
+    state = document.get('source_state') or document.get('state')
+    view = {'family': family, 'scope': scope or document.get('scope'), 'region': region,
+            'source_id': document.get('source_id'), 'family_label': family_label(family),
+            'state': state, 'issue_date': document.get('issue_date'),
+            'age_days': document.get('age_days'), 'currency': document.get('currency'),
+            'extraction_status': document.get('extraction_status') or 'family_extraction_reviewed_in_intake',
+            'printed_times': document.get('printed_times') or {}, 'pages': document.get('pages'),
+            'is_shared_edition': document.get('is_shared_edition'),
+            'selected_for_regions': document.get('selected_for_regions') or []}
+    return {'sha': head['sha'], 'hits': supported, 'document': document, 'view': view,
+            'issue_date': document.get('issue_date'),
+            'method': {**(method or {}), 'mode': 'current_edition_retry',
+                       'retried_because': 'every match was retired as superseded'}}
+
+
+def queue_the_gap(index, asked, family='district_agromet'):
+    """Record that a reader asked for a district this corpus does not hold, or None.
+
+    Only a district the PUBLISHER lists is queued. A name that is not in the directory is
+    not a gap in this corpus's coverage, it is a name the publisher does not publish, and
+    queueing it would have the refresh chase something that will never arrive.
+
+    A failure here is never allowed to change the answer: the ledger is bookkeeping for the
+    next refresh, and an answer that is correct without it stays correct.
+    """
+    if not asked or family != 'district_agromet':
+        return None
+    try:
+        from .document_tools import directory_district
+        from .document_demand import DemandLedger
+        state, spelled, _why = directory_district([asked])
+        if not spelled:
+            return None
+        DemandLedger(index.path.parent / 'demand.sqlite').mark(
+            state, spelled, reason='asked for and not held at this read')
+        return {'state': state, 'district': spelled, 'family': family}
+    except (SourceError, ValueError, OSError, ImportError):
+        return None
+
+
 def indexed_regions(index, family):
     """Region names with at least one indexed passage for this family."""
     with index.connection() as db:
@@ -363,10 +440,33 @@ def resolve_region(index, plan, family, scope, resolved=None):
         # The publisher's English name is tried before the reader's own spelling, and the name the
         # reader wrote is tried last rather than first.
         stored = None
-        for candidate in resolved_names(place, resolved):
+        names = resolved_names(place, resolved)
+        for candidate in names:
             stored = region_exists(index, 'district_agromet', candidate)
             if stored:
                 break
+        if not stored:
+            # THE PUBLISHER'S OWN SPELLING, LAST.
+            #
+            # The corpus is keyed by the publisher's district name and a reader is not.
+            # Measured 22 September 2026, after the resolver had been taught to read
+            # "Davangere" as the directory's Davanagere: the live fetch failed on a layout
+            # rule, the fallback to the held edition searched the corpus under "Davangere",
+            # found nothing, and the turn died with "Bulletin retrieval is unavailable:
+            # Printed district could not be verified" - for a district whose edition was
+            # sitting in the index. Bathinda/Bhatinda failed the same way.
+            #
+            # This is the same bounded match used to resolve the district in the first place
+            # - close, and clearly ahead of the next - so it admits nothing the rest of the
+            # path would refuse, and it runs only after every name the reader and the
+            # gazetteer supplied has already missed.
+            try:
+                from .document_tools import directory_district
+                _state, spelled, _why = directory_district(names)
+            except (SourceError, ValueError, OSError, ImportError):
+                spelled = None
+            if spelled:
+                stored = region_exists(index, 'district_agromet', spelled)
         if not stored:
             return None, None, 'district_absent'
         states = district_states(index, stored)
@@ -647,6 +747,26 @@ def execute_corpus(engine, result, plan, task, resolved=None):
             if note not in result.setdefault('notes', []):
                 result['notes'].append(note)
     region, expected_state, problem = resolve_region(index, plan, family, scope, resolved)
+    # A DISTRICT READ UNDER THE PUBLISHER'S SPELLING IS SAID, NEVER ASSUMED.
+    #
+    # The corpus is keyed by the publisher's own district names and a reader is not, so a
+    # request can be answered from an edition filed under a different spelling of the same
+    # district. That is allowed - it is the same bounded match the rest of this path uses -
+    # but it may not be silent. "Read under another name, and silent about it" is the one
+    # combination this product does not permit anywhere, and the reason the resolver says
+    # so for places too.
+    if region and (family == 'district_agromet' or scope == 'district'):
+        place = (plan.get('places') or [{}])[0]
+        asked = [name for name in resolved_names(place, resolved) if name]
+        # The reader's OWN word for the district, not the last name the resolver happened to
+        # return. resolved_names ends with the administrative parent, so taking its tail wrote
+        # 'the district asked for as "Punjab"' on a question about Bathinda.
+        wrote = str(place.get('district') or place.get('name') or '').strip()
+        if asked and wrote and not any(norm(name) == norm(region) for name in asked):
+            note = ('Read as the published district ' + str(region) + ', which is how the publisher spells the '
+                    'district asked for as "' + wrote + '". No other district\'s edition was substituted.')
+            if note not in result.setdefault('notes', []):
+                result['notes'].append(note)
     if problem == 'place':
         if family == 'district_agromet' or scope == 'district':
             reason = 'A source district is needed for this document family'
@@ -665,11 +785,25 @@ def execute_corpus(engine, result, plan, task, resolved=None):
         places = plan.get('places') or []
         asked = ((places[0].get('district') or places[0].get('name')) if places else '') or ''
         close = near_names(held, asked)
-        answer = ('No district agromet edition is indexed under that name. The corpus is keyed by the publisher\'s own '
+        # NAME THE GAP, AND RECORD THAT SOMEBODY ASKED.
+        #
+        # A district the publisher lists but this corpus has never fetched is a gap with a
+        # name, a family and a date, and saying so is more use than "no edition is indexed".
+        # The request is also written to the demand ledger, so the next scheduled sweep takes
+        # it before the districts nobody asked for: coverage then grows from real demand
+        # rather than from the alphabet (docs/142).
+        queued = queue_the_gap(index, asked, 'district_agromet')
+        answer = ('No district agromet edition is held here under that name. The corpus is keyed by the publisher\'s own '
                   'district names; no edition for another district was substituted. ' +
-                  (str(len(held)) + ' district names are indexed; the closest to that request ' +
+                  (str(len(held)) + ' district names are held; the closest to that request ' +
                    ('are ' if len(close) > 1 else 'is ') + ', '.join(close) + ' — name one and I will read its edition.'
-                   if close else str(len(held)) + ' district names are indexed and none is close to that request.'))
+                   if close else str(len(held)) + ' district names are held and none is close to that request.'))
+        if queued:
+            answer += (' ' + str(queued['district']) + ', ' + str(queued['state']) + ' is in the publisher\'s directory '
+                       'but was not held at this read; it has been queued and the next scheduled refresh fetches it first.')
+            result.setdefault('notes', []).append(
+                'Gap recorded: ' + str(queued['district']) + ', ' + str(queued['state']) +
+                ' (district_agromet) was requested and not held. Queued for the next refresh.')
         result.update(status='unavailable', answer=answer)
         return result
     if problem == 'state':
@@ -852,18 +986,44 @@ def execute_corpus(engine, result, plan, task, resolved=None):
         kept = [sha for sha in kept_order if sha not in superseded]
         retired = [sha for sha in kept_order if sha in superseded]
     if not kept:
-        # Every matching passage belongs to an edition a newer printed edition has
-        # superseded. Current retrieval must not serve it as though it were current.
-        result['retrieval_coverage'] = {'candidates': method.get('candidates', 0), 'returned': 0,
-                                        'filters': {'family': family or None, 'scope': scope or None, 'region': region},
-                                        'superseded_retired': len(retired),
-                                        'scope': 'Whole-document passage index; earlier editions are retired from current retrieval.',
-                                        'scores_are_confidence': False}
-        result.update(status='unavailable',
-                      answer=('The only matching passage belongs to an earlier edition that a newer printed edition of the same '
-                              'product and region has superseded. The newer edition does not contain this match, and the earlier '
-                              'one is not served as current. Ask for the historical edition explicitly to read it.'))
-        return result
+        # ASK THE CURRENT EDITION BEFORE REFUSING.
+        #
+        # Retrieval ranks across every edition and only then retires the superseded ones, so a
+        # generic question can match an old edition's wording, have all of it retired, and be
+        # refused while the CURRENT edition sits in the index unread. Measured 22 September 2026:
+        # "What does the Gujarat state agromet bulletin advise?" was refused with "the only
+        # matching passage belongs to an earlier edition", while the 2026-09-19 Gujarat edition
+        # held 216 indexed passages. That is the whole state_agromet family - 1,106 passages
+        # across five states - able to refuse while holding current data.
+        #
+        # So the retrieval is tried again, inside the current edition, before anything is
+        # refused. Nothing is loosened: this searches the NEWER edition, which is the one a
+        # reader asking a present-tense question meant. A genuine absence still refuses, and now
+        # says both things - that an older edition matched, and that the current one does not.
+        current = retry_within_current_edition(index, query, family, scope, region, retired, views)
+        if current:
+            hits, method = current['hits'], current['method']
+            result.setdefault('notes', []).append(
+                'The question first matched only an edition that a newer printed edition has superseded, so the '
+                'newer ' + str(current['issue_date'] or 'undated') + ' edition was searched instead. The earlier '
+                'edition is retained and is not served as current.')
+            kept = [current['sha']]
+            kept_order, retired = kept, [sha for sha in kept_order if sha != current['sha']]
+            documents[current['sha']] = current['document']
+            views[current['sha']] = current['view']
+            documents[current['sha']]['_hits'] = hits
+        else:
+            result['retrieval_coverage'] = {'candidates': method.get('candidates', 0), 'returned': 0,
+                                            'filters': {'family': family or None, 'scope': scope or None, 'region': region},
+                                            'superseded_retired': len(retired),
+                                            'current_edition_searched': True,
+                                            'scope': 'Whole-document passage index; earlier editions are retired from current retrieval.',
+                                            'scores_are_confidence': False}
+            result.update(status='unavailable',
+                          answer=('The only matching passage belongs to an earlier edition that a newer printed edition of the same '
+                                  'product and region has superseded. The newer edition was searched and does not contain this match, '
+                                  'and the earlier one is not served as current. Ask for the historical edition explicitly to read it.'))
+            return result
 
     comparison = {'items': [], 'editions_indexed': 0, 'newest_issue': None, 'previous_issue': None}
     if kept and not historical:
@@ -970,8 +1130,31 @@ def execute_corpus(engine, result, plan, task, resolved=None):
             pieces.append('shared edition covering ' + ', '.join(view.get('selected_for_regions') or []))
         return ' · '.join(pieces)
 
-    parts = ['Indexed published documents, not forecasts or current warnings:' if len(kept) > 1 else
-             'Indexed published document:']
+    def opening_sentence():
+        """What was found, said as a sentence a reader can read.
+
+        This floor used to open "Indexed published document:" - a filing-cabinet label, on
+        an answer. It is the text a reader actually meets whenever the model's draft is
+        refused, which on document turns was often (docs/142: every Guntur advisory, over a
+        Play Store link the bulletin itself prints). A floor is not a place where prose
+        stops mattering; it is the answer on the turns that need it most.
+        """
+        first = views[kept[0]]
+        where = first.get('region') or ('national' if first.get('scope') == 'national' else first.get('scope'))
+        if first.get('state') and first.get('family') == 'district_agromet':
+            where = str(first.get('region')) + ', ' + str(first['state'])
+        label = str(first.get('family_label') or 'published document')
+        issued = first.get('issue_date')
+        printed = (' printed ' + str(issued)) if issued else ' (the edition states no printed date)'
+        if len(kept) > 1:
+            return ('From ' + str(len(kept)) + ' published documents held here — ' + label + ' for ' + str(where) +
+                    ' and others — as they were printed. These are published records, not forecasts or '
+                    'current official warnings:')
+        return ('From the ' + label + ' for ' + str(where) + ',' + printed +
+                ', as the publisher printed it. This is a published record, not a forecast or a current '
+                'official warning:')
+
+    parts = [opening_sentence()]
     if whole:
         parts.append(str(whole['passages_served']) + ' of ' + str(whole['passages_indexed']) +
                      ' indexed passages of this edition are quoted below, one per printed section in printed order (' +
@@ -986,20 +1169,42 @@ def execute_corpus(engine, result, plan, task, resolved=None):
                          '; '.join((str(item.get('section')) + ' (page ' + str(item.get('page')) + ')')
                                   for item in sections) +
                          '. Ask about a heading to read that section.')
+    # THE EDITION DIFF IS KEPT, AND MOVED BELOW THE ANSWER.
+    #
+    # It may not be dropped: "a section a later edition does not print is not a withdrawal"
+    # is a standing rule (docs/20, docs/107), and a reader served one edition's view without
+    # being told the other exists is the harm it prevents. So this is not a question about
+    # whether to say it. It is a question about where.
+    #
+    # Measured 22 September 2026: "What does the agromet advisory say for chilli farmers in
+    # Guntur?" opened "Editions compared for District agromet advisory bulletin Guntur: ·
+    # (no printed section heading) differs materially between the 2026-09-11 edition and the
+    # 2026-09-18 edition" - two paragraphs about the corpus's own filing, above a question
+    # about chilli, for a section with no printed heading. The reader met the bookkeeping
+    # first and the advisory second, if at all.
+    #
+    # docs/117 settled that an answer opens with the answer. These lines are built here,
+    # where the comparison is, and appended after the quoted advice.
+    difference_lines = []
     if differences:
-        parts.append('Editions compared for ' + str(views[kept[0]].get('family_label')) + ' ' +
-                     str(views[kept[0]].get('region') or 'national') + ':')
+        difference_lines.append('Editions compared for ' + str(views[kept[0]].get('family_label')) + ' ' +
+                                str(views[kept[0]].get('region') or 'national') + ':')
         for item in differences:
             if item['kind'] == 'section_absent_from_newer':
-                parts.append('· ' + str(item['section']) + ' is printed in the ' + str(item['earlier']['issue_date']) +
-                             ' edition (page ' + str(item['earlier']['page']) + ') and is not printed in the ' +
-                             str(item['nearer']['issue_date']) + ' edition.')
+                difference_lines.append('· ' + str(item['section']) + ' is printed in the ' + str(item['earlier']['issue_date']) +
+                                        ' edition (page ' + str(item['earlier']['page']) + ') and is not printed in the ' +
+                                        str(item['nearer']['issue_date']) + ' edition.')
             else:
-                parts.append('· ' + str(item['section']) + ' differs materially between the ' +
-                             str(item['earlier']['issue_date']) + ' edition (page ' + str(item['earlier']['page']) + ') and the ' +
-                             str(item['nearer']['issue_date']) + ' edition (page ' + str(item['nearer']['page']) + ').')
-        parts.append('Both editions are retained and none is ranked: the workspace does not decide which edition is current or '
-                     'correct, and a section a later edition does not print is not a withdrawal.')
+                difference_lines.append('· ' + str(item['section']) + ' differs materially between the ' +
+                                        str(item['earlier']['issue_date']) + ' edition (page ' + str(item['earlier']['page']) + ') and the ' +
+                                        str(item['nearer']['issue_date']) + ' edition (page ' + str(item['nearer']['page']) + ').')
+        difference_lines.append('Both editions are retained and none is ranked: the workspace does not decide which edition is current or '
+                                'correct, and a section a later edition does not print is not a withdrawal.')
+        # A reader who asked what changed is asking for exactly this, so for them it is the
+        # answer and stays at the top where an answer belongs.
+        if change_question:
+            parts.extend(difference_lines)
+            difference_lines = []
     # What the question is about, used to quote the part of a long extraction block that answers it. The
     # topic words come first; when the request names no topic, the question's own content words are used, so
     # a passage is never quoted from its head when the asked word sits further down.
@@ -1052,6 +1257,11 @@ def execute_corpus(engine, result, plan, task, resolved=None):
         parts.append('That text records what a document published. It is not a current applicable official warning, not an '
                      'all-clear, and it grants no clearance. Current applicability is answered only by the official warning check, '
                      'which is a separate evidence source.')
+    # The edition comparison, below everything the reader asked for. It is placed here rather
+    # than after the advice quotes because an edition whose matches are all warning-classified
+    # has no advice quotes, and the diff simply moved back to the top of that answer -
+    # measured on the Bhatinda bulletin, whose page-1 matches are all warning text.
+    parts.extend(difference_lines)
     if crop_hits:
         parts.append('Crop guidance is district-level published advice. It has not been validated against an individual field, '
                      'current crop stage or the weather at that field, and it is not a personal go/no-go decision.')
