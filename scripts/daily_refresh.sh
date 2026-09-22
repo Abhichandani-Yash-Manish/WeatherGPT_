@@ -38,7 +38,22 @@ started=$(date -u +%FT%TZ)
 echo "$started starting" >> "$LOG"
 
 PY="${WEATHERGPT_PYTHON:-python3}"
-"$PY" scripts/run_daily_cycle.py --district-limit "${WEATHERGPT_DISTRICT_LIMIT:-40}" > "$STATE/last-cycle.json" 2>> "$LOG"
+# HOW MANY DISTRICTS THIS RUN SWEEPS. It was 40, and India has 756 - so the corpus held agromet
+# bulletins for about five per cent of the country and every question about the other ninety-five could
+# only be answered "not held here". That is the whole of the weakest group in the scenario atlas
+# (agromet and advisories, 60-76% against 89% overall): a coverage gap, not a reasoning one.
+#
+# Measured on the run of 22 September 2026: the sweep takes 99.5 s for 40 districts, about 2.5 s each,
+# inside a refresh that finishes in 3 m 23 s. At 200 the sweep is roughly eight minutes on a job that
+# runs unattended, twice a day, with nobody waiting on it - and a reader waiting for an answer cannot
+# afford thirty seconds. That asymmetry is the argument in docs/141 against fetching documents at
+# question time: the same work, moved onto the schedule, costs nothing anyone experiences.
+#
+# The sweep takes QUEUED targets, so coverage grows run by run either way; this is the difference
+# between covering the country in weeks and covering it in days. Lower it with the environment
+# variable if the publisher turns out not to tolerate the rate - which is worth watching on the first
+# widened run rather than assuming in either direction.
+"$PY" scripts/run_daily_cycle.py --district-limit "${WEATHERGPT_DISTRICT_LIMIT:-200}" > "$STATE/last-cycle.json" 2>> "$LOG"
 code=$?
 finished=$(date -u +%FT%TZ)
 
