@@ -1,0 +1,26 @@
+{
+ "generated_at_utc": "2026-09-22T12:48:14+00:00",
+ "offline": false,
+ "probes": [
+  {
+   "attempts": 1,
+   "checked_at_utc": "2026-09-22T12:48:14+00:00",
+   "content_length": null,
+   "content_range": null,
+   "content_type": "application/json",
+   "elapsed_ms": 527,
+   "error": null,
+   "final_url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.000&lon_gfs=72.500&date=2026092200_3hr_0p125",
+   "http_status": 200,
+   "method": "GET",
+   "request_id": "79c8dba23c2d",
+   "sample_bytes": 3714,
+   "sample_sha256": "a84ad00edf1b782e606b524dbbafa3fe2f2d03393cefc82fb9abd9653513f8a3",
+   "text": true,
+   "url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.000&lon_gfs=72.500&date=2026092200_3hr_0p125"
+  }
+ ],
+ "reused_measurements_from": null,
+ "sample_cap_bytes": 65536,
+ "user_agent": "WeatherGPT-local-prototype/1.0 (source activation audit; local prototype use)"
+}

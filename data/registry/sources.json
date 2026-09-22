@@ -1010,7 +1010,7 @@
       "id": "S16",
       "product": "IMD Mausamgram public forecast data",
       "category": "forecast",
-      "access_url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.000&lon_gfs=72.500&date=2026091100_3hr_0p125",
+      "access_url": "https://mausamgram.imd.gov.in/test4_mme.php?lat_gfs=23.000&lon_gfs=72.500&date=2026092200_3hr_0p125",
       "documentation_url": "https://mausamgram.imd.gov.in/",
       "evidence_stage": "sample_inspected",
       "supports_questions": [

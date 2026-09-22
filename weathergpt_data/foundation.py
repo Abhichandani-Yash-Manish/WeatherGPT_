@@ -5,9 +5,11 @@ from pathlib import Path
 from urllib.parse import urlparse
 from .transport import Store,SourceError,utcnow,stamp,parsed
 from .adapters import json_payload,hourly,FORECAST,MARINE,RIVER,aviation,warnings,envelope,numeric,grid_identity,numeric_quality
+from .adapters import NOWCAST_LAYER,nowcast
 from .adapters import EXTENDED,HISTORY_LOCAL,MAX_DAILY_HISTORY_DAYS,REANALYSIS_MODELS,reanalysis_fields,reanalysis_label
 from .adapters import ENSEMBLE,ENSEMBLE_MODELS,ensemble
 from .adapters import AIR_QUALITY,air_quality
+from .adapters import MAUSAMGRAM,MAUSAMGRAM_MODEL,MAUSAMGRAM_STEP_HOURS,MAUSAMGRAM_GRID_DEGREES,mausamgram
 from .adapters import (ERA5_HOURLY,PREVIOUS_RUNS,PREVIOUS_RUNS_MODELS,PREVIOUS_RUN_LEADS,
                        era5_hourly as era5_hourly_adapter,previous_runs as previous_runs_adapter)
 from .verification import summarise as verification_summarise
@@ -75,6 +77,43 @@ class Foundation:
                             {**point,'hourly':','.join(selected),'current':','.join(selected),
                              'forecast_days':days,'timezone':'UTC','timeformat':'unixtime'},refresh=refresh,product_parser=parse)
         return parse(data,meta)
+    def mausamgram(self,lat,lon,variables=None,init=None,refresh=False):
+        """IMD's own public multi-model forecast at a point. No credential, no key, no gate.
+
+        The initialisation is chosen rather than asked for: the publisher serves runs at 00 and 12
+        UTC and the address encodes the one wanted, so this walks back from the most recent
+        boundary until a run answers. A run that has not been published yet returns nothing
+        useful, and trying the previous one is the difference between an answer and a gap at
+        every hour before the new run lands.
+        """
+        point=self.point(lat,lon)
+        selected=tuple(variables) if variables else tuple(MAUSAMGRAM)
+        if not selected or any(name not in MAUSAMGRAM for name in selected):raise SourceError('Unsupported Mausamgram variable')
+        # The publisher answers only on its own 0.125 degree grid. Measured 22 September 2026: Pune
+        # at 18.520/73.860 returns {"error":"No data found"}, and 18.500/73.875 answers. Snapping is
+        # therefore part of addressing this source, not a liberty taken with the request - and the
+        # snapped cell is what the answer names as the cell it was served from.
+        cell={'latitude':round(round(point['latitude']/MAUSAMGRAM_GRID_DEGREES)*MAUSAMGRAM_GRID_DEGREES,3),
+              'longitude':round(round(point['longitude']/MAUSAMGRAM_GRID_DEGREES)*MAUSAMGRAM_GRID_DEGREES,3)}
+        now=self.store.clock().astimezone(timezone.utc)
+        if init is not None:
+            wanted=[parsed(init) if isinstance(init,str) else init]
+        else:
+            latest=now.replace(minute=0,second=0,microsecond=0,hour=12 if now.hour>=12 else 0)
+            wanted=[latest,latest-timedelta(hours=12),latest-timedelta(hours=24)]
+        errors=[]
+        for started in wanted:
+            stamped=started.strftime('%Y%m%d%H')+'_3hr_0p125'
+            parse=lambda d,m,started=started:mausamgram(d,m,selected,point,started,cell=cell)
+            try:
+                data,meta=self.get('S16','https://mausamgram.imd.gov.in/test4_mme.php',
+                                   {'lat_gfs':'%.3f'%cell['latitude'],'lon_gfs':'%.3f'%cell['longitude'],
+                                    'date':stamped},refresh=refresh,product_parser=parse)
+                return parse(data,meta)
+            except SourceError as error:
+                errors.append(started.strftime('%Y-%m-%d %HZ')+': '+str(error)[:120])
+        raise SourceError('No Mausamgram run answered for this point ('+'; '.join(errors[:3])+')')
+
     def _verification_window(self,start,end,label):
         a=date.fromisoformat(start);b=date.fromisoformat(end)
         if a>b or (b-a).days>30:raise SourceError(label+' supports one to thirty-one ordered completed days')
@@ -146,6 +185,21 @@ class Foundation:
         if (lat is None)!=(lon is None):raise SourceError('Both coordinates are required')
         parse=lambda d,m:warnings(d,m,self.store.clock(),point)
         data,meta=self.get('S15','https://reactjs.imd.gov.in/geoserver/wfs',{'service':'WFS','version':'1.1.0','request':'GetFeature','typename':'imd:district_warnings_india','srsname':'EPSG:4326','outputFormat':'application/json','maxFeatures':2000},max_bytes=50_000_000,refresh=refresh,ttl=900,product_parser=parse)
+        return parse(data,meta)
+    def nowcast_snapshot(self,lat=None,lon=None,refresh=False):
+        """IMD's district nowcast: the publisher's very-short-range statement, not the day outlook.
+
+        The same credential-free GeoServer as the warning layer and the AWS stations, and a
+        genuinely different product from either. A short TTL because a nowcast that is an hour old
+        is describing weather that has already happened.
+        """
+        point=self.point(lat,lon) if lat is not None and lon is not None else None
+        if (lat is None)!=(lon is None):raise SourceError('Both coordinates are required')
+        parse=lambda d,m:nowcast(d,m,self.store.clock(),point)
+        data,meta=self.get('S63','https://reactjs.imd.gov.in/geoserver/wfs',
+                           {'service':'WFS','version':'1.1.0','request':'GetFeature','typename':NOWCAST_LAYER,
+                            'srsname':'EPSG:4326','outputFormat':'application/json','maxFeatures':2000},
+                           max_bytes=80_000_000,refresh=refresh,ttl=600,product_parser=parse)
         return parse(data,meta)
     def history(self,lat,lon,start,end,refresh=False):
         point=self.point(lat,lon)

@@ -129,16 +129,24 @@ C = {
                 limits=['Warning level and hazard codes are IMD-defined; colour and day windows are derived.',
                         'CAP reference resolution never authorises dissemination.'],
                 action='Keep as the district warning supply; watch for schema drift.'),
-    'S16': dict(status='reachable_not_connected', kind='point', connected=False,
-                limits=['The registered table name answers, so an earlier "invalid table name" sample was a request error, not a dead route.',
-                        'Arrays carry the string NaN as a missing-value sentinel; it must never become a value.',
-                        'The date parameter names a model run, so a connector must drive it from the current run, not a fixed sample.'],
-                action='Register a Mausamgram ensemble connector; it is the only multi-model source in the registry.'),
-    'S17': dict(status='reachable_not_connected', kind='point', connected=False,
+    'S16': dict(status='active', kind='point', connected=True,
+                limits=['Arrays carry the string NaN as a missing-value sentinel; it never becomes a value.',
+                        'The date parameter names a model RUN, so the connector walks back from the current 00/12 UTC '
+                        'boundary rather than holding a fixed sample; a stale probe address is a request error, not a dead route.',
+                        'The payload carries no time axis, so each sample valid time is derived from the requested '
+                        'initialisation and the three-hour step, and is disclosed as derived.',
+                        'The publisher answers only on its own 0.125 degree grid, so the request is snapped to that grid '
+                        'and the answering cell and its distance are named.',
+                        'A multi-model blend is not an observation, an official IMD bulletin or a warning, and it can '
+                        'share lineage with the global models, so agreement is not independent confirmation.'],
+                action='Connected 22 September 2026 as the imd_forecast capability; it is the only route to an IMD-issued '
+                       'forecast while the fifteen api.imd.gov.in products stay credential-gated.'),
+    'S17': dict(status='active_via', kind='point', connected=False,
                 limits=['The registered route answers with real arrays for the requested date.',
                         'Arrays carry the string NaN as a missing-value sentinel; it must never become a value.',
                         'Real-time bias-corrected output is not a bias-corrected forecast for the user.'],
-                action='Register a Mausamgram real-time connector for cross-model comparison.'),
+                action='Covered by S16: the same Mausamgram connector serves the bias-corrected temperature series '
+                       'this address carries, as its own named parameter.'),
     'S18': dict(status='active', kind='point', connected=True,
                 limits=['Station METAR only; reports the aerodrome, not the surrounding district.'],
                 action='Keep for aviation and as an independent cross-check on point forecasts.'),

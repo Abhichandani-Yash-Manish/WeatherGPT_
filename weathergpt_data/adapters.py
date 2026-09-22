@@ -586,3 +586,220 @@ def warnings(data,meta,now,point=None):
     result=envelope('official_warning_snapshot',meta['source_id'],records,meta,['Day windows are derived from the bulletin date and the IMD day selector, not from a validity field published per day.','Source geometry is not an LGD village crosswalk.','Absence or quarantine is not an all-clear.'],{'source_features':len(features),'total_features_reported':total,'quarantined':quarantine,'requested_point':point,'independent_national_completeness':'unverified'})
     result['status']='reference_only' if records else 'unknown_coverage';result['actionable_current_alerts']=False
     return result
+
+
+# IMD's own public multi-model forecast (Mausamgram). The registry carried it as
+# `reachable_not_connected` from 16 September - "the only multi-model source in the registry" -
+# and it stayed unconnected while every forecast this product served came from a global model via
+# Open-Meteo. It needs no credential, which is what makes it the substantial answer to the fifteen
+# `api.imd.gov.in` products that are gated behind a key this workspace does not have.
+#
+# Each field: (parameter name, unit, aggregation, minimum, maximum).
+MAUSAMGRAM_MODEL='IMD Mausamgram multi-model ensemble'
+MAUSAMGRAM_STEP_HOURS=3
+# The publisher's own grid, named in the address it serves (`_0p125`) and enforced by it.
+MAUSAMGRAM_GRID_DEGREES=0.125
+MAUSAMGRAM={
+    'temp':('temperature_2m','°C','instant',-90,60),
+    'temp_bc':('temperature_2m_bias_corrected','°C','instant',-90,60),
+    'apcp':('precipitation','mm','preceding_step_accumulation',0,None),
+    'rh':('relative_humidity_2m','%','instant',0,100),
+    'wspd':('wind_speed_10m','m/s','instant',0,None),
+    'wdir':('wind_direction_10m','°','instant',0,360),
+    'gust':('wind_gusts_10m','m/s','instant',0,None),
+    'tcdc':('cloud_cover','%','instant',0,100),
+    'ghi':('shortwave_radiation','W/m²','instant',0,None),
+    'wspd80m':('wind_speed_80m','m/s','instant',0,None),
+    'wspd100m':('wind_speed_100m','m/s','instant',0,None),
+    'wspd120m':('wind_speed_120m','m/s','instant',0,None),
+    'wdir80m':('wind_direction_80m','°','instant',0,360),
+    'wdir100m':('wind_direction_100m','°','instant',0,360),
+    'wdir120m':('wind_direction_120m','°','instant',0,360),
+}
+
+
+def mausamgram(data,meta,variables,request_point,init,cell=None):
+    """IMD Mausamgram multi-model output at a point, as governed records.
+
+    TWO THINGS THIS SOURCE DOES NOT SUPPLY, AND THEY ARE BOTH STATED RATHER THAN FILLED IN.
+
+    It returns no time axis: the payload is a set of equal-length arrays and the step is carried in
+    the REQUEST (`..._3hr_0p125`). So each sample's valid time is DERIVED from the requested
+    initialisation plus three hours per index, and every record says so in its own locator. A
+    derived time is not a printed one and must never be presented as the publisher's own stamp.
+
+    It returns no grid identity either - no latitude or longitude comes back in the payload. But the
+    grid is not a mystery: the address itself names it (`_0p125`), and the publisher answers ONLY on
+    exact multiples of 0.125 degrees. Asked for Pune at 18.520/73.860 it replies
+    `{"error":"No data found"}`; asked for 18.500/73.875 it answers. So the caller snaps the request
+    to that grid and passes the cell it actually asked for, which is the answering cell - derived
+    from the published grid rather than read from the payload, and disclosed as such.
+    """
+    if not isinstance(data,dict):raise SourceError('Expected one-location Mausamgram object')
+    selected=[name for name in variables if name in MAUSAMGRAM]
+    if not selected:raise SourceError('Unsupported Mausamgram variable')
+    present=[name for name in selected if isinstance(data.get(name),list)]
+    if not present:raise SourceError('Mausamgram returned none of the requested fields')
+    lengths={len(data[name]) for name in present}
+    if len(lengths)!=1:raise SourceError('Mausamgram fields do not share one time axis')
+    steps=lengths.pop()
+    if not 2<=steps<=200:raise SourceError('Mausamgram time axis is outside the reviewed length')
+    started=parsed(init) if isinstance(init,str) else init
+    records=[]
+    for name in present:
+        parameter,unit,aggregation,low,high=MAUSAMGRAM[name]
+        for index,raw in enumerate(data[name]):
+            # The source writes a missing sample as the STRING "NaN", including at index 0 on every
+            # field. It is an absence and is carried as one; turning it into 0.0 would read as
+            # "no rain" on precipitation, which is the specific harm this workspace refuses.
+            if raw is None or (isinstance(raw,str) and raw.strip().lower() in {'nan','','null','-'}):
+                value=None
+            else:
+                try:value=numeric(raw,low,high)
+                except (TypeError,ValueError):value=None
+            valid=started+timedelta(hours=MAUSAMGRAM_STEP_HOURS*index)
+            row={'parameter':parameter,'value':None if value is None else Decimal(str(value)),'unit':unit,
+                 'valid_time_utc':stamp(valid),'aggregation':aggregation,
+                 'source_locator':(MAUSAMGRAM_MODEL+' field '+name+', index '+str(index)+' of '+str(steps)+
+                                   '; valid time derived as initialisation '+stamp(started)+' plus '+
+                                   str(MAUSAMGRAM_STEP_HOURS*index)+' hours, because the payload carries no time axis')}
+            if aggregation=='preceding_step_accumulation':
+                row['interval_start_utc']=stamp(valid-timedelta(hours=MAUSAMGRAM_STEP_HOURS))
+                row['interval_end_utc']=stamp(valid)
+            records.append(row)
+    coverage={'requested_point':request_point,'returned_grid':cell or None,
+              'grid_identity':('derived_from_the_published_0p125_grid' if cell else 'not_returned_by_this_source'),
+              'time_axis':'derived_from_the_requested_initialisation_and_step',
+              'initialisation_utc':stamp(started),'step_hours':MAUSAMGRAM_STEP_HOURS,'steps':steps,
+              'fields_requested':selected,'fields_returned':present,
+              'fields_absent':[name for name in selected if name not in present]}
+    result=envelope('mausamgram_forecast','S16',records,meta,limitations=[
+        'IMD Mausamgram multi-model output. The payload carries no grid identity; the answering cell '
+        'is the point actually requested, snapped to the publisher\'s own 0.125 degree grid, which '
+        'the source serves and nothing else.',
+        'The valid time of every sample is derived from the requested initialisation and the three-hour '
+        'step; it is not a timestamp the source printed.',
+        'A multi-model blend is not an observation, an official IMD forecast bulletin, or a warning.'],coverage=coverage)
+    # temporal_support() speaks hourly and daily cadence only - it hardcodes 3600 or 86400 - and
+    # this source is three-hourly. Bending that shared function to admit a third cadence would put
+    # every other product's axis check at risk for one source's benefit, so the support record is
+    # built here, to the same shape and with the same meaning.
+    support={}
+    for name in present:
+        parameter,unit,aggregation,_low,_high=MAUSAMGRAM[name]
+        rows=[row for row in records if row['parameter']==parameter]
+        times=[parsed(row['valid_time_utc']) for row in rows]
+        if any((b-a).total_seconds()!=MAUSAMGRAM_STEP_HOURS*3600 for a,b in zip(times,times[1:])):
+            raise SourceError('Duplicate or incomplete Mausamgram time axis: '+parameter)
+        item={'aggregation':aggregation,'sample_count':len(rows),
+              'cadence_seconds':MAUSAMGRAM_STEP_HOURS*3600,
+              'first_sample_at_utc':stamp(times[0]),'last_sample_at_utc':stamp(times[-1]),
+              'time_axis_basis':'derived_from_requested_initialisation'}
+        if aggregation=='preceding_step_accumulation':
+            item.update(interval_start_utc=rows[0]['interval_start_utc'],
+                        interval_end_utc=rows[-1]['interval_end_utc'])
+        support[parameter]=item
+    result['temporal_support']=support
+    return numeric_quality(result,False)
+
+
+# The district nowcast, which the blocked API was not the only route to.
+#
+# S03 (IMD District Nowcast) sits behind the api.imd.gov.in key and the registry recorded the S15
+# warning layer as only partly covering it. The two are different products and the difference
+# matters to a reader: the district WARNING is a five-day outlook keyed to the bulletin day, and the
+# NOWCAST is what is happening in the next few hours. `imd:NowcastWarningDistrict` carries it on the
+# same credential-free GeoServer this workspace already uses for the warning layer and the AWS
+# stations - probed 22 September 2026, 764 districts, issued that day, with the publisher's own
+# message, impact, recommended action, colour and validity window.
+NOWCAST_LAYER='imd:NowcastWarningDistrict'
+
+
+def nowcast(data,meta,now,point=None):
+    """District nowcast features, resolved to a point by the publisher's own geometry.
+
+    The publisher's own words are what is served. `message`, `impact` and `action` are carried
+    verbatim and never summarised here, the colour is the one the source published, and the
+    validity window is the printed one rather than a window derived from a day index - which is
+    the single way this product differs in kind from the five-day warning layer beside it.
+    """
+    from shapely.geometry import shape,Point
+    if not isinstance(data,dict) or data.get('type')!='FeatureCollection':raise SourceError('Expected nowcast FeatureCollection')
+    features=data.get('features')
+    if not isinstance(features,list):raise SourceError('Missing nowcast features')
+    records=[];quarantine=[]
+    for index,feature in enumerate(features):
+        properties={}
+        try:
+            if not isinstance(feature,dict) or not isinstance(feature.get('properties'),dict):raise SourceError('Malformed nowcast feature')
+            properties=feature['properties']
+            district=str(properties.get('District') or properties.get('State_District') or '').strip()
+            if not district:raise SourceError('Nowcast feature carries no district identity')
+            if not isinstance(feature.get('geometry'),dict):raise SourceError('Missing nowcast geometry')
+            geometry=shape(feature['geometry'])
+            if geometry.is_empty or not geometry.is_valid or geometry.geom_type not in ('Polygon','MultiPolygon'):
+                raise SourceError('Invalid nowcast geometry')
+            if point and not geometry.covers(Point(point['longitude'],point['latitude'])):continue
+            # THE cat COLUMNS ARE NOT THE WARNING PRODUCT'S HAZARD CODES, AND ARE NOT NAMED HERE.
+            #
+            # cat1..cat19 look like hazard flags and mostly hold their own index as a string. They
+            # are NOT all flags: measured 22 September 2026, five West Bengal districts carried the
+            # whole nowcast sentence in cat16 - "Moderate Thunderstorm & lightning accompanied with
+            # intense rain and gusty wind with speed 30-40 kmph" - while `message`, `impact` and
+            # `action` were empty on every one of them, and Pune carried cat7 and cat9 set with no
+            # text anywhere.
+            #
+            # Nothing published with this layer says what category 7 or 9 MEANS. Reading them
+            # through the district warning product's HAZARDS table would have answered "Pune: dust
+            # raising winds, heat wave" on nothing but the two numbers matching that other
+            # product's indices. So the codes are carried as codes, the text is carried as text,
+            # and neither is given a name this source did not print.
+            codes=[];printed=[]
+            for number in range(1,20):
+                raw=properties.get('cat'+str(number))
+                if raw in (None,'',0,'0'):continue
+                value=str(raw).strip()
+                if not value:continue
+                if value.isdigit():codes.append(int(value))
+                else:printed.append(value)
+            issued=str(properties.get('Date') or '').strip()
+            if issued:
+                try:datetime.fromisoformat(issued)
+                except ValueError:raise SourceError('Unreadable nowcast issue date: '+issued)
+            records.append({'district_label':district,'state':properties.get('State'),
+                            'issuing_centre':properties.get('MC_RMC'),
+                            'issue_date':issued or None,
+                            'time_of_issue':properties.get('toi') or None,
+                            'valid_until':properties.get('vupto') or None,
+                            'updated_at_raw':properties.get('update_time'),
+                            'hazard_category_codes':sorted(set(codes)),
+                            'hazard_category_legend':'not published with this layer; the codes are not named here '
+                                                     'and are not the district warning product\'s hazard codes',
+                            'colour':properties.get('Color') or None,
+                            # Verbatim, and named as the publisher's own text.
+                            'message':(str(properties.get('message') or '').strip()
+                                       or (printed[0] if printed else None)),
+                            'message_field':('message' if str(properties.get('message') or '').strip()
+                                             else ('a cat column' if printed else None)),
+                            'impact':str(properties.get('impact') or '').strip() or None,
+                            'action':str(properties.get('action') or '').strip() or None,
+                            'geometry':feature['geometry'],
+                            'source_locator':'$.features['+str(index)+']'})
+        except (KeyError,ValueError,TypeError,OverflowError,SourceError) as exc:
+            quarantine.append({'feature_index':index,'district':properties.get('District'),'reason':str(exc)})
+    result=envelope('official_nowcast_snapshot',meta.get('source_id','S63'),records,meta,[
+        'A nowcast is the publisher\'s very-short-range statement, not the five-day district warning '
+        'outlook and not a forecast this workspace computed.',
+        'The message, impact and recommended action are the publisher\'s own words, carried verbatim; '
+        'the publisher puts that text in different columns on different rows, so the column it was '
+        'read from is recorded beside it.',
+        'The cat1..cat19 category codes are carried as numbers and deliberately NOT named: no legend '
+        'is published with this layer, and they are not the district warning product\'s hazard codes.',
+        'An absent or quarantined district is not an all-clear, and nothing here is a dissemination '
+        'authorisation.'],
+        {'source_features':len(features),'total_features_reported':data.get('totalFeatures'),
+         'quarantined':quarantine,'requested_point':point,
+         'independent_national_completeness':'unverified'})
+    result['status']='reference_only' if records else 'unknown_coverage'
+    result['actionable_current_alerts']=False
+    return result
