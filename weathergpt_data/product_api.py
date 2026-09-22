@@ -43,7 +43,7 @@ WFS = 'https://reactjs.imd.gov.in/geoserver/wfs'
 # workspace to keep an unknown path a 404 rather than an authorisation failure.
 PRODUCT_PATHS = ('/api/overview', '/api/warnings/national', '/api/warnings/place',
                  '/api/observations/near', '/api/observations/network', '/api/radar', '/api/basins',
-                 '/api/forecast', '/api/forecast/changes', '/api/marine', '/api/river', '/api/aviation', '/api/places/search',
+                 '/api/forecast', '/api/forecast/changes', '/api/marine', '/api/river', '/api/aviation', '/api/places/search', '/api/places/nearest',
                  '/api/map/layers', '/api/warnings/cap', '/api/warnings/alert-brief', '/api/settings/capabilities',
                  '/api/climate/index', '/api/climate/series', '/api/advisories/states',
                  '/api/advisories/districts', '/api/advisories/holdings',
@@ -734,6 +734,29 @@ def places_search(query, limit=12):
                                  'A settlement point is not a district boundary and not a district average.'],
                     not_established=['No reviewed dated administrative crosswalk is applied here.'])
 
+def places_nearest(latitude, longitude):
+    """The catalogue's nearest place to a point, for a reader who asked this browser where they are.
+
+    This exists because every tool here takes a NAMED place - the district a warning is published for,
+    the station a reading came from, the bulletin a district carries. A pair of coordinates is not a
+    place this workspace can answer about, so it is resolved to a catalogue row once and the name that
+    results is the reader's to see, to correct, or to reject.
+
+    A point the catalogue does not cover - at sea, or outside India - answers `unavailable` with the
+    coordinates unchanged rather than the least-distant row on the subcontinent. Being told nothing was
+    found is useful; being quietly placed in a town 400 km away is not.
+    """
+    match = Gazetteer().nearest(latitude, longitude)
+    return envelope('places.nearest', 'ok' if match else 'unavailable',
+                    {'point': {'latitude': latitude, 'longitude': longitude}, 'match': match},
+                    sources=[source_entry('S61', {'url': (registry_products().get('S61') or {}).get('access_url')})],
+                    coverage={'matched': 1 if match else 0},
+                    limitations=['The nearest catalogued place is not a reverse-geocode of an address, and not a district boundary.',
+                                 'Place records are GeoNames source labels, not authoritative LGD entities.',
+                                 'Where a city and its own quarters are all plain populated places in this extract, the row whose name matches its district is preferred; it can still name a neighbour within a few kilometres.'],
+                    not_established=['No reviewed dated administrative crosswalk is applied here.'])
+
+
 # A place is resolved against the vendored district geometry rather than by
 # re-fetching the 19 MB warning layer with a point in the URL, which would create
 # a separate cache entry per point. The vendored geometry is the same official
@@ -1029,6 +1052,9 @@ def dispatch(foundation, path, params):
         return personas_view()
     if path == '/api/places/search':
         return places_search(_first(params, 'q', ''), limit=_int(params, 'limit', 12, low=1, high=30))
+    if path == '/api/places/nearest':
+        latitude, longitude = _point_params(params)
+        return places_nearest(latitude, longitude)
     if path == '/api/map/layers':
         return map_manifest()
     return dispatch_extra(foundation, path, params)

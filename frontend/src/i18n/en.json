@@ -48,7 +48,9 @@
     "goodNight": "Good night",
     "setYourPlace": "Set your place",
     "namePlace": "Name a place and it becomes yours",
-    "readingStation": "Reading the nearest station report."
+    "readingStation": "Reading the nearest station report.",
+    "useMyLocation": "Use my location",
+    "locating": "Finding you…"
   },
   "working": {
     "default": "Working on it",

@@ -50,6 +50,7 @@ SURFACE_ROUTES = {
 # product route must either appear in SURFACE_ROUTES or be listed here with its reason, so a served view cannot
 # become invisible to the interface without anyone noticing.
 SUBROUTE_REASONS = {
+    '/api/places/nearest': 'the catalogue place nearest a point, for the front door\'s "Use my location" control; it has no surface of its own because its whole result is the place the reader then holds',
     '/api/warnings/place': 'the place view of the warnings surface',
     '/api/warnings/alert-brief': 'the alert brief the warnings surface offers',
     '/api/warnings/cap': 'the CAP relay assessment inside the warnings surface',

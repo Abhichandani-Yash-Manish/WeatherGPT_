@@ -68,6 +68,13 @@ def choose_by_probe(candidates, probe, limit=8, score=None):
     if best is not None:
         return best[1], tried, best[2]
     return None, tried, None
+# What a step down the seat order, and being the town a district is named after, are worth in
+# kilometres when choosing the place a reader would name for where they are standing. The seat credit
+# is deliberately larger than the rank step and far smaller than a district: it names the city you are
+# in over its own neighbourhood, and never a city you are not in.
+RANK_WORTH_KM=3.0
+SEAT_WORTH_KM=12.0
+
 SEAT_ORDER={'PPLC':0,'PPLA':1,'PPLA2':2,'PPLA3':3,'PPLA4':4,'PPLA5':5,'PPLX':6,'PPL':7}
 
 
@@ -234,6 +241,75 @@ class Gazetteer:
                 return ranked[0], ('the place catalogue marks this row ' + feature +
                                    ', an administrative seat, and the other rows of this name ordinary settlements')
         return None, 'the place catalogue does not record which of its rows is this district\'s seat'
+
+    def nearest(self,latitude,longitude,within_km=60.0):
+        """The catalogue's own nearest inhabited place to a point, or None when nothing is near.
+
+        This is what turns a browser's coordinates into something the rest of the product can use. Every
+        tool here takes a NAMED place - the district a warning is published for, the station a reading
+        came from, the bulletin a district carries - so a bare latitude and longitude is not a place this
+        workspace can answer about. It is resolved to a catalogue row once, here, and the name that
+        results is the reader's to see and to correct.
+
+        Bounded rather than unbounded: a point in the sea or outside the catalogue's coverage returns
+        None instead of the least-distant row on the subcontinent. `within_km` is generous enough for a
+        rural point whose nearest catalogued settlement is genuinely far, and small enough that a match
+        is always somewhere a reader would recognise as near them.
+
+        Distance is equirectangular rather than great-circle. Over sixty kilometres the difference is
+        under a metre, and the cheap form lets the index-backed bounding box do the work.
+        """
+        from math import cos, radians
+        if hashlib.sha256(self.path.read_bytes()).hexdigest()!=self.expected_sha256:raise ValueError('Place catalogue changed after verification')
+        latitude=float(latitude);longitude=float(longitude)
+        if not (-90<=latitude<=90 and -180<=longitude<=180):raise ValueError('A point needs a latitude within ±90 and a longitude within ±180')
+        span=max(0.01,float(within_km))/111.0
+        # Longitude degrees shrink toward the poles; at Leh a degree is 92 km, at Kanyakumari 110.
+        widen=span/max(0.2,cos(radians(latitude)))
+        con=sqlite3.connect(self.path.resolve().as_uri()+'?mode=ro',uri=True);con.row_factory=sqlite3.Row
+        try:
+            rows=[dict(r) for r in con.execute(
+                'SELECT * FROM places WHERE latitude BETWEEN ? AND ? AND longitude BETWEEN ? AND ?',
+                (latitude-span,latitude+span,longitude-widen,longitude+widen))]
+        finally:
+            con.close()
+        if not rows:return None
+        scale=cos(radians(latitude))
+        def far(row):
+            dy=(float(row['latitude'])-latitude)*111.0
+            dx=(float(row['longitude'])-longitude)*111.0*scale
+            return (dx*dx+dy*dy)**0.5
+        # THE PLACE A READER WOULD NAME, not the closest catalogued point. Standing in Ahmedabad the
+        # nearest row is Lal Darwaja, 0.66 km away - a section of the city, correct as geometry and
+        # wrong as an answer to "where am I". Somebody there says Ahmedabad, and every product this
+        # workspace reads is published for the district, not the neighbourhood.
+        #
+        # So within a radius a person would still call "here", the better-known place wins: a district
+        # or state seat ahead of a section of one. Outside that radius the nearest row stands, because
+        # a distant city is not where the reader is.
+        # WHICH OF THESE IS THE PLACE A READER WOULD NAME. Standing in Ahmedabad the nearest row is
+        # Lal Darwaja, 0.66 km away - a quarter of the city, correct as geometry and wrong as an answer
+        # to "where am I". Feature rank cannot separate them: this extract marks Lal Darwaja, Ahmedabad,
+        # Asarwa and every other row around them as plain PPL, so seat order ties at 7 across the whole
+        # city. And ranking on it anyway sent the reader to GANDHINAGAR, a state capital 24 km away.
+        #
+        # The signal that does work is already used elsewhere in this module: GeoNames India marks a
+        # district by the town it is named for, so the row whose own name matches its own district is
+        # the one the district is named after - Ahmedabad in Ahmadābād, not Lal Darwaja in Ahmadābād.
+        # It is worth a few kilometres of credit rather than absolute priority, so it names the city a
+        # reader is standing in and never a district seat they are nowhere near.
+        import difflib
+        def namesake(row):
+            district=norm(row.get('admin2') or '');own=norm(row.get('name') or '')
+            if not district or not own:return False
+            return district==own or difflib.SequenceMatcher(None,district,own).ratio()>=0.82
+        def score(row):
+            credit=SEAT_WORTH_KM if namesake(row) else 0.0
+            return far(row)+feature_rank(row.get('feature'))*RANK_WORTH_KM-credit
+        best=min(rows,key=score)
+        distance=far(best)
+        if distance>float(within_km):return None
+        return {**best,'distance_km':round(distance,2)}
 
     def search(self,name,state='',district=''):
         if hashlib.sha256(self.path.read_bytes()).hexdigest()!=self.expected_sha256:raise ValueError('Place catalogue changed after verification')

@@ -7,7 +7,7 @@
    The rail, the column width, the docking composer, the transient hover actions and the streaming stop are
    ChatGPT's shape. The claim, the source line, the published colour and the work panel are ours. */
 
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { ArrowDown, ArrowLeft, MapPin } from 'lucide-react';
 
@@ -24,6 +24,7 @@ import { Composer } from './Composer';
 import { Field } from './Field';
 import { hourOf, lightAt } from './fieldPaint';
 import { chromeFor, i18n } from '../i18n';
+import { readSiteLanguage, subscribeSiteLanguage } from '../i18n/siteLanguage';
 import { useSky } from './sky';
 import { rememberPlace, useWorkingPlace } from '../modules/Evidence';
 import { Rail } from './Rail';
@@ -219,7 +220,10 @@ export function Workspace({
   /* The interface follows the answer language. A reader who picks Gujarati for answers gets a Gujarati
      product rather than half of one — and the document's lang attribute follows too, because that is what
      a screen reader and the browser's own hyphenation read. */
-  const chrome = chromeFor(language);
+  /* A pinned SITE language wins; with none pinned this is exactly the old behaviour - follow the answer
+     language, and the browser when that is unset. See i18n/siteLanguage.ts for why unset is not English. */
+  const pinnedSite = useSyncExternalStore(subscribeSiteLanguage, readSiteLanguage, readSiteLanguage);
+  const chrome = pinnedSite || chromeFor(language);
   useEffect(() => {
     void i18n.changeLanguage(chrome);
     document.documentElement.lang = chrome;

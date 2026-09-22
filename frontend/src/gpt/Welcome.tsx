@@ -29,8 +29,10 @@ import { QuoteLine } from './QuoteLine';
 import { Horizon } from './Horizon';
 import { PlacePicker } from './PlacePicker';
 import { useShellPrefs } from './shellState';
-import { useWorkingPlace } from '../modules/Evidence';
+import { rememberPlace, useWorkingPlace } from '../modules/Evidence';
 import { useTranslation } from 'react-i18next';
+import { MapPin } from 'lucide-react';
+import { findMyPlace } from '../place/useMyLocation';
 
 /* The national default, the same one the ground uses when the browser holds no place: the sun is the same
    sun either way, and what changes is where it stands over the page. */
@@ -73,6 +75,8 @@ export function Welcome({ hour }: { hour: Hour }) {
   const longitude = held?.longitude ?? DEFAULT_LONGITUDE;
   const [at, setAt] = useState(() => new Date());
   const [picking, setPicking] = useState(false);
+  const [locating, setLocating] = useState(false);
+  const [locateNote, setLocateNote] = useState<string | null>(null);
   const { prefs } = useShellPrefs();
 
   useEffect(() => {
@@ -126,11 +130,38 @@ export function Welcome({ hour }: { hour: Hour }) {
           </button>
         </p>
       ) : (
-        <p className="w-place w-place-none">
-          <button type="button" className="w-place-button" onClick={() => setPicking(true)}>
-            {t('welcome.setYourPlace')}
-          </button>
-        </p>
+        <>
+          <p className="w-place w-place-none">
+            <button type="button" className="w-place-button" onClick={() => setPicking(true)}>
+              {t('welcome.setYourPlace')}
+            </button>
+          </p>
+          {/* The other way in, for a reader who would rather not type their own town. The browser's
+              own permission dialogue is the consent - nothing here runs on load - and every way it
+              can fail says so in a sentence rather than going quiet. */}
+          <p className="w-locate">
+            <button
+              type="button"
+              className="g-chip"
+              disabled={locating}
+              onClick={async () => {
+                setLocating(true);
+                setLocateNote(null);
+                const outcome = await findMyPlace();
+                setLocating(false);
+                if (!outcome.ok) { setLocateNote(outcome.message); return; }
+                rememberPlace(outcome.place);
+                setLocateNote(outcome.distanceKm === null ? null
+                  : 'Holding ' + outcome.place.label + ', the nearest place in the catalogue — '
+                    + outcome.distanceKm.toFixed(1) + ' km from where this browser put you. Change it if that is not right.');
+              }}
+            >
+              <MapPin size={13} aria-hidden="true" />
+              {locating ? t('welcome.locating') : t('welcome.useMyLocation')}
+            </button>
+          </p>
+          {locateNote ? <p className="w-source g-claim-source" role="status">{locateNote}</p> : null}
+        </>
       )}
 
       {/* The reading, as the station printed it, and the source line that owns it — ONE region, because a

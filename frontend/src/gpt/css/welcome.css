@@ -251,3 +251,12 @@
 @media (prefers-reduced-motion: reduce) {
   .w-glyph, .w-greeting, .w-place, .w-reading, .w-source { animation: none; }
 }
+
+/* The other way to set a place: ask this browser. It sits under the invitation rather than beside it,
+   because typing a town is the primary route and this is the shortcut - and a reader who has already
+   declined the browser's permission prompt should not find the two competing for the same line. */
+.w-locate {
+  margin: var(--g-3) 0 0;
+  display: flex; justify-content: center;
+  animation: w-arrive 720ms var(--g-ease) 200ms both;
+}

@@ -10,6 +10,7 @@
    chosen, and the reading is stated exactly as the station printed it — with its distance, its age and its
    staleness, because a reading without those is not the reading this product promises. */
 
+import { useSyncExternalStore } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import { MapPin, X } from 'lucide-react';
 import { getJson, withQuery } from '../api/client';
@@ -23,6 +24,8 @@ import { istClock, istStamp, istWindow } from '../lib/time';
 import { SkyGlyphIcon } from '../shell/icons';
 import { useWorkingPlace } from '../modules/Evidence';
 import type { Persona } from '../api/types';
+import { SITE_LANGUAGES, readSiteLanguage, subscribeSiteLanguage, writeSiteLanguage } from '../i18n/siteLanguage';
+import type { ChromeLanguage } from '../i18n';
 
 /* ---- what is published for this district, and what is coming --------------------------------------
    The panel states the place; these two blocks say what the product holds for it. Both read the same governed
@@ -222,6 +225,7 @@ export function ReadingPanel({
   sources, language, onLanguage, persona, onPersona, personas, onFindPlace, onOpenView, onClose,
 }: ReadingPanelProps) {
   const place = useWorkingPlace();
+  const sitePinned = useSyncExternalStore(subscribeSiteLanguage, readSiteLanguage, readSiteLanguage);
   const languages = useQuery({ queryKey: ['languages'], queryFn: () => getJson<Languages>('/api/languages'), staleTime: 300_000 });
   const live = allLanguages(languages.data);
 
@@ -268,6 +272,30 @@ export function ReadingPanel({
       ) : null}
 
       <section className="g-side-block">
+        {/* THE PRODUCT'S OWN LANGUAGE, which is a different question from the one below it and sits
+            above it for that reason. This one changes the rail, the controls and the labels and states
+            nothing about the weather, so every option is offered without qualification. The one below
+            changes what the ENGINE writes, and its options carry whether writing that language has
+            been measured - because there the choice is a claim about an answer. */}
+        <label className="g-side-label" htmlFor="site-language">Site language</label>
+        <select
+          id="site-language"
+          className="g-side-select"
+          value={sitePinned || ''}
+          onChange={event => writeSiteLanguage((event.target.value || null) as ChromeLanguage | null)}
+        >
+          <option value="">Follow my answer language</option>
+          {SITE_LANGUAGES.map(entry => (
+            <option key={entry.code} value={entry.code}>
+              {entry.own}{entry.own === entry.english ? '' : ' · ' + entry.english}
+            </option>
+          ))}
+        </select>
+        <p className="g-side-note">
+          Changes the interface only — the rail, the controls and the labels. It does not change what the
+          engine writes, and it never changes a value, a unit, a place name or a source.
+        </p>
+
         <label className="g-side-label" htmlFor="answer-language">Answer language</label>
         <select
           id="answer-language"
