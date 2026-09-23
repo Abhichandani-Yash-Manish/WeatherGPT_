@@ -1,0 +1,20 @@
+PASS built_page_present                 web/dist/index.html
+PASS FE01_mobile_reachability           composer is not a form: True; one-column dock rules: True
+PASS FE02_bounded_collection_reachable  the card offers the control and a check exercises it
+PASS FE03_no_unreachable_renderer       no product component calls fetch outside src/api/client.ts (the CSP probe is a development entry, built by its own config)
+PASS FE04_task_accounting               the card states requested, completed and the incomplete ids
+PASS FE05_scope_and_language            language control: True; surfaces rendering the evidence footer: 20
+PASS FE06_one_question_input            question inputs in the composer: 1; builder writes and does not send: True
+PASS FE07_surfaces_served_and_recorded  live acceptance record: True; surface registry audit: True
+PASS FE08_edition_coverage              the changed-edition surface exists with a check
+PASS FE10_print_parity                  the print rules and the card markup name the same hooks
+PASS FE11_view_contract                 every surface is a registry entry loaded by the host, and the registry audit compares both frontends
+PASS FE12_sentence_case                 every uppercase rule is neutralised and no component uses the uppercase utility
+PASS FE13_no_unstyled_element           every element resolves to at least one rule in the built stylesheet
+PASS FE14_ink_contrast                  Meridian and historic palettes: every ink clears 4.5:1 on every ground of its hour (the tertiary step on the page ground and the sky's lower band, the two upper inks on all three)
+PASS FE16_published_colour_on_its_wash  red, orange, yellow and green each clear 4.5:1 on their own 16 percent wash over a card, on both historic light hours and the active Meridian ground
+PASS FE15_selected_light_ground         Meridian owns the light palette; Field cannot override it with the retired solar spectrum
+PASS FE17_type_floor                    no visible text is set below 11px
+PASS port_ledger_parses                 10 suites, 110 checks, 110 named against a React spec
+PASS probe_is_not_a_product_entry       the probe is absent from the built manifest
+19 check(s), 0 failed
