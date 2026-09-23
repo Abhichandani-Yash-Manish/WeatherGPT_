@@ -250,8 +250,11 @@ def main():
     short = []
     for hour in ("night", "golden", "daybreak", "noon"):
         # Anchored to the line start so the shared light-hours block, whose selector list begins
-        # "[data-hour='daybreak'], [data-hour='noon'] {", is not mistaken for noon's own block.
-        block = re.search(r"^\[data-hour='" + hour + r"'\]\s*\{(.*?)\n\}", gpt_css, re.S | re.M)
+        # ":root[data-hour='daybreak'], :root[data-hour='noon'] {", is not mistaken for noon's own block.
+        # The :root prefix is load-bearing rather than cosmetic: written bare, these blocks matched `.g`
+        # as well, and an element declaration beats an inherited one, so the fallback palette was
+        # overriding the active design's tokens for everything inside the shell.
+        block = re.search(r"^:root\[data-hour='" + hour + r"'\]\s*\{(.*?)\n\}", gpt_css, re.S | re.M)
         if not block:
             short.append(hour + ": no palette block")
             continue
@@ -327,9 +330,9 @@ def main():
     # The two light hours share a block for the tokens that are not per-hour, and the published colours are
     # declared in it. Reading only the hour's own block reported all four as "not declared", which is the
     # same anchoring mistake FE14's comment records.
-    shared_light = re.search(r"^\[data-hour='daybreak'\], \[data-hour='noon'\]\s*\{(.*?)\n\}", gpt_css, re.S | re.M)
+    shared_light = re.search(r"^:root\[data-hour='daybreak'\], :root\[data-hour='noon'\]\s*\{(.*?)\n\}", gpt_css, re.S | re.M)
     for hour in ("daybreak", "noon"):
-        block = re.search(r"^\[data-hour='" + hour + r"'\]\s*\{(.*?)\n\}", gpt_css, re.S | re.M)
+        block = re.search(r"^:root\[data-hour='" + hour + r"'\]\s*\{(.*?)\n\}", gpt_css, re.S | re.M)
         tokens = {}
         for body in (shared_light.group(1) if shared_light else "", block.group(1) if block else ""):
             tokens.update(dict(re.findall(r"(--g-[a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", body)))

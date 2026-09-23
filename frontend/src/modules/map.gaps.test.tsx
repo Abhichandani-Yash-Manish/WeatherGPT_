@@ -172,8 +172,9 @@ describe('the map pointer readout', () => {
     expect(paths[0]).toHaveAttribute('tabindex', '0');
     expect(paths[1]).toHaveAttribute('tabindex', '-1');
 
-    await userEvent.tab(); // the surface's own 'ask instead' link
-    await userEvent.tab(); // the shared-view-registry 'ask instead' link
+    /* The 'ask instead' links moved BELOW the surface's own content, so they are no longer the first two
+       things a keyboard user meets. A reader tabbing into a surface now reaches the instrument before the
+       offer to go and ask the question somewhere else, which is the order the offer deserves. */
     await userEvent.tab(); // the layer selector
     await userEvent.tab(); // the figure's one tab stop
     expect(document.activeElement).toBe(paths[0]);

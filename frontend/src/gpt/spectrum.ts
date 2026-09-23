@@ -1004,5 +1004,10 @@ export function meridianSpectrumAt(position: SolarPosition): Spectrum {
        page's dark one. Without this the solved value put charcoal icons on a charcoal rail. */
     '--g-rail-icon': '#ada599',
     '--g-bar-fill': bar,
+    /* A CARD IS A SHEET, NOT GLASS. `composeSpectrum` solves --g-fill as a translucent white gradient,
+       which is right on a dark ground where a card has to catch some of the sky. On this ground it made
+       every card on all eighteen module surfaces a warm, soft pane while the conversation's own answer
+       sheets were opaque white - two materials for the same idea, in the same product. One material. */
+    '--g-fill': c.raise,
   };
 }

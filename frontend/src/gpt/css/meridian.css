@@ -1012,3 +1012,19 @@
 .w-arc-halo { fill: var(--g-solar); }
 .g[data-design='meridian'] .g-skyline > svg,
 .g[data-design='meridian'] .g-claim.w-now .w-reading > svg { color: var(--g-solar); }
+
+/* ---- every value in the product is set in the numeral face ---------------------------------------------
+   It was applied to the conversation's claims and to the arc, and nowhere else, so the dashboard's 26.4
+   and every module surface's readings were still in the UI sans. A value is a value wherever it is
+   printed: the same face, the same tabular figures, the same tight tracking. */
+.g[data-design='meridian'] :is(
+  .dash-numeral, .dash-value, .dash-metric, .dash-fine-metric, .dash-temp,
+  .dash-day-temps, .dash-metric-unit, .g-place-reading, .g-side-reading
+) {
+  font-family: var(--g-numeral); font-variant-numeric: tabular-nums lining-nums;
+}
+.g[data-design='meridian'] .dash-numeral { font-weight: 500; letter-spacing: -.05em; }
+
+/* A module card is the same sheet the conversation uses. */
+.g[data-design='meridian'] :is(.card, .card-raised) { background: var(--g-raise); box-shadow: var(--g-e1); }
+.g[data-design='meridian'] .receipt { background: var(--g-raise-2); }

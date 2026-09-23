@@ -457,13 +457,19 @@ export function SurfaceShell({ title, lead, what, envelope, busy, error, onRetry
         ) : null}
       </header>
       {!busy && !error && reading ? <Headline testId={reading.testId} statement={reading.statement} source={reading.source} /> : null}
-      <AskInstead intents={intents} />
       <div className="flex flex-col gap-5">
         {hold}
         {busy ? <Reading what={what} /> : null}
         {!busy && error ? <Failure error={error} what={what} onRetry={onRetry} /> : null}
         {!busy && !error ? children : null}
       </div>
+      {/* The way back to the conversation, AFTER the instrument rather than before it.
+          It sat between the surface's own finding and the tables that prove it, so on every one of the
+          eighteen surfaces a reader met the title, the finding, and then three links offering to ask the
+          question somewhere else - before a single row of what they had come to read. The offer is a good
+          one and it belongs where an offer belongs: at the end, once the reader has seen what is here and
+          can judge whether they would rather ask. */}
+      <AskInstead intents={intents} />
       {!busy && !error && envelope ? <EvidenceFooter envelope={envelope} /> : null}
     </section>
   );

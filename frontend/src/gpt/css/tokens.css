@@ -147,7 +147,15 @@
 }
 
 /* ---- NIGHT: the night-flight palette, unchanged ---------------------------------------------------- */
-[data-hour='night'] {
+/* THE SELECTOR IS THE WHOLE POINT, AND IT WAS WRONG.
+   These four blocks are the ROOT fallback palette - what a reader gets with JavaScript off, and what the
+   live spectrum is written over. They were written as a bare `[data-hour='x']`, which matches `.g` as well
+   as `:root`, because the shell carries the same attribute. A declaration on an element beats a value
+   inherited from its parent, so every token here was silently overriding both the active design's palette
+   and the inline spectrum for everything inside the shell - which is how a warm-paper interface ended up
+   with a blue send button and a yellow question bubble. Scoped to :root, they are the fallback they were
+   always meant to be. */
+:root[data-hour='night'] {
   --g-void: #05080f; --g-bg: #0a0f1a; --g-raise: #111828; --g-raise-2: #172032;
   --g-line: #222d40; --g-line-soft: #18212f;
   --g-paper: #edf1f7; --g-mist: #9eabc0; --g-mist-2: #737f97;
@@ -184,7 +192,7 @@
 }
 
 /* ---- GOLDEN: dusk. Still dark, but warm, and plainly not midnight ---------------------------------- */
-[data-hour='golden'] {
+:root[data-hour='golden'] {
   --g-void: #0a0711; --g-bg: #14101c; --g-raise: #1e1729; --g-raise-2: #251d33;
   --g-line: #372b45; --g-line-soft: #271f35;
   --g-paper: #f3edf5; --g-mist: #ad9fb7; --g-mist-2: #857793;
@@ -221,7 +229,7 @@
    The ink ladder is near-black rather than pure black, the raised surface is white and the page is not,
    so a card lifts off the ground by being lighter than it — the inverse of the dark hours and the reason
    a light interface can have depth without a heavier shadow. */
-[data-hour='daybreak'], [data-hour='noon'] {
+:root[data-hour='daybreak'], :root[data-hour='noon'] {
   --g-t1: rgba(16, 24, 40, 0.022);
   --g-t2: rgba(16, 24, 40, 0.038);
   --g-t3: rgba(16, 24, 40, 0.055);
@@ -254,7 +262,7 @@
    The sky is a colour rather than a tinted grey, because a page whose top half is almost white reads as a
    form, not as a morning. It is kept light enough that the ink ladder is unchanged: the darkest sky here
    is 4.9:1 against --g-mist and better against the paper. */
-[data-hour='daybreak'] {
+:root[data-hour='daybreak'] {
   --g-void: #f0e9e1; --g-bg: #fdfaf6; --g-raise: #ffffff; --g-raise-2: #f8f2ea;
   --g-line: #e2d7c9; --g-line-soft: #ede5da;
   --g-paper: #241c14; --g-mist: #574d40; --g-mist-2: #6d6254;
@@ -274,7 +282,7 @@
 }
 
 /* ---- NOON: full day. Cool paper, and a plain blue sky above it --------------------------------------- */
-[data-hour='noon'] {
+:root[data-hour='noon'] {
   --g-void: #e9eef6; --g-bg: #f2f6fb; --g-raise: #ffffff; --g-raise-2: #eef4fa;
   --g-line: #d3dce9; --g-line-soft: #e3e9f2;
   --g-paper: #121a27; --g-mist: #465166; --g-mist-2: #5b6679;
