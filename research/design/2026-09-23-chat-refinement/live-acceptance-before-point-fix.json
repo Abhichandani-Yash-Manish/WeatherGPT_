@@ -1,0 +1,54 @@
+{
+  "reports": [
+    {
+      "check": "rail place selection",
+      "passed": true
+    },
+    {
+      "check": "Hindi selection survives reload",
+      "passed": true
+    },
+    {
+      "check": "Hindi rendered answer",
+      "passed": false,
+      "status": "answered",
+      "answer": "Answer\nEvidence retrieved\nRequested output: hi\n23 सित॰ 2026, 15:02 IST\n\nकल Jaipur के लिए बारिश की कोई भविष्यवाणी नहीं हैः वैश्विक मॉडल और IMD के बहु-मॉडल पूर्वानुमान में 0.0 mm पर 24 Sep 2026 00:30-25 Sep 2026 00:30 IST पर वर्षा होती है।\n\nThese are model forecasts for the selected points, not observed conditions or district averages.\n\nThe rest of the answer\n(3 sentences)\n\nForecast rainfall · 24 सित॰ 2026, 00:30-25 सित॰ 2026, 00:30 IST\n\n0.0\nmm\n\nModel forecast · Jaipur, Jaipur, State of Rājasthān\n\nsource S21 · geonames:1269515 · read 23 सित॰ 2026, 15:02 IST\n\nRead at Jaipur, Jaipur, State of Rājasthān. Other places share this name: Jaipur, Dibrugarh, Assam; Jaipur, Cāchār, Assam; Jaipur, Puruliya, West Bengal; Jaipur, Hingoli, State of Mahārāshtra and 1 more.\n\nhow much of the window this covers · every part of it covered\nwhere this came from\n\nPrecipitation total over the window · IMD · 24 सित॰ 2026, 00:30-25 सित॰ 2026, 00:30 IST\n\n0.0\nmm\n\nimd multi model forecast · Jaipur, Jaipur, State of Rājasthān\n\nsource S16 · geonames:1269515 · read 23 सित॰ 2026, 15:02 IST\n\nAny warnings for Jaipur?\nWhat this answer does not cover\nHow this was answered · 7 steps · 8.726 s · nothing refused\n\nWritten by a model from the retrieved facts and checked against them; the value, window and source line below stay tool-owned.\n\nHow much this card unfolds: Conversational\nCopy the answer\nMore ways to use this answer\nEvidence\n3\nS21\nOpen-Meteo\nGFS forecast delivery\nS61\nGeoNames\nIndia place catalogue\nS16\nIndia Meteorological Department\nIMD Mausamgram multi-model ensemble",
+      "geography_failure": "Selected Jaipur in Haryana; answer resolved Jaipur in Rajasthan. Fixed in held_point.py and rechecked separately."
+    },
+    {
+      "check": "new place and English in same conversation",
+      "passed": true,
+      "status": "answered",
+      "answer": "Answer\nEvidence retrieved\n23 Sep 2026, 15:02 IST\n\nYes — light rain is forecast for Bhopal tomorrow, 24 Sep 2026 00:30–25 Sep 2026 00:30 IST, though only a small amount.\n\nThese are model forecasts for the selected points, not observed conditions or district averages.\n\nThe rest of the answer\n(3 sentences)\n\nForecast rainfall · 24 Sep 2026, 00:30-25 Sep 2026, 00:30 IST\n\n2.4\nmm\n\nModel forecast · Bhopal, Bhopāl, Madhya Pradesh\n\nsource S21 · geonames:1275841 · read 23 Sep 2026, 15:02 IST\n\nRead at Bhopal, Bhopāl, Madhya Pradesh. Other places share this name: Bhopāl, Ashoknagar, Madhya Pradesh; Bhopāl, Hardoi, Uttar Pradesh.\n\nhow much of the window this covers · every part of it covered\nwhere this came from\n\nPrecipitation total over the window · IMD · 24 Sep 2026, 00:30-25 Sep 2026, 00:30 IST\n\n1.0\nmm\n\nimd multi model forecast · Bhopal, Bhopāl, Madhya Pradesh\n\nsource S16 · geonames:1275841 · read 23 Sep 2026, 15:02 IST\n\nAny warnings for Bhopal?\nWhat this answer does not cover\nHow this was answered · 7 steps · 9.342 s · nothing refused\n\nWritten by a model from the retrieved facts and checked against them; the value, window and source line below stay tool-owned.\n\nHow much this card unfolds: Conversational\nCopy the answer\nMore ways to use this answer\nEvidence\n3\nS21\nOpen-Meteo\nGFS forecast delivery\nS61\nGeoNames\nIndia place catalogue\nS16\nIndia Meteorological Department\nIMD Mausamgram multi-model ensemble"
+    },
+    {
+      "check": "no overflow at 768",
+      "passed": true
+    },
+    {
+      "check": "no overflow at 360",
+      "passed": true
+    }
+  ],
+  "requests": [
+    {
+      "question": "Will it rain in my selected place tomorrow?",
+      "language": "hi",
+      "home": {
+        "label": "Jaipur, Yamunanagar, State of Haryāna",
+        "latitude": 30.05564,
+        "longitude": 77.21282
+      }
+    },
+    {
+      "question": "Will it rain in my selected place tomorrow?",
+      "language": "en",
+      "home": {
+        "label": "Bhopal, Bhopāl, Madhya Pradesh",
+        "latitude": 23.25469,
+        "longitude": 77.40289
+      }
+    }
+  ],
+  "errors": []
+}

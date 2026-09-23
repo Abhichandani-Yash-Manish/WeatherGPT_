@@ -678,7 +678,7 @@
    Every surface a reader works with. Redeclaring the four ink tokens here inverts the whole subtree in one
    place: a source line, a fold, a chip or a table inside one of these resolves correctly without knowing
    it is on the dark side. */
-.g[data-design='meridian'] :is(.g-answer, .g-composer, .card, .card-raised, .g-claim.w-now, .g-you p) {
+.g[data-design='meridian'] :is(.g-composer, .card, .card-raised, .g-claim.w-now) {
   background: var(--g-panel);
   --g-paper: var(--g-panel-ink);
   --g-mist: var(--g-panel-mist);

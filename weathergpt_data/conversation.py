@@ -1380,6 +1380,17 @@ class ConversationEngine:
                     # place in the same question (the port in "waves off Kochi") can still resolve.
                     sea_areas.append(p)
                     continue
+                # The picker already resolved this identity. Searching its short name
+                # again can silently move a selected village to a famous namesake.
+                from .held_point import held_point
+                held=held_point(getattr(self._local,'reader_home',None),p,result.get('question',''))
+                if held is not None:
+                    resolved[p['name']]=held
+                    points.append(held)
+                    result['trace']['tools'].append({'name':'reader_selected_point','place':held['label'],
+                                                    'coordinates':held['coordinates']})
+                    result['notes'].append('Read at the selected place: '+held['label']+'. Its coordinates were kept; the name was not searched again.')
+                    continue
                 if p['name'] in resolved:
                     points.append(resolved[p['name']]);continue
                 matches=self.gazetteer.search(p['name'],p['state'],p['district'])

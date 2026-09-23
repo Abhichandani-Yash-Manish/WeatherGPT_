@@ -82,7 +82,13 @@ function Shell() {
   const watchId = query.get('watch');
   /* No theme switch: the light engine decides the palette from the reader's own sun, so a manual toggle would
      be a second, contradicting answer to the same question. */
-  const [language, setLanguage] = useState('');
+  const [language, setLanguageState] = useState(() => {
+    try { return localStorage.getItem('weathergpt.answer-language') || ''; } catch { return ''; }
+  });
+  const setLanguage = (code: string) => {
+    setLanguageState(code);
+    try { localStorage.setItem('weathergpt.answer-language', code); } catch { /* The selection still works for this session. */ }
+  };
   const [persona, setPersona] = useState('');
   const [palette, setPalette] = useState(false);
   const askedSeeded = useRef(false);

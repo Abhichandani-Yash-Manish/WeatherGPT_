@@ -1,0 +1,171 @@
+{
+  "run_id": "district-v1-b24816debd7544db",
+  "built_at_utc": "2026-09-21T19:54:59.772901+00:00",
+  "implementation_sha256": "649ff89b491f68a3f678cee7d8829bfd9c7eb0b027e027187a41c6f224880db0",
+  "inputs": [
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/andhra_pradesh.csv",
+      "sha256": "94e0051827001a17d56d0bc0bd4c859dd66e00b089843cfb90fe6619f9b9c26a"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/arunachal_pradesh.csv",
+      "sha256": "40cb815a5243b2a12609a7db46c0db95080670b54bd9169f00d47ae29358e635"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/assam.csv",
+      "sha256": "39d66d3d270b399d84c7ad4511bbe44c7b89df2e6eda54bee5d32b319ff82120"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/bihar.csv",
+      "sha256": "104d9d2eed99e30b7209ef06083e98487d22eb4109e7830df5636f351c6976fc"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/chhattisgarh.csv",
+      "sha256": "8639ff84a052bb88b8ef02e886b9e952634ddaaddb2f800eccd69052e8bdc424"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/delhi.csv",
+      "sha256": "cf82ed8574f3d74f540ce27116c90568197eb3b011b76b0d0e45e2b369fa1a2c"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/goa.csv",
+      "sha256": "e28085b390f0c2f37390fa93a73543747e702cf175514cd0190f01ce75671d34"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/gujarat.csv",
+      "sha256": "11f9195cf742d4d0e1b77ce268aa059cebb864a283182d6df890d97162ee592f"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/haryana.csv",
+      "sha256": "58c59c46c99209e5a05faffa169eaaf614b317b43eb879a475f4f7086a0535da"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/himachal_pradesh.csv",
+      "sha256": "7127dc4f1d64bad4f3b1c9985ffb2a7282366ecce505307b6063243b0121ad5f"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/islands.csv",
+      "sha256": "ca4ca8da680ed4725fcebb52efef55671e69130682fe987b870675d81fcab602"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/jammu_kashmir.csv",
+      "sha256": "242bb515027ba423d8bda47d09c2dc8bbc399be5ed1eada1c116301890a34a7b"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/jharkhand.csv",
+      "sha256": "5eafe5b4477f183eb29c7456b25e7872515c7411e381b65c9a65563d30d9b8ff"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/karnataka.csv",
+      "sha256": "894b0696ce2f8d608fa4f00adda579d08befaa3c2a52ff5ef116850eb709d81c"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/kerala.csv",
+      "sha256": "77009d9e76d92d9ac7de8b2eb2905587fb4f15efdf8f64dfd55ea98c403ed39a"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/madhya_pradesh.csv",
+      "sha256": "52e4bcd8907a58faa657f43d300552f5dbf809eacc160611203a14ca5e61a99f"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/maharashtra.csv",
+      "sha256": "faf6840b6a6f717416ec0f8a70bf5ef9e54f88b77b84eb0ca1f74d8fc32ae44e"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/manipur.csv",
+      "sha256": "e78becc591fa4aa716fc0c39ac08be8ae20708b7d11632c064437ea3e75c4524"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/meghalaya.csv",
+      "sha256": "afb14005934dc782441fd37f0bfe8c703f6e6c7be4161449f1e5b440029bbc82"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/mizoram.csv",
+      "sha256": "ec0916240858c53fd5bfd66bfe4dc52679c93c9449facf179f5e9aff816cb7f8"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/nagaland.csv",
+      "sha256": "498ba1fd5f1619b9359eb6ed1f90075bc6aae9978f4c42aedddf415a2ed7ce6d"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/orissa.csv",
+      "sha256": "6e1ee5b499cb58e623151ef2facf56f384ff3a3214e9d87afbc3bf5473ffb30f"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/punjab.csv",
+      "sha256": "1156b81fd84d9bc1fdf5e20f1828fb509e5962ca2a12e2c80c0bce57a69cbb39"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/rajasthan.csv",
+      "sha256": "c513a483a81eb88584e3bf0703f2791c45db49d6b57ed085a1fc6ce1b6da1703"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/sikkim.csv",
+      "sha256": "cdbb71269485d4b8d34fd46b94baf7aea01b1d14aa7e8406f188d3ca1f2d5bdb"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/tamil_nadu.csv",
+      "sha256": "01562aab1ec1e7bf889100d0da3c72affb72d9677a0c4b3a1a5b5d8f5157c0c2"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/telangana.csv",
+      "sha256": "f1871cfabc2d5a2590302df228263f4f793fbe977984da6c60e948bef5ab088f"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/tripura.csv",
+      "sha256": "9db539871072fcf10cafd0d54b0a8ace7f485aba95f424f183f9983b5d28f395"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/union_terr.csv",
+      "sha256": "e6fabf61003702c21b6ed13861b59a939ffb24309575a77b5f4472ab72bd239f"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/uttar_pradesh.csv",
+      "sha256": "520e4607508c45b65635e2cf2f1c4d142de0115f19cc4381b73b90bae73813f1"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/uttarakhand.csv",
+      "sha256": "63d99db9d73a586778dfff5af6827cd0869b1421539e75babddab5b6e83008b4"
+    },
+    {
+      "source_id": "S27",
+      "path": "data/raw/imports/2026-09-11/states/west_bengal.csv",
+      "sha256": "47120202b3b00bb86b0de8d73c26d783d7f404962f1209d07729b50d1e3e4bbd"
+    }
+  ],
+  "outputs": {
+    "districts.sqlite": "db12593f5d243f0ab531f4f418de6913d8d57b5c9b163bcccb21682589c20716",
+    "audit.json": "a45311e90a7754c4ab36f4669f9ac3828bb1a74f34a2c7702c4eecd763f32bdf"
+  }
+}

@@ -1,0 +1,101 @@
+
+> weathergpt-frontend@0.0.0 build
+> vite build
+
+vite v6.4.3 building for production...
+transforming...
+✓ 4222 modules transformed.
+rendering chunks...
+computing gzip size...
+../web/dist/assets/jetbrains-mono-cyrillic-ext-wght-normal-EocZY2iu.woff2        2.03 kB
+../web/dist/index.html                                                           2.80 kB │ gzip:   1.32 kB
+../web/dist/assets/martian-mono-cyrillic-ext-wght-normal-DAknEryR.woff2          3.17 kB
+../web/dist/assets/noto-serif-gujarati-symbols-400-normal-C_Q1nxh-.woff2         5.58 kB
+../web/dist/assets/noto-serif-gujarati-symbols-400-normal-D5OoQIhE.woff          7.01 kB
+../web/dist/assets/noto-serif-gujarati-latin-ext-400-normal-M74A1SuZ.woff2       7.12 kB
+../web/dist/assets/jetbrains-mono-vietnamese-wght-normal-Bt-aOZkq.woff2          7.50 kB
+../web/dist/assets/noto-serif-gujarati-math-400-normal-n6CyUV_5.woff2            8.62 kB
+../web/dist/assets/jetbrains-mono-greek-wght-normal-Bw9x6K1M.woff2               9.00 kB
+../web/dist/assets/noto-serif-gujarati-latin-ext-400-normal-BlVg-Og1.woff        9.06 kB
+../web/dist/assets/tiro-telugu-latin-ext-400-normal-Y68bymom.woff                9.92 kB
+../web/dist/assets/tiro-kannada-latin-ext-400-normal-DRpjrrjy.woff               9.92 kB
+../web/dist/assets/inter-vietnamese-wght-normal-CBcvBZtf.woff2                  10.25 kB
+../web/dist/assets/martian-mono-cyrillic-wght-normal-B84CD5C_.woff2             10.56 kB
+../web/dist/assets/noto-serif-gujarati-math-400-normal-CuOyy7ei.woff            10.73 kB
+../web/dist/assets/tiro-tamil-latin-ext-400-normal-BU_va74u.woff                10.98 kB
+../web/dist/assets/tiro-bangla-latin-ext-400-normal-BBcU6JF0.woff               11.01 kB
+../web/dist/assets/inter-greek-ext-wght-normal-DlzME5K_.woff2                   11.23 kB
+../web/dist/assets/anek-latin-vietnamese-wght-normal-DzXCloSq.woff2             11.62 kB
+../web/dist/assets/noto-serif-gujarati-latin-400-normal-2vhCm747.woff2          11.88 kB
+../web/dist/assets/tiro-kannada-latin-ext-400-normal-CImXEWUu.woff2             12.07 kB
+../web/dist/assets/tiro-telugu-latin-ext-400-normal-DORLeJOm.woff2              12.10 kB
+../web/dist/assets/jetbrains-mono-cyrillic-wght-normal-D73BlboJ.woff2           12.11 kB
+../web/dist/assets/tiro-bangla-latin-ext-400-normal-hEpVi6du.woff2              12.98 kB
+../web/dist/assets/tiro-tamil-latin-ext-400-normal-DTbpJT5f.woff2               13.07 kB
+../web/dist/assets/outfit-latin-ext-wght-normal-DdQaqQDo.woff2                  14.81 kB
+../web/dist/assets/noto-serif-gujarati-latin-400-normal-HrY02zoL.woff           14.83 kB
+../web/dist/assets/jetbrains-mono-latin-ext-wght-normal-DBQx-q_a.woff2          15.20 kB
+../web/dist/assets/martian-mono-latin-ext-wght-normal-DlL6xMw5.woff2            15.91 kB
+../web/dist/assets/inter-cyrillic-wght-normal-DqGufNeO.woff2                    18.75 kB
+../web/dist/assets/inter-greek-wght-normal-CkhJZR-_.woff2                       19.00 kB
+../web/dist/assets/tiro-tamil-tamil-400-normal-CnqR1VCR.woff                    19.56 kB
+../web/dist/assets/tiro-kannada-latin-400-normal-pGhwT1u5.woff                  21.08 kB
+../web/dist/assets/tiro-telugu-latin-400-normal-LD5cHYAU.woff                   21.12 kB
+../web/dist/assets/martian-mono-latin-wght-normal-5W32yIyr.woff2                23.56 kB
+../web/dist/.vite/manifest.json                                                 23.90 kB │ gzip:   2.44 kB
+../web/dist/assets/tiro-tamil-latin-400-normal-hc1QFZmQ.woff                    24.12 kB
+../web/dist/assets/tiro-bangla-latin-400-normal-DSiOXPjq.woff                   24.13 kB
+../web/dist/assets/tiro-kannada-latin-400-normal-DOhnCMdu.woff2                 24.50 kB
+../web/dist/assets/tiro-telugu-latin-400-normal-BT2WiTgL.woff2                  24.52 kB
+../web/dist/assets/inter-cyrillic-ext-wght-normal-BOeWTOD4.woff2                25.96 kB
+../web/dist/assets/tiro-tamil-latin-400-normal-Bzsy9M7v.woff2                   26.87 kB
+../web/dist/assets/tiro-bangla-latin-400-normal-1lYSvEyl.woff2                  26.89 kB
+../web/dist/assets/tiro-tamil-tamil-400-normal-p7Cca2Gy.woff2                   28.47 kB
+../web/dist/assets/outfit-latin-wght-normal-Bc-8i84L.woff2                      32.29 kB
+../web/dist/assets/noto-serif-gujarati-gujarati-400-normal-Ddx35BHv.woff2       33.16 kB
+../web/dist/assets/anek-latin-latin-ext-wght-normal-CzxqaSOW.woff2              36.50 kB
+../web/dist/assets/jetbrains-mono-latin-wght-normal-B9CIFXIH.woff2              40.40 kB
+../web/dist/assets/noto-serif-gujarati-gujarati-400-normal-9dOa5BDK.woff        43.00 kB
+../web/dist/assets/anek-latin-latin-wght-normal-DZcssQ26.woff2                  44.80 kB
+../web/dist/assets/inter-latin-wght-normal-Dx4kXJAl.woff2                       48.26 kB
+../web/dist/assets/tiro-kannada-kannada-400-normal-B-e5u2iN.woff                59.67 kB
+../web/dist/assets/tiro-bangla-bengali-400-normal-CIbHCMPl.woff                 67.55 kB
+../web/dist/assets/tiro-bangla-bengali-400-normal-v3lAayBG.woff2                81.93 kB
+../web/dist/assets/tiro-devanagari-hindi-devanagari-400-normal-Dpl8O0n8.woff    82.33 kB
+../web/dist/assets/inter-latin-ext-wght-normal-DO1Apj_S.woff2                   85.07 kB
+../web/dist/assets/tiro-kannada-kannada-400-normal-BxN51C0c.woff2               86.17 kB
+../web/dist/assets/tiro-telugu-telugu-400-normal-lZNkgje2.woff                  88.79 kB
+../web/dist/assets/tiro-devanagari-hindi-devanagari-400-normal-BN7hftjh.woff2   98.83 kB
+../web/dist/assets/tiro-telugu-telugu-400-normal-Dsuqdn0L.woff2                100.43 kB
+../web/dist/assets/vizSpecs-ccW2lmBE.css                                        10.25 kB │ gzip:   2.40 kB
+../web/dist/assets/WorkspaceSurface-DPaYXkg2.css                                19.66 kB │ gzip:   3.92 kB
+../web/dist/assets/main-CV1LbyWz.css                                           609.72 kB │ gzip:  74.47 kB
+../web/dist/assets/ObservationsSurface-DsDcLtHt.js                               4.69 kB │ gzip:   1.86 kB
+../web/dist/assets/vizSpecs-DtqP7n-l.js                                          4.80 kB │ gzip:   2.27 kB
+../web/dist/assets/ForecastSurface-BONb7lMM.js                                   5.89 kB │ gzip:   2.33 kB
+../web/dist/assets/ChangesSurface-BNbV-Qxi.js                                    6.45 kB │ gzip:   2.43 kB
+../web/dist/assets/AirQualitySurface-C819mLfx.js                                 6.84 kB │ gzip:   2.76 kB
+../web/dist/assets/SettingsSurface-_iTJO5uu.js                                   7.62 kB │ gzip:   2.58 kB
+../web/dist/assets/MarineSurface-CbU1oPln.js                                     7.90 kB │ gzip:   3.01 kB
+../web/dist/assets/ClimateSurface-BQDvQ7zN.js                                    7.93 kB │ gzip:   3.09 kB
+../web/dist/assets/VerificationSurface-DBNaiSjw.js                               8.05 kB │ gzip:   3.11 kB
+../web/dist/assets/EnsembleSurface-Bj5PJsTx.js                                   8.34 kB │ gzip:   3.16 kB
+../web/dist/assets/AviationSurface-ConbibO2.js                                   8.41 kB │ gzip:   3.22 kB
+../web/dist/assets/CompareSurface-3BmbzQV7.js                                    8.87 kB │ gzip:   3.41 kB
+../web/dist/assets/DistrictInspector-B_PPHQCf.js                                 9.52 kB │ gzip:   3.16 kB
+../web/dist/assets/DocumentsSurface-Bo7AkDoF.js                                 10.13 kB │ gzip:   3.71 kB
+../web/dist/assets/react-DfSJUp79.js                                            12.46 kB │ gzip:   4.38 kB
+../web/dist/assets/BriefcaseSurface-J_ZCTTka.js                                 14.75 kB │ gzip:   4.73 kB
+../web/dist/assets/WarningsSurface-BoVxk5rf.js                                  16.09 kB │ gzip:   5.32 kB
+../web/dist/assets/AdvisoriesSurface-on-4lDgD.js                                16.18 kB │ gzip:   5.28 kB
+../web/dist/assets/MapSurface-B1u-6PY9.js                                       20.09 kB │ gzip:   6.90 kB
+../web/dist/assets/TodaySurface-DJsdTLvv.js                                     36.12 kB │ gzip:  11.78 kB
+../web/dist/assets/WorkspaceSurface-V2qtIWqk.js                                 57.58 kB │ gzip:  18.62 kB
+../web/dist/assets/LanguagePicker-CI5u1qW5.js                                  224.39 kB │ gzip:  72.11 kB
+../web/dist/assets/main-BR_EPybt.js                                            791.06 kB │ gzip: 246.28 kB
+
+(!) Some chunks are larger than 500 kB after minification. Consider:
+- Using dynamic import() to code-split the application
+- Use build.rollupOptions.output.manualChunks to improve chunking: https://rollupjs.org/configuration-options/#output-manualchunks
+- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.
+✓ built in 1.61s

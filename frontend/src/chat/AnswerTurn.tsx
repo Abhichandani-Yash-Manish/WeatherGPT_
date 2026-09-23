@@ -275,7 +275,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
      It is also not drawn WHILE the answer is arriving: the rest of the prose crosses the fold's threshold
      mid-reveal, so a details box would appear, swallow the text being written, and reopen a moment later. */
   const foldsRest = !revealing && Boolean((primary && !conversational) || warnings.length);
-  const byline = authorshipNote(packet);
+  const byline = packet.answer_basis === 'conversation' ? '' : authorshipNote(packet);
   const placeAt = primary && !conversational ? placeRead(packet, primary) : null;
   const windowCovered = windowCoverage(packet);
   const resolution = packet.trace?.context_resolution;
@@ -305,7 +305,7 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
   return (
     <article className="g-answer" data-has-evidence={Boolean(packet.citations?.length)} data-multiple-facts={facts.length > 1} data-turn-status={packet.status} data-revealing={revealing ? 'true' : undefined}>
       <div className="g-answer-main">
-      <header className="g-chips" style={{ alignItems: 'baseline', justifyContent: 'space-between' }}>
+      <header className="g-chips g-answer-header">
         <div className="g-answer-identity"><Mark size={32} className="g-answer-mark" /><h2 className="g-eyebrow" style={{ margin: 0 }}>{turnTitle(packet)}</h2></div>
         <StatusTags packet={packet} />
       </header>
@@ -366,7 +366,6 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
           ))
         )}
       </div>
-      {byline ? <p className="answer-by">{byline}</p> : null}
 
       {/* For a matched comparison, the matrix leads and these complete original claims
           remain its depth. With no matrix, the same claims stay open as before. */}
@@ -579,6 +578,8 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
 
       </div>
       ) : null}
+
+      {byline ? <p className="answer-by">{byline}</p> : null}
 
       {/* How much of the card is unfolded, and the reader's own choice about it. It is a fold rather than a
           row of chips because a preference is not a control the answer depends on, and it writes the

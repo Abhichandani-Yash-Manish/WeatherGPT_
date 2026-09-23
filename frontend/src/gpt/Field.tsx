@@ -28,7 +28,6 @@ import { useEffect, useRef } from 'react';
 import { SkyGlyphIcon, type SkyGlyph } from '../shell/icons';
 import { solarPosition } from './fieldPaint';
 import { applySpectrum, clearSpectrum, meridianSpectrumAt } from './spectrum';
-import { Skyline } from './Skyline';
 import { useWorkingPlace } from '../modules/Evidence';
 
 /* The centre of the country, for a reader who has held no place yet. The welcome screen reads the held
@@ -112,7 +111,6 @@ export function Field({ expanded, sky = null }: { expanded: boolean; sky?: SkyGl
           glide between those positions over a minute rather than stepping. */}
       <div className="g-bloom" data-bloom="sun" />
       <div className="g-bloom" data-bloom="sky" />
-      <Skyline />
       <div className="g-field-grain" />
       <div className="g-field-vignette" />
       {sky ? (

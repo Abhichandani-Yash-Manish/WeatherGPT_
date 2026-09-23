@@ -7,7 +7,7 @@
 **Smart India Hackathon · SIH26068 · Ministry of Earth Sciences / IMD**
 Team **Void Pointer** (18) · Disaster Management
 
-`1,630` Python checks · `596` frontend checks · `21`-step gate, `0` failed · `276`-scenario atlas · `70` governed sources · `100%` local
+`1,637` Python checks · `596` frontend checks · `21`-step gate, `0` failed · `276`-scenario atlas · `70` governed sources · `100%` local
 
 </div>
 
@@ -353,7 +353,7 @@ Everything runs **on this machine**. No telemetry, no account, no cloud store. T
 
 ```bash
 python3 scripts/verify_all.py                        # 21 steps, 0 failed
-python3 -m pytest tests/ -q                          # 1630 Python tests
+python3 -m pytest tests/ -q                          # 1637 Python tests
 cd frontend && npx vitest run                        # 596 checks, 90 suites
 ```
 
@@ -366,7 +366,7 @@ cd frontend && npx vitest run                        # 596 checks, 90 suites
 
 | | |
 |---|---|
-| Python | **1,630** checks, 113 files |
+| Python | **1,637** checks, 114 files |
 | Frontend | **596** checks, 90 suites |
 | Gate | **21** steps, **0** failed |
 | Scenario atlas | **276** scenarios / 306 turns |

@@ -46,7 +46,7 @@ export function Skyline() {
     <svg
       className="g-skyline-art"
       viewBox="0 0 1600 220"
-      preserveAspectRatio="xMidYMax slice"
+      preserveAspectRatio="xMidYMax meet"
       aria-hidden="true"
       focusable="false"
     >

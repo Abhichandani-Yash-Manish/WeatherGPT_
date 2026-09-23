@@ -12,7 +12,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getJson } from '../api/client';
 import type { Languages } from '../api/types';
 import { writableLanguages } from '../chat/voice';
-import { ArrowDown, ArrowLeft, MapPin } from 'lucide-react';
+import { ArrowDown, ArrowLeft, MapPin, Pencil } from 'lucide-react';
 
 import { collectEvidence, personas as readPersonas, searchPlaces, type PlaceMatch } from '../chat/api';
 import { useConversation } from '../chat/useConversation';
@@ -25,7 +25,6 @@ import { viewById, type ViewEntry } from '../shell/views';
 import { AnswerTurn } from '../chat/AnswerTurn';
 import { Composer } from './Composer';
 import { Field } from './Field';
-import { useAtmosphere } from './atmosphere';
 import { PlacePicker } from './PlacePicker';
 import { hourOf, lightAt } from './fieldPaint';
 import { chromeFor, i18n } from '../i18n';
@@ -333,11 +332,12 @@ export function Workspace({
   useEffect(() => {
     const node = thread.current;
     if (!node || !chatting) return;
+    const behavior = window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth';
     if (spotlight) {
       const target = Array.from(node.querySelectorAll('.g-turn')).find(turn => turn.textContent?.includes(spotlight));
       if (target) {
         /* jsdom has no layout and therefore no scrollIntoView; the mark is what the check can see. */
-        if (typeof target.scrollIntoView === 'function') target.scrollIntoView({ block: 'center', behavior: 'smooth' });
+        if (typeof target.scrollIntoView === 'function') target.scrollIntoView({ block: 'center', behavior });
         target.classList.add('g-found');
         const timer = window.setTimeout(() => target.classList.remove('g-found'), 2600);
         return () => window.clearTimeout(timer);
@@ -359,10 +359,10 @@ export function Workspace({
     const anchor = questions[questions.length - 1]?.closest('.g-turn') as HTMLElement | null;
     if (anchor && typeof anchor.getBoundingClientRect === 'function') {
       const top = anchor.getBoundingClientRect().top - node.getBoundingClientRect().top + node.scrollTop;
-      node.scrollTo({ top: Math.max(0, top - ANCHOR_INSET), behavior: 'smooth' });
+      node.scrollTo({ top: Math.max(0, top - ANCHOR_INSET), behavior });
       return;
     }
-    node.scrollTo({ top: node.scrollHeight, behavior: 'smooth' });
+    node.scrollTo({ top: node.scrollHeight, behavior });
   }, [conversation.turns.length, conversation.working?.key, chatting, spotlight]);
 
   /* A finished turn is a new stored conversation: the rail has to hear about it. */
@@ -406,7 +406,7 @@ export function Workspace({
   }, [prefs.rail, setPrefs, conversation, onNew]);
 
   const toEnd = useCallback(() => {
-    thread.current?.scrollTo({ top: thread.current.scrollHeight, behavior: 'smooth' });
+    thread.current?.scrollTo({ top: thread.current.scrollHeight, behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
   }, []);
 
   /* A chip on the card. A place choice the engine offered is resolved inside the turn that offered it —
@@ -503,7 +503,6 @@ export function Workspace({
     });
   };
 
-  const atmosphere = useAtmosphere();
   /* THE PLACE PICKER LIVES HERE NOW.
      Every "Change" and "Set a place" control in the shell called `onFindPlace`, an OPTIONAL prop that no
      caller has ever supplied - so `onFindPlace?.()` ran, did nothing, and three separate controls in the
@@ -554,6 +553,11 @@ export function Workspace({
 
   const composer = (
     <div className="g-dock">
+      {chatting && scrolled ? (
+        <button type="button" className="g-to-end" onClick={toEnd} aria-label="Go to the newest turn">
+          <ArrowDown size={16} aria-hidden="true" />
+        </button>
+      ) : null}
       <Composer
         draft={conversation.draft}
         onDraft={conversation.setDraft}
@@ -566,6 +570,8 @@ export function Workspace({
         onPlace={openPlacePicker}
         onLanguage={onLanguage}
         languages={answerLanguages}
+        languageState={languageList.isPending ? 'loading' : languageList.isError ? 'error' : 'ready'}
+        onRetryLanguages={() => void languageList.refetch()}
       />
       {chatting ? (
         <p className="g-hint" id="composer-hint">
@@ -612,7 +618,7 @@ export function Workspace({
       data-hour={hour}
       data-scrolled={scrolled ? 'true' : 'false'}
       data-design="meridian"
-      data-atmosphere={atmosphere.running ? 'active' : 'paused'}
+      data-atmosphere="paused"
       data-busy={Boolean(working && !working.stopRequested)}
     >
       <Field expanded={chatting} sky={mood} />
@@ -651,8 +657,6 @@ export function Workspace({
 
       <main className="g-main" data-panel={prefs.panel ? 'open' : 'closed'}>
         <TopBar
-          atmosphere={atmosphere.enabled}
-          onToggleAtmosphere={atmosphere.toggle}
           title={title}
           chatting={chatting}
           sky={sky.data}
@@ -691,24 +695,20 @@ export function Workspace({
                 {/* A module page carries its own title and its own first reading, so the greeting, the
                     verse and the starters are not drawn under it. The composer is, because the front
                     door is the front door on every page. */}
-                {sheet ? null : <Welcome hour={hour} />}
-                {composer}
-                {sheet ? null : (<div className="g-chips">
-                  {STARTERS.map(starter => (
-                    <button key={starter.label} type="button" className="g-chip" title={starter.question} onClick={() => void conversation.send(starter.question)}>
-                      {starter.label}
-                    </button>
-                  ))}
-                </div>)}
-                {/* The national reading, which used to be the headline here. A way into the Warnings home
-                    for a reader who wants it, set as a way in rather than as a fourth question: it opens a
-                    surface, and it is not something a reader would ever type. */}
-                {sheet ? null : (
-                  <p className="g-welcome-foot">
-                    <button type="button" className="g-quiet" onClick={() => onOpen('overview')}>
-                      Today across India
-                    </button>
-                  </p>
+                {sheet ? composer : (
+                  <Welcome hour={hour}>
+                    {composer}
+                    <div className="g-chips g-starters">
+                      {STARTERS.map(starter => (
+                        <button key={starter.label} type="button" className="g-chip" title={starter.question} onClick={() => void conversation.send(starter.question)}>
+                          {starter.label}
+                        </button>
+                      ))}
+                    </div>
+                    <p className="g-welcome-foot">
+                      <button type="button" className="g-quiet" onClick={() => onOpen('overview')}>Today across India</button>
+                    </p>
+                  </Welcome>
                 )}
               </div>
             ) : (
@@ -726,17 +726,18 @@ export function Workspace({
                   const lastQuestion = [...turns].reverse().find(entry => entry.role === 'user')?.key;
                   if (turn.role === 'user') {
                     return (
-                      <div key={turn.key} className="g-turn g-in">
+                      <div key={turn.key} className="g-turn g-question-turn g-in">
                         <div className="g-you"><p>{turn.text}</p></div>
                         {turn.key === lastQuestion ? (
                           <div className="g-chips no-print" data-print="drop">
                             <button
                               type="button"
-                              className="g-chip"
+                              className="g-chip g-edit-question"
+                              aria-label="Edit this question"
                               title={'Puts this question back in the box and removes its answer, so the corrected question is what is asked next: “' + turn.text + '”'}
                               onClick={() => conversation.edit(turn.key)}
                             >
-                              Edit this question
+                              <Pencil size={14} aria-hidden="true" /><span>Edit</span>
                             </button>
                           </div>
                         ) : null}
@@ -895,13 +896,6 @@ export function Workspace({
 
           {chatting ? <div className="g-col">{composer}</div> : null}
         </div>
-        {/* Only once there is something above it: a reader who has scrolled back into a long answer gets one
-            press back to the question they are still asking. */}
-        {chatting && scrolled ? (
-          <button type="button" className="g-to-end" onClick={toEnd} aria-label="Go to the newest turn">
-            <ArrowDown size={16} aria-hidden="true" />
-          </button>
-        ) : null}
         {/* No legend: the ground states the hour by being that hour, and it draws no condition to disclaim.
             What leaves this machine is said once, under the composer, where a reader is about to send. */}
       </main>

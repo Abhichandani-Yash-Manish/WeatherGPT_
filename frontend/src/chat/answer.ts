@@ -183,7 +183,7 @@ export function authorshipNote(packet: AnswerPacket): string | null {
   const generation = packet.trace?.generation as { authored_by?: string; status?: string; provider?: string } | null | undefined;
   if (!generation) return null;
   if (generation.authored_by === 'model') {
-    return 'Written by a model from the retrieved facts and checked against them; the value, window and source line below stay tool-owned.';
+    return 'Written by a model from the retrieved facts and checked against them; values, windows and source lines remain tool-owned.';
   }
   if (generation.provider === 'controlled_localized_template') {
     return 'Rendered by the product\'s own language template for that language, not written by a model.';

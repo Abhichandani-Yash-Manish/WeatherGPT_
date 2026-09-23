@@ -1,12 +1,13 @@
 # DESIGN.md — the design system
 
-> **Active direction, 22 September 2026: Meridian Light.** The user selected the second Meridian
-> concept and explicitly requested a light palette, responsive atmospheric motion and no glassmorphism.
-> This supersedes the solar/dark/glass material and motion decisions recorded below; their rationale is
-> retained as history. The active layer is `frontend/src/gpt/css/meridian.css`, with implementation and
-> acceptance evidence in [docs/160](docs/160-meridian-react-ui.md). The React app is the product surface;
-> the legacy HTML UI stays decommissioned. Source ownership, honest absence, language fidelity and
-> published hazard semantics remain binding.
+> **Active direction, 23 September 2026: the calm Meridian workspace.** Keep the light ground,
+> dark rail and composer. The latest user direction replaces looping background effects with a static,
+> fully visible skyline under the welcome's daylight arc. The quote sits above the composer. Answers
+> read directly on a light page. `frontend/src/gpt/css/conversation.css` follows `meridian.css` and owns
+> these proportions and interactions. See [docs/163](docs/163-chat-reading-and-selected-controls.md).
+> Earlier motion, dark-answer and glass decisions below remain historical. The React app is the product
+> surface; the HTML frontend remains decommissioned. Source ownership, honest absence, language fidelity
+> and published hazard semantics remain binding.
 
 **The governing idea: the conversation is the product, and it sits on the reader's own sky.**
 

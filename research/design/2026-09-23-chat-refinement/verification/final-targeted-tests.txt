@@ -1,0 +1,350 @@
+
+> weathergpt-frontend@0.0.0 test
+> vitest run src/gpt/shell.test.tsx src/gpt/meridian.test.tsx src/chat/answer.shape.test.tsx
+
+
+ RUN  v3.2.7 /Users/yashabhichandani/WeatherGPT/frontend
+
+(node:36461) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36460) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+(node:36462) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.
+(Use `node --trace-warnings ...` to show where the warning was created)
+ ✓ src/chat/answer.shape.test.tsx (14 tests) 209ms
+ ✓ src/gpt/meridian.test.tsx (7 tests) 460ms
+   ✓ composer language control > selects a real answer language with the keyboard and dismisses with Escape  386ms
+stderr | src/gpt/shell.test.tsx > the shell > filters the list to a place the conversations themselves resolved
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > opens the key list with ⌥/
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > saves the whole conversation, not one answer
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > saves the whole conversation, not one answer
+Error: Not implemented: HTMLCanvasElement.prototype.getContext (without installing the canvas npm package)
+    at module.exports (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at HTMLCanvasElementImpl.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/nodes/HTMLCanvasElement-impl.js:42:5)
+    at HTMLCanvasElement.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/generated/HTMLCanvasElement.js:131:58)
+    at file:///Users/yashabhichandani/WeatherGPT/frontend/node_modules/thinking-orbs/dist/index.es.js:85:17
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13) undefined
+Error: Not implemented: HTMLCanvasElement.prototype.getContext (without installing the canvas npm package)
+    at module.exports (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at HTMLCanvasElementImpl.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/nodes/HTMLCanvasElement-impl.js:42:5)
+    at HTMLCanvasElement.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/generated/HTMLCanvasElement.js:131:58)
+    at file:///Users/yashabhichandani/WeatherGPT/frontend/node_modules/thinking-orbs/dist/index.es.js:85:17
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13) undefined
+
+stderr | src/gpt/shell.test.tsx > the shell > saves the whole conversation, not one answer
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/chat/stream?request_id=fc3e6943-e77a-4884-8f32-71f098ff0bd7
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > merges two labels the reader named the same thing
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > lands on the turn a search sent the reader to, and marks it
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > marks a legacy restored answer as missing its receipt and offers a fresh read
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > states what is published for the place, and the hours the model returned
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > says what the panel did not get rather than drawing a zero
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > copies one claim with its place, window and source, and not the whole answer
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > copies one claim with its place, window and source, and not the whole answer
+Error: Not implemented: HTMLCanvasElement.prototype.getContext (without installing the canvas npm package)
+    at module.exports (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at HTMLCanvasElementImpl.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/nodes/HTMLCanvasElement-impl.js:42:5)
+    at HTMLCanvasElement.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/generated/HTMLCanvasElement.js:131:58)
+    at file:///Users/yashabhichandani/WeatherGPT/frontend/node_modules/thinking-orbs/dist/index.es.js:85:17
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13) undefined
+Error: Not implemented: HTMLCanvasElement.prototype.getContext (without installing the canvas npm package)
+    at module.exports (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at HTMLCanvasElementImpl.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/nodes/HTMLCanvasElement-impl.js:42:5)
+    at HTMLCanvasElement.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/generated/HTMLCanvasElement.js:131:58)
+    at file:///Users/yashabhichandani/WeatherGPT/frontend/node_modules/thinking-orbs/dist/index.es.js:85:17
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13) undefined
+
+stderr | src/gpt/shell.test.tsx > the shell > copies one claim with its place, window and source, and not the whole answer
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/chat/stream?request_id=a62d14b7-baa0-4935-bbd6-bb232c0b8b87
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > links the panel blocks to the surfaces that own them
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > copies a warning as the product published it, colour and source together
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > copies a warning as the product published it, colour and source together
+Error: Not implemented: HTMLCanvasElement.prototype.getContext (without installing the canvas npm package)
+    at module.exports (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at HTMLCanvasElementImpl.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/nodes/HTMLCanvasElement-impl.js:42:5)
+    at HTMLCanvasElement.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/generated/HTMLCanvasElement.js:131:58)
+    at file:///Users/yashabhichandani/WeatherGPT/frontend/node_modules/thinking-orbs/dist/index.es.js:85:17
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13) undefined
+Error: Not implemented: HTMLCanvasElement.prototype.getContext (without installing the canvas npm package)
+    at module.exports (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at HTMLCanvasElementImpl.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/nodes/HTMLCanvasElement-impl.js:42:5)
+    at HTMLCanvasElement.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/generated/HTMLCanvasElement.js:131:58)
+    at file:///Users/yashabhichandani/WeatherGPT/frontend/node_modules/thinking-orbs/dist/index.es.js:85:17
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13) undefined
+
+stderr | src/gpt/shell.test.tsx > the shell > copies a warning as the product published it, colour and source together
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/chat/stream?request_id=82a94698-004a-4e93-8a83-73426bcf9e48
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > offers a watch only when the engine supplies its exact next question
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > offers a watch only when the engine supplies its exact next question
+Error: Not implemented: HTMLCanvasElement.prototype.getContext (without installing the canvas npm package)
+    at module.exports (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at HTMLCanvasElementImpl.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/nodes/HTMLCanvasElement-impl.js:42:5)
+    at HTMLCanvasElement.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/generated/HTMLCanvasElement.js:131:58)
+    at file:///Users/yashabhichandani/WeatherGPT/frontend/node_modules/thinking-orbs/dist/index.es.js:85:17
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13) undefined
+Error: Not implemented: HTMLCanvasElement.prototype.getContext (without installing the canvas npm package)
+    at module.exports (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at HTMLCanvasElementImpl.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/nodes/HTMLCanvasElement-impl.js:42:5)
+    at HTMLCanvasElement.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/generated/HTMLCanvasElement.js:131:58)
+    at file:///Users/yashabhichandani/WeatherGPT/frontend/node_modules/thinking-orbs/dist/index.es.js:85:17
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13) undefined
+
+stderr | src/gpt/shell.test.tsx > the shell > offers a watch only when the engine supplies its exact next question
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/chat/stream?request_id=8717c90f-71fa-4f29-903f-5ea9f7a9d3f5
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > offers a watch only when the engine supplies its exact next question
+Error: Not implemented: HTMLCanvasElement.prototype.getContext (without installing the canvas npm package)
+    at module.exports (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at HTMLCanvasElementImpl.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/nodes/HTMLCanvasElement-impl.js:42:5)
+    at HTMLCanvasElement.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/generated/HTMLCanvasElement.js:131:58)
+    at file:///Users/yashabhichandani/WeatherGPT/frontend/node_modules/thinking-orbs/dist/index.es.js:85:17
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13) undefined
+Error: Not implemented: HTMLCanvasElement.prototype.getContext (without installing the canvas npm package)
+    at module.exports (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at HTMLCanvasElementImpl.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/nodes/HTMLCanvasElement-impl.js:42:5)
+    at HTMLCanvasElement.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/generated/HTMLCanvasElement.js:131:58)
+    at file:///Users/yashabhichandani/WeatherGPT/frontend/node_modules/thinking-orbs/dist/index.es.js:85:17
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13) undefined
+
+stderr | src/gpt/shell.test.tsx > the shell > offers a watch only when the engine supplies its exact next question
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/chat/stream?request_id=c00e2b0d-620f-4fa9-b855-ceb95312a5e0
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > does not invent a watch from a place and a weather fact
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > does not invent a watch from a place and a weather fact
+Error: Not implemented: HTMLCanvasElement.prototype.getContext (without installing the canvas npm package)
+    at module.exports (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at HTMLCanvasElementImpl.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/nodes/HTMLCanvasElement-impl.js:42:5)
+    at HTMLCanvasElement.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/generated/HTMLCanvasElement.js:131:58)
+    at file:///Users/yashabhichandani/WeatherGPT/frontend/node_modules/thinking-orbs/dist/index.es.js:85:17
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13) undefined
+Error: Not implemented: HTMLCanvasElement.prototype.getContext (without installing the canvas npm package)
+    at module.exports (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/browser/not-implemented.js:9:17)
+    at HTMLCanvasElementImpl.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/nodes/HTMLCanvasElement-impl.js:42:5)
+    at HTMLCanvasElement.getContext (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/jsdom/lib/jsdom/living/generated/HTMLCanvasElement.js:131:58)
+    at file:///Users/yashabhichandani/WeatherGPT/frontend/node_modules/thinking-orbs/dist/index.es.js:85:17
+    at Object.react_stack_bottom_frame (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:28656:20)
+    at runWithFiberInDEV (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:1048:13)
+    at commitHookEffectListMount (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13748:29)
+    at commitHookPassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:13835:11)
+    at commitPassiveMountOnFiber (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16906:13)
+    at recursivelyTraversePassiveMountEffects (/Users/yashabhichandani/WeatherGPT/frontend/node_modules/react-dom/cjs/react-dom-client.development.js:16851:13) undefined
+
+stderr | src/gpt/shell.test.tsx > the shell > does not invent a watch from a place and a weather fact
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/chat/stream?request_id=939fe216-b6f0-4eea-bb57-8c9703be7218
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > opens the n-th conversation with ⌥-digit
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > keeps the delete failure visible rather than emptying the list on a promise
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+stderr | src/gpt/shell.test.tsx > the shell > deletes a stored conversation through the local route only, and says when the delete failed
+[MSW] Error: intercepted a request without a matching request handler:
+
+  • GET /api/now?lat=9.93&lon=76.26
+
+If you still wish to intercept this unhandled request, please create a request handler for it.
+Read more: https://mswjs.io/docs/http/intercepting-requests
+
+ ✓ src/gpt/shell.test.tsx (26 tests) 4627ms
+   ✓ the shell > collapses the rail and remembers the arrangement  313ms
+   ✓ the shell > lists the stored conversations, with the place each resolved, and searches every turn  344ms
+   ✓ the shell > saves the whole conversation, not one answer  654ms
+   ✓ the shell > copies one claim with its place, window and source, and not the whole answer  578ms
+   ✓ the shell > copies a warning as the product published it, colour and source together  668ms
+   ✓ the shell > offers a watch only when the engine supplies its exact next question  675ms
+   ✓ the shell > does not invent a watch from a place and a weather fact  670ms
+
+ Test Files  3 passed (3)
+      Tests  47 passed (47)
+   Start at  15:14:00
+   Duration  5.26s (transform 220ms, setup 240ms, collect 678ms, tests 5.30s, environment 322ms, prepare 80ms)
+

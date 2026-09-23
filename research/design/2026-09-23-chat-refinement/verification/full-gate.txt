@@ -1,0 +1,23 @@
+python >= 3.9                                     PASS 3.9.6
+node available                                    PASS /opt/homebrew/bin/node
+requirements-foundation.txt present               PASS 
+requirements-bulletins.txt present                PASS 
+requirements.txt present                          PASS 
+requirements-dev.txt present                      PASS 
+parse data/registry/sources.json                  PASS 
+parse data/registry/source-review.json            PASS 
+parse data/registry/product-progress.json         PASS 
+parse data/registry/hardening-progress.json       PASS 
+parse data/registry/language-support.json         PASS 
+parse data/registry/acceptance-benchmark.json     PASS 
+parse data/registry/answer-policy.json            PASS 
+parse data/registry/openrouter-free-models.json   PASS 
+status drift guard                                PASS status drift: 0 problem(s); collected tests 1637, README 1637
+python tests                                      PASS 1637 passed, 1 warning in 77.56s (0:01:17)
+react component specs                             PASS Test Files  90 passed (90)
+react build audit                                 PASS 11 check(s), 0 failed
+surface registry audit                            PASS 10 check(s), 0 failed
+react frontend audit                              PASS 19 check(s), 0 failed
+port ledger audit                                 PASS 2 check(s), 0 failed
+
+21 step(s), 0 failed

@@ -1,0 +1,38 @@
+[
+  {
+    "state": "welcome",
+    "violations": []
+  },
+  {
+    "state": "language list",
+    "violations": []
+  },
+  {
+    "state": "place picker",
+    "violations": []
+  },
+  {
+    "state": "welcome 768",
+    "overflow": false
+  },
+  {
+    "state": "welcome 360",
+    "overflow": false
+  },
+  {
+    "state": "restored answer",
+    "violations": []
+  },
+  {
+    "state": "source receipt opens",
+    "passed": true
+  },
+  {
+    "state": "answer 768",
+    "overflow": false
+  },
+  {
+    "state": "answer 360",
+    "overflow": false
+  }
+]

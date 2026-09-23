@@ -20,12 +20,13 @@
    desktop where the rail carries it already, the hour word under a greeting that states the hour, and
    "name a place and it becomes yours" under a composer whose placeholder asks for exactly that. */
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, type ReactNode } from 'react';
 import { istStamp } from '../lib/time';
 import { shortPlace } from '../lib/locale';
 import { SkyGlyphIcon } from '../shell/icons';
 import { greetingKey, useSky, type SkyReading } from './sky';
 import { type Hour } from './fieldPaint';
+import { Skyline } from './Skyline';
 import { DayArc } from './DayArc';
 import { QuoteLine } from './QuoteLine';
 import { PlacePicker } from './PlacePicker';
@@ -68,7 +69,7 @@ export function stationSource(reading: SkyReading, options: { includeStale?: boo
   ].filter(Boolean).join(' · ');
 }
 
-export function Welcome({ hour }: { hour: Hour }) {
+export function Welcome({ hour, children }: { hour: Hour; children?: ReactNode }) {
   const { t } = useTranslation();
   const sky = useSky();
   const held = useWorkingPlace();
@@ -133,6 +134,7 @@ export function Welcome({ hour }: { hour: Hour }) {
           line that owns it, below, not standing at display size where nothing says where it came from. */}
       <div className="w-glyph" data-kind={reading?.glyph ? 'condition' : 'hour'}>
         <DayArc at={at} latitude={latitude} longitude={longitude} lightLabel={t('welcome.ofLight')} />
+        <Skyline />
       </div>
 
       {/* THE BODY: the invitation on the left, what is happening right now on the right.
@@ -161,7 +163,7 @@ export function Welcome({ hour }: { hour: Hour }) {
       {/* The place, and the one control on this screen that can change what everything else is about. A
           reader who has no place is shown the hour and the sun, and this is how they get their own sky. */}
       {place ? null : (
-        <>
+        <div className="w-place-actions">
           <p className="w-place w-place-none">
             <button type="button" className="w-place-button" onClick={() => setPicking(true)}>
               {t('welcome.setYourPlace')}
@@ -192,7 +194,7 @@ export function Welcome({ hour }: { hour: Hour }) {
             </button>
           </p>
           {locateNote ? <p className="w-source g-claim-source" role="status">{locateNote}</p> : null}
-        </>
+        </div>
       )}
 
       </div>
@@ -261,6 +263,7 @@ export function Welcome({ hour }: { hour: Hour }) {
           can change. It sits under everything the sky has said, so the page reads as a fact and then a
           thought rather than the other way round. */}
       <QuoteLine at={at} hour={hour} />
+      <div className="w-ask">{children}</div>
 
       {picking ? <PlacePicker onClose={() => setPicking(false)} /> : null}
     </div>

@@ -4,12 +4,14 @@
    send that becomes a stop while a turn is running. Enter sends, Shift+Enter makes a line. Voice is a tool in
    the row rather than a second door, and it confirms what it heard before anything is sent. */
 
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ArrowUp, Check, ChevronDown, MapPin, Mic, Square, X } from 'lucide-react';
+import { ArrowUp, Check, MapPin, Mic, Square, X } from 'lucide-react';
 import { transcribe } from '../chat/api';
 import { blobToBase64, startRecording, type Recorder } from '../chat/voice';
 import { shortPlace } from '../lib/locale';
+
+const LanguagePicker = lazy(() => import('./LanguagePicker'));
 
 export type ComposerProps = {
   draft: string;
@@ -29,12 +31,13 @@ export type ComposerProps = {
   onLanguage?: (code: string) => void;
   /** The languages the server says it can answer in, newest read first. */
   languages?: { code: string; label: string }[];
+  languageState?: 'loading' | 'error' | 'ready';
+  onRetryLanguages?: () => void;
 };
 
 export function Composer({
-  draft, onDraft, onSend, onStop, busy, language, placeholder, place, onContext, onPlace, onLanguage, languages,
+  draft, onDraft, onSend, onStop, busy, language, placeholder, place, onContext, onPlace, onLanguage, languages, languageState = 'ready', onRetryLanguages,
 }: ComposerProps) {
-  const [pickingLanguage, setPickingLanguage] = useState(false);
   const { t } = useTranslation();
   const box = useRef<HTMLTextAreaElement | null>(null);
   const recorder = useRef<Recorder | null>(null);
@@ -139,45 +142,19 @@ export function Composer({
             "Set a place" opened a list of sources, and pressing a control wearing a dropdown chevron opened
             the same panel rather than a menu. A control that does not do the thing on its label is worse
             than no control, because a reader stops trusting the rest of them. */}
-        {onContext ? <div className="g-composer-context">
+        {onContext || onPlace || onLanguage ? <div className="g-composer-context">
           <button
             type="button"
-            onClick={() => (onPlace ? onPlace() : onContext())}
+            onClick={() => (onPlace ? onPlace() : onContext?.())}
             title={place ? 'Change the place this conversation is about — ' + place : 'Choose the place this conversation is about'}
           >
             <MapPin size={14} aria-hidden="true" />
             <span>{place ? shortPlace(place) : 'Set a place'}</span>
           </button>
-          <div className="g-composer-language">
-            <button
-              type="button"
-              onClick={() => setPickingLanguage(open => !open)}
-              aria-expanded={pickingLanguage}
-              aria-haspopup="menu"
-              title="Choose the language answers are written in"
-            >
-              {/* Short by design: this sits in a row with the place, the microphone and the send, and the
-                full name of the option belongs in the menu rather than on the control that opens it. */}
-            <span>{languages?.find(entry => entry.code === language)?.label || (language ? language : 'Auto')}</span>
-              <ChevronDown size={13} aria-hidden="true" />
-            </button>
-            {pickingLanguage && onLanguage ? (
-              <ul className="g-menu g-language-menu" role="menu" aria-label="Answer language">
-                {[{ code: '', label: 'Auto — match the question' }, ...(languages || [])].map(entry => (
-                  <li key={entry.code || 'auto'}>
-                    <button
-                      type="button"
-                      role="menuitemradio"
-                      aria-checked={(language || '') === entry.code}
-                      onClick={() => { onLanguage(entry.code); setPickingLanguage(false); }}
-                    >
-                      {entry.label}
-                    </button>
-                  </li>
-                ))}
-              </ul>
-            ) : null}
-          </div>
+          <Suspense fallback={<span className="g-language-loading">Languages…</span>}>
+            <LanguagePicker language={language} languages={languages} onLanguage={onLanguage} languageState={languageState} />
+          </Suspense>
+          {languageState === 'error' ? <button type="button" onClick={onRetryLanguages}>Retry languages</button> : null}
         </div> : null}
         <button
           type="button"

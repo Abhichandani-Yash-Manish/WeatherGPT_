@@ -1,6 +1,7 @@
-import { cleanup, fireEvent, render, screen, within } from '@testing-library/react';
+import { cleanup, fireEvent, render, screen, waitFor, within } from '@testing-library/react';
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { AnswerEvidence } from '../chat/AnswerEvidence';
+import userEvent from '@testing-library/user-event';
 import { Composer } from './Composer';
 import { useAtmosphere } from './atmosphere';
 import { currentGroundTheme } from './orb';
@@ -62,5 +63,34 @@ describe('Meridian preserves the conversation contracts', () => {
     document.documentElement.dataset.hour = 'night';
     expect(currentGroundTheme()).toBe('light');
     delete document.documentElement.dataset.hour;
+  });
+});
+
+
+describe('composer language control', () => {
+  it('selects a real answer language with the keyboard and dismisses with Escape', async () => {
+    const user = userEvent.setup();
+    const change = vi.fn();
+    render(<Composer draft="" onDraft={() => {}} onSend={() => {}} onStop={() => {}} busy={false} language=""
+      onLanguage={change} languages={[{code: 'en', label: 'English'}, {code: 'hi', label: 'Hindi'}]} />);
+    const trigger = await screen.findByRole('button', {name: 'Answer language'});
+    await user.click(trigger);
+    await user.keyboard('h{Enter}');
+    expect(change).toHaveBeenCalledWith('hi');
+    await user.click(trigger);
+    await user.keyboard('{Escape}');
+    expect(screen.queryByRole('listbox')).toBeNull();
+    await waitFor(() => expect(trigger).toHaveFocus());
+  });
+
+  it('states a failed language read and offers a working retry', async () => {
+    const user = userEvent.setup();
+    const retry = vi.fn();
+    render(<Composer draft="" onDraft={() => {}} onSend={() => {}} onStop={() => {}} busy={false} language=""
+      onLanguage={() => {}} languageState="error" onRetryLanguages={retry} />);
+    expect(await screen.findByRole('button', {name: 'Answer language'})).toBeDisabled();
+    expect(screen.getByText('Languages unavailable')).toBeInTheDocument();
+    await user.click(screen.getByRole('button', {name: 'Retry languages'}));
+    expect(retry).toHaveBeenCalledOnce();
   });
 });

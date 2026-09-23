@@ -29,6 +29,7 @@ const pointOf = (row: Match) => ({
 
 export function PlacePicker({ onClose }: { onClose: () => void }) {
   const box = useRef<HTMLDialogElement | null>(null);
+  const trigger = useRef(document.activeElement instanceof HTMLElement ? document.activeElement : null);
   const [term, setTerm] = useState('');
   const query = term.trim();
 
@@ -37,6 +38,7 @@ export function PlacePicker({ onClose }: { onClose: () => void }) {
     if (!node) return;
     if (typeof node.showModal === 'function') node.showModal();
     else node.setAttribute('open', '');
+    return () => { trigger.current?.focus(); };
   }, []);
 
   const search = useQuery({
@@ -61,12 +63,18 @@ export function PlacePicker({ onClose }: { onClose: () => void }) {
       aria-label="Set the place this conversation is about"
       onClose={onClose}
       onCancel={onClose}
-      onClick={event => { if (event.target === box.current) onClose(); }}
+      onKeyDown={event => {
+        if (event.key === 'Escape') { event.preventDefault(); event.stopPropagation(); onClose(); }
+      }}
+      onClick={event => {
+        if (event.target !== box.current) return;
+        const rect = event.currentTarget.getBoundingClientRect();
+        if (event.clientX < rect.left || event.clientX > rect.right || event.clientY < rect.top || event.clientY > rect.bottom) onClose();
+      }}
     >
       <h2 className="g-keys-title">Name a place</h2>
       <p className="g-keys-note">
-        The place is held in this browser. The welcome screen, the station reading, the ground’s colour and the
-        answers all follow it, and nothing about it leaves this machine.
+        Choose a place for your next question. You can still ask about somewhere else by naming it in your message.
       </p>
       <label className="sr-only" htmlFor="w-place">Place</label>
       <input

@@ -1,4 +1,44 @@
 {
+ "chat_refinement_20260923": {
+  "date": "2026-09-23",
+  "status": "verified_scoped",
+  "review": "docs/163-chat-reading-and-selected-controls.md",
+  "related_findings": [
+   "P01",
+   "P08",
+   "P12",
+   "P13",
+   "P15",
+   "R01",
+   "R10",
+   "R11",
+   "R12",
+   "F03",
+   "F10"
+  ],
+  "result": "React welcome balance and static skyline refined; conversation reading column and language/place controls verified. Selected settlement coordinates now survive short-name replanning instead of resolving a namesake.",
+  "evidence": [
+   "research/design/2026-09-23-chat-refinement/design-qa.md",
+   "research/design/2026-09-23-chat-refinement/layout-acceptance.json",
+   "research/design/2026-09-23-chat-refinement/live-acceptance.json",
+   "research/design/2026-09-23-chat-refinement/live-acceptance-before-point-fix.json",
+   "research/design/2026-09-23-chat-refinement/verification/full-gate.txt",
+   "tests/test_held_point.py"
+  ],
+  "verification": {
+   "canonical_steps": 21,
+   "failed_steps": 0,
+   "python_tests": 1637,
+   "react_checks": 596,
+   "react_suites": 90,
+   "viewport_widths": [
+    1440,
+    768,
+    360
+   ]
+  },
+  "limits": "No broad finding closed. Hindi and English narratives and two selected-place paths are scoped evidence; some evidence labels and caveats remain English. Aesthetic approval, full multilingual, nationwide and real-device acceptance remain unclaimed."
+ },
  "schema_version": "hardening-progress-v1",
  "review": "research/reviews/national-readiness-20260912/review.md",
  "updated_at_utc": "2026-09-17T03:10:00+00:00",

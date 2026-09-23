@@ -1,0 +1,42 @@
+import { chromium, expect } from '@playwright/test';
+import { mkdir, writeFile } from 'node:fs/promises';
+const out='../research/design/2026-09-23-chat-refinement';await mkdir(out,{recursive:true});
+const browser=await chromium.launch();const page=await browser.newPage({viewport:{width:1440,height:1000},reducedMotion:'reduce'});
+const reports=[],requests=[],errors=[];
+page.on('pageerror',e=>errors.push(e.message));
+page.on('request',r=>{if(r.method()==='POST' && /\/api\/chat$/.test(r.url())) {const b=r.postDataJSON();requests.push({question:b.question,language:b.output_language||'auto',home:b.home});}});
+await page.goto('http://127.0.0.1:8765/#/assistant');
+await page.locator('.g-rail').getByRole('button',{name:'Set a place',exact:true}).click();
+await page.getByRole('searchbox',{name:'Place',exact:true}).fill('Jaipur');
+await page.getByRole('option').filter({hasText:'Jaipur, Yamunanagar, State of Haryāna'}).first().click();
+await expect(page.getByRole('dialog')).not.toBeVisible();
+await expect(page.locator('.g-composer-context')).toContainText('Jaipur');
+reports.push({check:'rail place selection',passed:true});
+await page.locator('.g-language-trigger').click();await page.getByRole('option',{name:'हिन्दी',exact:true}).click();
+await page.reload();await expect(page.locator('.g-language-trigger')).toContainText('हिन्दी');
+reports.push({check:'Hindi selection survives reload',passed:true});
+async function ask(name){
+ await page.locator('#question').fill('Will it rain in my selected place tomorrow?');
+ const response=page.waitForResponse(r=>r.request().method()==='POST' && /\/api\/chat$/.test(r.url()),{timeout:180000});
+ await page.getByTestId('send-question').click();
+ await page.getByTestId('working-turn').waitFor();
+ await page.screenshot({path:out+'/working-'+name+'.png'});console.log('Submitted '+name);
+ const r=await response; const a=await r.json();
+ await page.locator('.g-working, [data-revealing]').waitFor({state:'detached',timeout:30000});
+ return {status:a.status,points:a.resolved_points,lead:await page.locator('.answer-lead').last().innerText(),text:await page.locator('.g-answer').last().innerText()};
+}
+const first=await ask('hindi-jaipur');
+reports.push({check:'Hindi rendered answer',passed:/[\u0900-\u097f]/.test(first.lead) && Object.values(first.points||{}).some(p=>p.coordinates?.latitude===30.05564 && p.coordinates?.longitude===77.21282),points:first.points,status:first.status,answer:first.text.slice(0,1600)});
+await page.screenshot({path:out+'/hindi-answer.png'});
+await page.locator('.g-composer-context > button').click();
+await page.getByRole('searchbox',{name:'Place',exact:true}).fill('Bhopal');
+await page.getByRole('option').filter({hasText:'Bhopal'}).first().click();
+await expect(page.locator('.g-composer-context')).toContainText('Bhopal');
+await page.locator('.g-language-trigger').click();await page.getByRole('option',{name:'English',exact:true}).click();
+const second=await ask('english-bhopal');
+reports.push({check:'new place and English in same conversation',passed:/Bhopal/i.test(second.text)&&Object.values(second.points||{}).some(p=>p.coordinates?.latitude===23.25469 && p.coordinates?.longitude===77.40289)&&!/[\u0900-\u097f]/.test(second.text),status:second.status,answer:second.text.slice(0,1800)});
+await page.screenshot({path:out+'/live-answer-1440.png'});
+reports.push({check:'newest question anchored in view',passed:await page.locator('.g-you').last().evaluate(e=>e.getBoundingClientRect().top < 200)});
+for(const width of [768,360]){await page.setViewportSize({width,height:1000});await page.screenshot({path:out+'/live-answer-'+width+'.png'});reports.push({check:'no overflow at '+width,passed:await page.evaluate(()=>document.documentElement.scrollWidth<=innerWidth)});}
+await writeFile(out+'/live-acceptance.json',JSON.stringify({reports,requests,errors},null,2));console.log(JSON.stringify({reports:reports.map(({answer,...rest})=>rest),requests,errors},null,2));await browser.close();
+if (reports.some(r=>r.passed===false) || errors.length) process.exitCode=1;
