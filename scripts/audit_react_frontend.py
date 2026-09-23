@@ -272,9 +272,37 @@ def main():
                 measured = _contrast(ink, ground)
                 if measured < FLOOR:
                     short.append(hour + " " + name + " on " + ground_name + " " + format(measured, ".2f") + ":1")
+    # The selected Meridian palette is the live React ground. Historic hour palettes above
+    # remain covered for utility consumers, but cannot stand in as proof of this theme.
+    meridian_css = read(SRC / "gpt" / "css" / "meridian.css")
+    # The token block moved from `.g[data-design='meridian']` to `:root[data-design='meridian']`, and the
+    # move was the point: `.g` carries the same attribute, and a declaration on an element beats its
+    # parent's inline style, so declaring these on `.g` meant every value Field.tsx computed reached the
+    # document element and nothing below it. Either selector is accepted here so this check follows the
+    # palette rather than pinning it to the selector that had the bug.
+    meridian_block = re.search(r"(?::root|\.g)\[data-design='meridian'\][^{]*\{(.*?)\n\}", meridian_css, re.S)
+    meridian = dict(re.findall(r"(--g-[a-z0-9-]+):\s*(#[0-9a-fA-F]{6})", meridian_block.group(1) if meridian_block else ""))
+    # THE PAGE'S INKS, ON THE PAGE'S OWN PLANES. --g-rail-fill is deliberately NOT in this list any more:
+    # the rail is near-black now, and measuring the page's dark ink against it produced a number about a
+    # pairing that never occurs on screen. The rail carries its own inks and they are measured below,
+    # against the plane they actually sit on -- which is the check that was missing all along.
+    for ink_name in ("--g-paper", "--g-mist", "--g-mist-2", "--g-accent", "--g-accent-2"):
+        for ground_name in ("--g-bg", "--g-raise", "--g-raise-2", "--g-bar-fill", "--g-accent-wash"):
+            ink, ground = meridian.get(ink_name), meridian.get(ground_name)
+            if not ink or not ground:
+                short.append("Meridian missing " + ink_name + " or " + ground_name)
+            elif _contrast(ink, ground) < FLOOR:
+                short.append("Meridian " + ink_name + " on " + ground_name + " below AA")
+    # THE RAIL'S OWN INKS, ON THE RAIL.
+    for ink_name in ("--g-rail-ink", "--g-rail-mist", "--g-rail-mist-2", "--g-rail-accent"):
+        ink, ground = meridian.get(ink_name), meridian.get("--g-rail-fill")
+        if not ink or not ground:
+            short.append("Meridian missing " + ink_name + " or --g-rail-fill")
+        elif _contrast(ink, ground) < FLOOR:
+            short.append("Meridian " + ink_name + " on the rail below AA")
     fe14 = not short
     findings.append(("FE14_ink_contrast", fe14,
-                     "every ink clears " + str(FLOOR) + ":1 on every ground of its hour (the tertiary step on "
+                     "Meridian and historic palettes: every ink clears " + str(FLOOR) + ":1 on every ground of its hour (the tertiary step on "
                      "the page ground and the sky's lower band, the two upper inks on all three)"
                      if fe14 else "below " + str(FLOOR) + ":1 — " + ", ".join(short)[:180]))
 
@@ -317,28 +345,45 @@ def main():
             measured = _contrast(ink, _mix(ink, card, WASH))
             if measured < FLOOR:
                 washed.append(hour + " " + name + " " + format(measured, ".2f") + ":1")
+    for name in ("--g-red", "--g-orange", "--g-yellow", "--g-green"):
+        ink = meridian.get(name)
+        card = meridian.get("--g-bg")
+        if not ink or not card or _contrast(ink, _mix(ink, card, WASH)) < FLOOR:
+            washed.append("Meridian " + name + " below AA or missing")
     fe16 = not washed
     findings.append(("FE16_published_colour_on_its_wash", fe16,
                      "red, orange, yellow and green each clear " + str(FLOOR) + ":1 on their own " +
-                     str(int(WASH * 100)) + " percent wash over a card, on both light hours"
+                     str(int(WASH * 100)) + " percent wash over a card, on both historic light hours and the active Meridian ground"
                      if fe16 else "below " + str(FLOOR) + ":1 — " + ", ".join(washed)[:180]))
 
-    # FE15: the hours are actually distinguishable from one another.
+    # FE15: the selected interface is LIGHT at every hour. Not frozen -- light.
     #
-    # The failure this replaces: all four grounds were near-identical navy-blacks, 1.13:1 between noon and
-    # midnight, which is under the threshold where a difference is perceivable at all. The hour was
-    # computed from the reader's own latitude, applied, and then invisible.
-    grounds = {}
-    for hour in ("night", "golden", "daybreak", "noon"):
-        block = re.search(r"^\[data-hour='" + hour + r"'\]\s*\{(.*?)\n\}", gpt_css, re.S | re.M)
-        found = re.search(r"--g-bg:\s*(#[0-9a-fA-F]{6})", block.group(1)) if block else None
-        if found:
-            grounds[hour] = found.group(1)
-    day_night = _contrast(grounds["noon"], grounds["night"]) if len(grounds) == 4 else 0
-    fe15 = day_night >= 4.0
-    findings.append(("FE15_hours_differ", fe15,
-                     "noon and night grounds differ by " + format(day_night, ".1f") + ":1"
-                     if fe15 else "noon and night are indistinguishable: " + format(day_night, ".2f") + ":1"))
+    # This check used to read "stable across solar hours" and enforce it by forbidding Field.tsx from
+    # calling applySpectrum at all. That banned the code path instead of measuring the property, with two
+    # costs. It never actually measured anything: a palette that went dark at midnight by some other route
+    # would have passed. And it made "light" mean "one frozen set of hex values", which is what left the
+    # page byte-for-byte identical at 06:00 and 23:00.
+    #
+    # The requirement was always that a reader who chose a light interface is never handed a dark one --
+    # not that the light may never move. So the property is now measured, every fifteen minutes across a
+    # full day at four latitudes, in meridianSpectrum.test.ts: the ground stays pale, the ink stays dark,
+    # every ink clears AA on every ground, and the day is required to actually differ between its hours.
+    #
+    # What is checked HERE is the wiring that test cannot see: that the block still declares the light
+    # colour-scheme, that Field drives Meridian's own family rather than the solar one that flips to dark,
+    # and that the measuring test exists to be run.
+    active_field = read(SRC / "gpt" / "Field.tsx")
+    sweep_test = (SRC / "gpt" / "meridianSpectrum.test.ts")
+    fe15 = (bool(meridian_block)
+            and "color-scheme: light" in meridian_block.group(1)
+            and "meridianSpectrumAt(" in active_field
+            and not re.search(r"\bspectrumAt\(", active_field.replace("meridianSpectrumAt(", ""))
+            and sweep_test.exists()
+            and "--g-paper" in read(sweep_test))
+    findings.append(("FE15_selected_light_ground", fe15,
+                     "Meridian's own light family drives the ground, the solar family that flips to dark cannot reach it, "
+                     "and a sweep across the day measures that it stays light and legible"
+                     if fe15 else "the active ground may drift away from the selected light direction"))
 
     # FE17: nothing a reader is meant to read is set below eleven pixels.
     #

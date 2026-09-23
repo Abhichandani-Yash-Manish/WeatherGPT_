@@ -7,7 +7,7 @@
 **Smart India Hackathon · SIH26068 · Ministry of Earth Sciences / IMD**
 Team **Void Pointer** (18) · Disaster Management
 
-`1,630` Python checks · `547` frontend checks · `21`-step gate, `0` failed · `276`-scenario atlas · `70` governed sources · `100%` local
+`1,630` Python checks · `596` frontend checks · `21`-step gate, `0` failed · `276`-scenario atlas · `70` governed sources · `100%` local
 
 </div>
 
@@ -293,7 +293,7 @@ cd frontend && node tools/demo.mjs                   # 10 live turns, recorded, 
 </tr>
 </table>
 
-**The page is lit by the real sun.** The palette is computed from solar altitude and hour angle *at the reader's own latitude*, once a minute — dawn in Kochi and dawn in Leh are different colours because they are different dawns. The skyline between the reading and the composer is the horizon: what the sky is doing above it, what you ask about it below.
+**The active React interface now uses Meridian Light.** The screenshots above record the earlier solar direction. The selected 22 September design keeps a matte mineral-white ground, restrained weather contours, answer-owned source margins and compatible comparison tables. Background motion responds to actual work and can be paused. The welcome mark still reads the astronomical hour. See [the implementation and verification record](docs/160-meridian-react-ui.md).
 
 ---
 
@@ -332,7 +332,7 @@ Everything runs **on this machine**. No telemetry, no account, no cloud store. T
 ```bash
 python3 scripts/verify_all.py                        # 21 steps, 0 failed
 python3 -m pytest tests/ -q                          # 1630 Python tests
-cd frontend && npx vitest run                        # 547 checks, 83 suites
+cd frontend && npx vitest run                        # 596 checks, 90 suites
 ```
 
 21 steps: the Python suite, the frontend suites, a typecheck, a production build, and audits that read the built stylesheet and the served DOM rather than the source. **0 failed.**
@@ -345,7 +345,7 @@ cd frontend && npx vitest run                        # 547 checks, 83 suites
 | | |
 |---|---|
 | Python | **1,630** checks, 113 files |
-| Frontend | **547** checks, 83 suites |
+| Frontend | **596** checks, 90 suites |
 | Gate | **21** steps, **0** failed |
 | Scenario atlas | **276** scenarios / 306 turns |
 

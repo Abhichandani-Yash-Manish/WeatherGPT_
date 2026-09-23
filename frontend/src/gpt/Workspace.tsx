@@ -22,6 +22,7 @@ import { viewById, type ViewEntry } from '../shell/views';
 import { AnswerTurn } from '../chat/AnswerTurn';
 import { Composer } from './Composer';
 import { Field } from './Field';
+import { useAtmosphere } from './atmosphere';
 import { hourOf, lightAt } from './fieldPaint';
 import { chromeFor, i18n } from '../i18n';
 import { readSiteLanguage, subscribeSiteLanguage } from '../i18n/siteLanguage';
@@ -498,6 +499,7 @@ export function Workspace({
     });
   };
 
+  const atmosphere = useAtmosphere();
   const working = conversation.working;
   const progress = working?.progress;
   /* The stages the engine has been through, with the one it is on marked. A single stage is shown as a single
@@ -530,6 +532,8 @@ export function Workspace({
         onStop={() => void conversation.stop()}
         busy={Boolean(working)}
         language={language}
+        place={workingPlace?.label}
+        onContext={() => setPrefs({ panel: true })}
       />
       {chatting ? (
         <p className="g-hint" id="composer-hint">
@@ -575,7 +579,9 @@ export function Workspace({
       data-rail={railOpen ? 'open' : 'closed'}
       data-hour={hour}
       data-scrolled={scrolled ? 'true' : 'false'}
-      data-design="gpt"
+      data-design="meridian"
+      data-atmosphere={atmosphere.running ? 'active' : 'paused'}
+      data-busy={Boolean(working && !working.stopRequested)}
     >
       <Field expanded={chatting} sky={mood} />
       <button type="button" className="g-scrim" aria-label="Close the conversation list" onClick={() => setRailOpen(false)} />
@@ -612,6 +618,8 @@ export function Workspace({
 
       <main className="g-main" data-panel={prefs.panel ? 'open' : 'closed'}>
         <TopBar
+          atmosphere={atmosphere.enabled}
+          onToggleAtmosphere={atmosphere.toggle}
           title={title}
           chatting={chatting}
           sky={sky.data}
@@ -621,7 +629,7 @@ export function Workspace({
           onExport={chatting && turns.some(turn => turn.role === 'answer' || turn.role === 'restored') ? exportConversation : null}
         />
 
-        {/* One frosted sheet holds the conversation: the sky stays visible around it and faintly through it. */}
+        {/* The conversation stays on the matte ground; each answer owns its evidence margin. */}
         <div className="g-panel" data-chatting={chatting ? 'true' : 'false'}>
           <div className="g-thread" ref={thread} onScroll={event => setScrolled(event.currentTarget.scrollTop > 8)}>
             <div className="g-col">

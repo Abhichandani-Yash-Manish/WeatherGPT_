@@ -125,19 +125,23 @@ describe('the front door', () => {
     expect(document.querySelector('.w-glyph')?.getAttribute('data-kind')).toBe('condition');
   });
 
-  it('keys its ground to the hour and draws no image', async () => {
+  it('keeps the selected light ground decorative', async () => {
     renderFrontDoor();
     await screen.findByTestId('welcome');
-    expect(document.querySelector('[data-design="gpt"]')).not.toBeNull();
-    /* Four CSS layers, no canvas and no photograph: nothing on this page needs a disclaimer. */
-    expect(document.querySelector('img, canvas')).toBeNull();
-    expect(document.querySelector('.g-field-sky')).not.toBeNull();
-    expect(document.querySelector('.g-field-halo')).not.toBeNull();
-    expect(document.querySelector('.g-field-grain')).not.toBeNull();
-    expect(document.querySelector('.g-field-vignette')).not.toBeNull();
-    /* The horizon hairline was the sixth layer and is gone: at welcome strength it read as a rule drawn
-       across the middle of the greeting. docs/112 records the change; the gradient carries the depth. */
-    expect(document.querySelector('.g-field-horizon')).toBeNull();
+    /* Meridian supersedes the solar glass direction. The atmosphere is DRAWN now - a contour field and a
+       geostrophic flow on two canvases - rather than a raster of one, so what this pins is the property
+       that mattered about the image and matters more about a moving field: it is decoration, it is inside
+       an aria-hidden subtree, and it offers a screen reader nothing to announce and nothing to mistake for
+       a reading. A canvas with a role or a label would be a weather map, and this is not one. */
+    expect(document.querySelector('[data-design="meridian"]')).not.toBeNull();
+    const atmosphere = [...document.querySelectorAll('canvas.g-skyfield, canvas.g-skywind')];
+    expect(atmosphere.length).toBeGreaterThan(0);
+    atmosphere.forEach(layer => {
+      expect(layer.closest('[aria-hidden="true"]')).not.toBeNull();
+      expect(layer.getAttribute('role')).toBeNull();
+      expect(layer.getAttribute('aria-label')).toBeNull();
+      expect(layer.textContent).toBe('');
+    });
     expect(screen.queryByText(/condition report/i)).toBeNull();
   });
 

@@ -1,0 +1,1014 @@
+/* Meridian · the selected light identity, 22 September 2026.
+   ============================================================================
+   The block below is the STATIC FALLBACK, and it is the selected reference exactly: the palette a reader
+   gets with JavaScript off, and the palette every element starts from before the first paint. With
+   JavaScript on, Field.tsx writes `meridianSpectrumAt` over the top of it as inline custom properties on
+   the document element every minute, so the page drifts through Meridian's own four hours - warm at first
+   light, this block exactly at high sun, rose-grey at dusk, coolest at midnight - without ever leaving the
+   light family.
+
+   THE SELECTOR IS THE WHOLE POINT. These properties are declared on `:root` and nowhere else. `.g` also
+   carries `data-design`, and a declaration on an element beats its parent's inline style - so listing `.g`
+   here, as the first implementation did, meant every value Field.tsx computed reached the document element
+   and nothing below it. The palette was live and the page was frozen, which is the hardest kind of dead
+   code to see, because everything works. */
+:root[data-design='meridian'] {
+  color-scheme: light;
+  /* FOUR PLANES, darkest to lightest: rail, bar, ground, sheet. The high-sun anchor of the four hours in
+     spectrum.ts - what a reader gets before the first paint and with JavaScript off. */
+  --g-void: #dcdbd3;
+  --g-bg: #ecebe4;
+  --g-raise: #fffffc;
+  --g-raise-2: #f1f0ea;
+  --g-line: #c7c6bd;
+  --g-line-soft: #dcdbd3;
+  --g-line-strong: #b0aea3;
+  --g-paper: #191a16;
+  --g-mist: #4b4c44;
+  --g-mist-2: #52534b;
+  --g-accent: #7c420b;
+  --g-accent-2: #6b3807;
+  --g-accent-wash: #f6e9d7;
+  /* The four published hazard colours. Untouched by any of this: a bulletin's red is the publisher's. */
+  --g-red: #a9223d;
+  --g-orange: #934413;
+  /* Deepened from #735900. The card these are measured on moved from near-white to the mid-tone ground,
+     and yellow was the one of the four that no longer cleared AA on its own wash over it: 4.47 against a
+     floor of 4.50. This is the product's rendering of a published severity, not the publisher's own hex,
+     so it is the rendering that moves. 4.88 now, in line with the other three. */
+  --g-yellow: #6b5300;
+  --g-green: #256443;
+  --g-mark-2: #a2762f;
+  /* THE ACCENT IS TWO THINGS NOW, because it was being asked to be two things and doing neither well.
+     --g-accent is INK: links, controls, the send button, the rule on a claim. It has to clear AA against
+     four planes, which forces it deep and brown, and a deep brown is a poor colour for light.
+     --g-solar is LIGHT: the arc's daylight, the sun on it, the bloom behind the page. It is never set as
+     text and never has to be read, so it is free to be the luminous gold those things actually want. */
+  --g-solar: #c9862e;
+  --g-solar-soft: #dfae67;
+  /* The rail is near-black at every hour, so it carries its own inks. They are declared here rather than
+     only inside .g-rail so the contrast audit can find and measure them against the plane they sit on -
+     a rail ink measured against the page ground is a number about nothing. */
+  --g-rail-fill: #161712;
+  --g-rail-bg: #161712;
+  --g-rail-ink: #f2efe7;
+  --g-rail-mist: #ada599;
+  --g-rail-mist-2: #948c80;
+  --g-rail-accent: #e3a961;
+  --g-rail-line: #2f2d26;
+  --g-bar-fill: #d0cfc7;
+  --g-bubble-fill: #e3e2da;
+  --g-pane-fill: #fffffc;
+  --g-rail-icon: #ada599;
+  --g-bar-icon: #4b4c44;
+  --g-glass: #fffffc;
+  --g-glass-2: #f1f0ea;
+  --g-scrim: rgba(25,26,22,.44);
+  --g-t1: rgba(25,26,22,.03);
+  --g-t2: rgba(25,26,22,.05);
+  --g-t3: rgba(25,26,22,.08);
+  --g-t4: rgba(25,26,22,.11);
+  --g-t5: rgba(25,26,22,.15);
+  --g-fill: #fffffc;
+  --g-e1: 0 1px 2px rgba(30,28,18,.06);
+  --g-e2: 0 2px 6px rgba(30,28,18,.05), 0 14px 34px -14px rgba(30,28,18,.20);
+  --g-e3: 0 6px 16px rgba(30,28,18,.07), 0 34px 76px -28px rgba(30,28,18,.30);
+  /* One saturated control on the page, on the one action the page exists for. */
+  --g-send-bg: #7c420b;
+  --g-send-ink: #fffdf7;
+  /* Narrowed from 1140. With the conversation on a sheet, the column IS the sheet, and at 1140 it filled
+     the panel edge to edge and left the living ground nowhere to show. */
+  --g-col: 1000px;
+  /* Meridian had flattened the display face to the body face, which is why every heading on the product
+     was Inter at a larger size. Outfit is the geometric one: sharper apertures, tighter joins, and it
+     holds up at fifty-eight pixels where a UI face just looks enlarged. */
+  --g-display: 'Outfit Variable', var(--g-sans);
+  /* The numeral face: squared-off and wide, so a reading looks read off an instrument. Receipts keep
+     JetBrains - it is the more legible of the two at the eleven pixels a source line is set at. */
+  --g-numeral: 'Martian Mono Variable', 'JetBrains Mono Variable', ui-monospace, monospace;
+  --g-pane-blur: 0px;
+}
+
+.g[data-design='meridian'] .g-field { background: var(--g-bg); }
+
+/* The contour field (skyfield.ts). It sits above the sky gradient and the mood wash and below the grain,
+   so the grain breaks up its lines the same way it breaks up the gradient's bands - a 1px stroke at seven
+   per cent on a flat light ground is exactly the width that shows stair-stepping without it.
+
+   It is never given a transition: it is redrawn every frame it moves, and a CSS transition on an element
+   that repaints itself is a second animation fighting the first. What DOES transition is its opacity,
+   because that changes on state - composing dims it - and that change should be felt rather than seen. */
+.g-skyfield, .g-skywind {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+  transition: opacity 900ms var(--g-ease-out);
+}
+/* The wind sits over the contours and under the grain. Slight multiply keeps a trail crossing a warm pool
+   from turning pale, which is what plain alpha over a tinted wash does. */
+.g-skywind { mix-blend-mode: multiply; }
+.g:has(.g-composer:focus-within) :is(.g-skyfield, .g-skywind) { opacity: .6; }
+@media (prefers-reduced-motion: reduce) {
+  .g-skyfield, .g-skywind { transition: none; }
+  /* A trail is motion by construction: there is no still version of one, so it is not drawn at all. */
+  .g-skywind { display: none; }
+}
+
+/* Matte navigation and controls. An opaque edge, never a blurred pane. */
+.g[data-design='meridian'] :is(.g-rail, .g-top, .g-panel-side, .g-you p, .g-composer, .g-pane-glass, .card, .receipt) {
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+}
+.g[data-design='meridian'] .g-rail[data-collapsed='true'] { width: 80px; flex-basis: 80px; }
+.g[data-design='meridian'] .g-rail-head { padding-top: 22px; padding-bottom: 22px; }
+/* The mark is drawn now (Mark.tsx), so it needs a colour and a box and nothing else - no background
+   image, no ring drawn in CSS around an image that already has one. `color` is what the whole of it is
+   stroked in, and the daylight attribute lets the sun read a shade stronger than the horizon it crosses. */
+.g[data-design='meridian'] .g-brand-mark {
+  background: none; width: 30px; height: 30px; border-radius: 0; box-shadow: none; border: 0;
+  color: var(--g-mark-2); flex-shrink: 0;
+}
+.g[data-design='meridian'] .g-brand-mark[data-daylight='true'] { color: var(--g-accent-2); }
+.g[data-design='meridian'] .g-brand-mark::before,
+.g[data-design='meridian'] .g-brand-mark::after { display: none; }
+.g-answer-mark { color: var(--g-mark-2); flex-shrink: 0; }
+.g-answer-mark[data-daylight='true'] { color: var(--g-accent-2); }
+.g[data-design='meridian'] .g-home { min-height: 44px; border-radius: 12px; }
+.g[data-design='meridian'] .g-rail[data-collapsed='true'] .g-home { margin-inline: 14px; }
+.g[data-design='meridian'] .g-rail[data-collapsed='true'] .g-rail-actions-lead :is(.g-new-label, .g-kbd) { display: none; }
+.g[data-design='meridian'] .g-rail[data-collapsed='true'] .g-rail-actions-lead > button { justify-content: center; height: 44px; width: 48px; margin-inline: auto; border: 0; background: transparent; }
+.g[data-design='meridian'] .g-rail[data-collapsed='true'] .g-rail-actions-lead > button:hover { background: var(--g-accent-wash); }
+.g-top-identity { min-width: 0; }
+.g-wordmark { display: block; font-size: 18px; line-height: 1.35; font-weight: 600; letter-spacing: -.045em; color: var(--g-paper); }
+.g[data-design='meridian'] .g-top-title { margin: 3px 0 0; font-size: 11.5px; color: var(--g-mist); font-weight: 400; max-width: 48ch; }
+.g[data-design='meridian'] .g-act { min-height: 38px; min-width: 38px; border-radius: 11px; }
+.g[data-design='meridian'] .g-act:hover { background: var(--g-accent-wash); }
+.g[data-design='meridian'] .g-panel-side { background: #f0f4f6; box-shadow: none; }
+.g[data-design='meridian'] :is(.g-picker, .g-keys, .g-menu) { background: #fff; backdrop-filter: none; -webkit-backdrop-filter: none; }
+
+/* A page of prose with its own source margin. Container queries keep this usable
+   when the reader opens their context panel or chooses to keep the rail expanded. */
+.g[data-design='meridian'] .g-panel { container-type: inline-size; }
+.g[data-design='meridian'] .g-thread { overflow-anchor: none; }
+.g[data-design='meridian'] .g-col { padding-inline: 36px; }
+.g[data-design='meridian'] .g-welcome { max-width: 760px; margin-inline: auto; min-height: calc(100dvh - 120px); padding-bottom: 48px; }
+.g[data-design='meridian'] .g-you { justify-content: flex-start; max-width: 740px; margin-bottom: 14px; }
+.g[data-design='meridian'] .g-you p { background: #eaf0f3; border: 1px solid #e0e7ec; border-radius: 16px 16px 16px 4px; padding: 16px 20px; max-width: 100%; box-shadow: none; font-size: 14px; }
+.g[data-design='meridian'] .g-turn + .g-turn { border-top: 0; }
+.g[data-design='meridian'] .g-answer { display: grid; grid-template-columns: minmax(0, 1fr); align-items: start; gap: 32px; }
+.g-answer-main { min-width: 0; display: flex; flex-direction: column; gap: 16px; }
+.g-answer-identity { display: flex; align-items: center; gap: 10px; }
+.g[data-design='meridian'] .g-answer-main > .g-chips { align-items: center !important; }
+.g[data-design='meridian'] .g-turn:has(> .g-you) { padding-bottom: 8px; }
+.g[data-design='meridian'] .g-turn:has(> .g-you) > .g-chips { margin-top: 0; }
+.g[data-design='meridian'] .answer-lead { font-size: clamp(20px, 2.3vw, 29px); line-height: 1.4; letter-spacing: -.035em; font-weight: 500; }
+.g[data-design='meridian'] .answer-body:has(.g-comparison) .answer-lead { font-size: clamp(20px, 2.1vw, 27px); }
+.g[data-design='meridian'] .answer-body > .g-comparison { margin-block: 22px; }
+.g[data-design='meridian'] .g-prose { max-width: 100%; }
+.g[data-design='meridian'] .g-claims { gap: 0 20px; border-top: 1px solid var(--g-line-soft); }
+.g[data-design='meridian'] .g-claim:not(.g-skyline) { border-radius: 0; background: transparent; box-shadow: none; border: 0; border-bottom: 1px solid var(--g-line-soft); padding: 18px 0; }
+.g[data-design='meridian'] .g-answer[data-multiple-facts='true'] .g-claim[data-lead='true'] .g-claim-number { font-size: 28px; }
+.g[data-design='meridian'] .g-claim-value { margin-top: 9px; }
+.g[data-design='meridian'] .g-claim-source { line-height: 1.75; }
+.g-claim-details-body { display: flex; flex-direction: column; gap: 16px; }
+.g-claim-details[open] > summary { margin-bottom: 14px; }
+.g-claim-details > summary { font-size: 12px; color: var(--g-mist); }
+.g-claim-details[data-comparison='false'] > summary { display: none; }
+.g-comparison-scroll { overflow-x: auto; }
+.g[data-design='meridian'] .g-comparison table { min-width: 480px; }
+.g[data-design='meridian'] .g-comparison caption { text-align: left; font-size: 13px; color: var(--g-mist); padding-bottom: 18px; }
+.g[data-design='meridian'] .g-comparison thead th { font-size: 12px; line-height: 1.6; padding: 10px 12px; }
+.g[data-design='meridian'] .g-comparison tbody th { font: 13px/1.6 var(--g-sans); color: var(--g-paper); padding: 14px 12px; }
+.g[data-design='meridian'] .g-comparison td { font: 600 18px/1.6 var(--g-mono); color: var(--g-paper); padding: 14px 12px; white-space: nowrap; }
+.g[data-design='meridian'] .g-comparison td > span { font-size: 12px; font-weight: 400; }
+.g-comparison-source { display: block; font: 11px/1.7 var(--g-mono); color: var(--g-mist); }
+.g[data-design='meridian'] .g-comparison tbody tr:nth-child(odd) { background: #eaf0f3; }
+.g[data-design='meridian'] .g-fold { border-radius: 0; background: transparent; box-shadow: none; }
+.g[data-design='meridian'] .g-chip { box-shadow: none; background: transparent; border-color: var(--g-line); }
+.g[data-design='meridian'] .g-chip:hover { background: #e7eef3; }
+.g[data-design='meridian'] .g-chip-lead { background: #e4ecf2; }
+.g[data-design='meridian'] .g-dock { padding-top: 12px; padding-bottom: 16px; }
+.g[data-design='meridian'] .g-composer,
+.g[data-design='meridian'] .g-composer:not(:focus-within) { background: #fff; border: 1px solid #c9d4dd; border-radius: 22px; padding: 17px 18px 13px; box-shadow: 0 6px 30px -14px rgba(32,45,58,.18); }
+.g[data-design='meridian'] .g-composer:focus-within { border-color: #66869f; box-shadow: 0 0 0 3px #e4ecf2, 0 12px 32px -20px #526372; transform: translateY(-2px); }
+.g[data-design='meridian'] .g-composer::after { display: none; }
+.g[data-design='meridian'] .g-composer-row { margin-top: 16px; }
+.g-composer-context { display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 0 6px 12px; margin-bottom: 14px; border-bottom: 1px solid var(--g-line-soft); }
+.g-composer-context button { min-width: 0; display: flex; align-items: center; gap: 8px; background: transparent; border: 0; padding: 3px 0; color: var(--g-accent-2); font-size: 12px; cursor: pointer; }
+.g-composer-context button:first-child { max-width: 68%; }
+.g-composer-context button span { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; }
+.g-composer-context button:hover { color: var(--g-paper); }
+.g-composer-context svg { flex-shrink: 0; }
+.g[data-design='meridian'] .g-send { width: 40px; height: 40px; box-shadow: none; }
+.g[data-design='meridian'] .g-send svg { animation: meridian-icon-in 220ms var(--g-ease-out) both; }
+@keyframes meridian-icon-in { from { opacity: 0; transform: scale(.75) translateY(3px); } to { opacity: 1; transform: none; } }
+
+.g-evidence-margin { border-top: 1px solid var(--g-line); padding-top: 20px; min-width: 0; }
+.g-evidence-heading { display: flex; gap: 9px; align-items: center; color: var(--g-mist); }
+.g-evidence-heading h3 { font-size: 13px; font-weight: 600; margin: 0; color: var(--g-paper); }
+.g-evidence-heading > span { font: 11px var(--g-mono); margin-left: auto; }
+.g-evidence-intro { font-size: 12px; line-height: 1.6; color: var(--g-mist); margin: 9px 0 22px; }
+.g-evidence-entry { border-bottom: 1px solid var(--g-line-soft); padding: 16px 0; }
+.g-evidence-entry summary { display: flex; align-items: flex-start; gap: 12px; list-style: none; cursor: pointer; border-radius: 6px; }
+.g-evidence-entry summary::-webkit-details-marker { display: none; }
+.g-evidence-entry summary::after { content: '+'; margin-left: auto; color: var(--g-mist); }
+.g-evidence-entry[open] summary::after { content: '−'; }
+.g-evidence-entry summary:hover strong { color: var(--g-accent); }
+.g-evidence-id { font: 11px var(--g-mono); border: 1px solid var(--g-line); border-radius: 6px; padding: 4px 6px; flex-shrink: 0; color: var(--g-mist); }
+.g-evidence-id.g-claim-source { margin: 0; }
+.g-evidence-entry strong { display: block; font-size: 13px; font-weight: 500; line-height: 1.6; }
+.g-evidence-product { display: block; font-size: 12px; line-height: 1.6; color: var(--g-mist); margin-top: 4px; overflow-wrap: anywhere; }
+.g-evidence-receipts { padding-top: 14px; }
+.g-evidence-receipt { font: 11px/1.75 var(--g-mono); color: var(--g-mist); overflow-wrap: anywhere; }
+.g-evidence-receipt + .g-evidence-receipt { border-top: 1px solid var(--g-line-soft); padding-top: 12px; margin-top: 12px; }
+.g-evidence-receipt p { margin: 0 0 5px; }
+.g-evidence-receipt a { display: inline-flex; align-items: center; gap: 5px; color: var(--g-accent-2); text-decoration: underline; text-underline-offset: 3px; font-family: var(--g-sans); }
+@supports (interpolate-size: allow-keywords) {
+  .g-evidence-entry { interpolate-size: allow-keywords; }
+  .g-evidence-entry::details-content { block-size: 0; overflow: clip; opacity: 0; transition: block-size 300ms var(--g-ease-out), opacity 200ms, content-visibility 300ms; transition-behavior: allow-discrete; }
+  .g-evidence-entry[open]::details-content { block-size: auto; opacity: 1; }
+}
+@container (min-width: 1000px) {
+  .g[data-design='meridian'] .g-answer[data-has-evidence='true'] { grid-template-columns: minmax(0, 1fr) 260px; gap: 48px; }
+  .g-evidence-margin { border-top: 0; border-left: 1px solid var(--g-line); padding: 4px 0 16px 26px; }
+}
+
+/* Real engine milestones remain visible; their entrance follows an actual stream event. */
+.g[data-design='meridian'] .g-working { padding-top: 22px; }
+.g-stage-label { display: inline-block; animation: meridian-stage 320ms var(--g-ease-out) both; }
+.g[data-design='meridian'] .g-working-head { min-height: 46px; }
+.g[data-design='meridian'] .g-orb { width: 40px; height: 40px; border: 1px solid var(--g-line-soft); border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; background: #fff; }
+.g[data-design='meridian'] .g-stages-live { display: flex; flex-direction: row; flex-wrap: wrap; gap: 8px 18px; padding: 6px 0; }
+.g[data-design='meridian'] .g-stages-live li { font-size: 12px; animation: meridian-stage 400ms var(--g-ease-out) both; }
+@keyframes meridian-stage { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+@media (max-width: 900px) {
+  .g[data-design='meridian'][data-rail='closed'] .g-rail { box-shadow: none; }
+  .g[data-design='meridian'] .g-top { padding: 14px 16px; min-height: 72px; }
+  .g[data-design='meridian'] .g-col { padding-inline: 20px; }
+  .g[data-design='meridian'] .g-welcome { min-height: 0; padding-top: 36px; }
+  .g[data-design='meridian'] .g-rail[data-collapsed='true'] { width: 80px; }
+  .g[data-design='meridian'] .g-answer { gap: 24px; }
+  .g[data-design='meridian'] .g-top-title { max-width: 25ch; }
+}
+@media (max-width: 520px) {
+  .g[data-design='meridian'] .g-top-title { max-width: 18ch; }
+  .g[data-design='meridian'] .g-wordmark { font-size: 16px; }
+  .g[data-design='meridian'] .g-col { padding-inline: 16px; }
+  .g[data-design='meridian'] .g-top { gap: 4px; padding-inline: 8px; }
+  .g[data-design='meridian'] .g-act { min-width: 34px; }
+  .g[data-design='meridian'] .g-composer { padding: 14px; }
+  .g[data-design='meridian'] .g-hint { font-size: 11px; line-height: 1.6; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .g[data-design='meridian'] .g-stages-live li, .g[data-design='meridian'] .g-send svg { animation: none; }
+  .g-evidence-entry::details-content { transition: none; }
+}
+@media print {
+  .g[data-design='meridian'] .g-answer { display: block; }
+  .g-evidence-margin { border: 0; margin-top: 20px; }
+}
+
+/* ==========================================================================================================
+   THE FRONT DOOR, THE READING, AND THE THINGS THAT MOVE WHEN YOU TOUCH THEM
+   ==========================================================================================================
+   Everything above this line is the material: which greys, which films, which edges. Everything below is
+   composition and behaviour - what is large, what is small, what happens when a reader points at it.
+
+   The complaint this answers was that the page was uniformly quiet: correct in every detail and memorable
+   in none of them, because nothing on it was allowed to be big. Three things are big now. The dial on the
+   front door, the greeting beside it, and the retrieved value in an answer. Everything else got quieter to
+   pay for them. */
+
+/* ---- the reading, which is the answer -------------------------------------------------------------------
+   An answer to "will it rain in Pune tomorrow?" is a number. Until now that number - 9.6 mm, with its
+   window, its place and its source - was set at 28px, with no surface under it, below a 29px sentence and
+   below a two-line note about who wrote the sentence. The least important thing on the turn was the
+   largest and the most important was fourth.
+
+   So the LEAD claim becomes a plate: a matte surface, its own edge, and the value set at display size in
+   the machine face. Every other claim stays a row, because a hierarchy needs both halves - making them all
+   plates would be the same failure in the other direction. */
+.g[data-design='meridian'] .g-claim[data-lead='true'] {
+  position: relative;
+  background: var(--g-raise);
+  border: 1px solid var(--g-line-soft);
+  border-radius: 16px;
+  box-shadow: var(--g-e1);
+  padding: 20px 24px 18px;
+  margin: 2px 0 10px;
+  overflow: hidden;
+}
+/* The one accent on the plate: a short rule down its leading edge. When the claim carries a published
+   hazard colour, --g-lit is set inline on this element and the rule takes the publisher's own colour
+   instead - which is the single place in this stylesheet where a bulletin's palette is allowed to win. */
+.g[data-design='meridian'] .g-claim[data-lead='true']::after {
+  content: ''; position: absolute; left: 0; top: 18px; bottom: 18px; width: 3px;
+  border-radius: 0 3px 3px 0; background: var(--g-lit, var(--g-accent)); opacity: .9;
+}
+.g[data-design='meridian'] .g-claim[data-lead='true'] .g-claim-eyebrow {
+  font: 11.5px/1.5 var(--g-mono); letter-spacing: .01em; color: var(--g-mist); margin-bottom: 4px;
+}
+.g[data-design='meridian'] .g-claim[data-lead='true'] .g-claim-value { margin-top: 2px; }
+.g[data-design='meridian'] .g-claim[data-lead='true'] .g-claim-number,
+.g[data-design='meridian'] .g-answer[data-multiple-facts='true'] .g-claim[data-lead='true'] .g-claim-number {
+  font: 500 clamp(42px, 5.4vw, 60px)/1 var(--g-mono);
+  letter-spacing: -.045em; color: var(--g-paper);
+  font-variant-numeric: tabular-nums lining-nums;
+}
+.g[data-design='meridian'] .g-claim[data-lead='true'] .g-claim-unit {
+  font: 400 clamp(16px, 1.6vw, 20px)/1 var(--g-mono); color: var(--g-mist); letter-spacing: -.01em;
+}
+.g[data-design='meridian'] .g-claim[data-lead='true'] .g-claim-note {
+  font-size: 13.5px; color: var(--g-paper); opacity: .78; margin-top: 8px;
+}
+/* The source line is a receipt, so it is given a receipt's edge: a hairline above it, and the machine
+   face it was always set in. */
+.g[data-design='meridian'] .g-claim[data-lead='true'] .g-claim-source {
+  margin-top: 12px; padding-top: 11px; border-top: 1px solid var(--g-line-soft);
+  /* 11px is the floor this product holds every readable string to, and a source line is the last string
+     on the page that should be allowed under it. */
+  font-size: 11px; letter-spacing: .005em;
+}
+/* Every other claim is a row. Denser, quieter, still complete. */
+.g[data-design='meridian'] .g-claim:not([data-lead='true']) .g-claim-number {
+  font: 500 21px/1.15 var(--g-mono); letter-spacing: -.03em; font-variant-numeric: tabular-nums lining-nums;
+}
+.g[data-design='meridian'] .g-claim-absent { font-size: 12.5px; font-style: normal; }
+
+/* The note about who wrote the prose. True, and worth keeping, and not worth two lines of body text in
+   the middle of a reader's first pass - it is a colophon, so it is set as one. */
+.g[data-design='meridian'] .answer-by {
+  font: 11px/1.7 var(--g-mono); color: var(--g-mist-2);
+  margin: 14px 0 2px; padding-left: 13px; border-left: 2px solid var(--g-line-soft);
+  max-width: 68ch;
+}
+
+/* The fold over the rest of the prose. It was a bare summary with a sentence count in brackets; the count
+   is honest and stays, but the control now looks like one. */
+.g[data-design='meridian'] .answer-rest > summary {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 13.5px; font-weight: 500; color: var(--g-accent-2);
+  padding: 7px 12px 7px 10px; margin-left: -10px; border-radius: 9px;
+  transition: background 150ms var(--g-ease-out), color 150ms var(--g-ease-out);
+}
+.g[data-design='meridian'] .answer-rest > summary:hover { background: var(--g-accent-wash); color: var(--g-paper); }
+.g[data-design='meridian'] .answer-rest .g-fold-count { color: var(--g-mist); font-weight: 400; }
+
+/* The caveats the engine holds. These may never be folded away, so they are given a surface that says
+   "read me" rather than the plain indent they had. */
+.g[data-design='meridian'] .answer-caveat {
+  border-left: 2px solid var(--g-accent); padding: 2px 0 2px 15px;
+  color: var(--g-paper); opacity: .9; font-size: 14.5px; line-height: 1.7;
+}
+
+/* ---- the things that move when a reader touches them --------------------------------------------------
+   One rule for all of it: motion answers an action. Nothing below runs on a timer, nothing loops, and the
+   longest of them is 220ms, because these are the interactions a reader performs dozens of times in a
+   session and an animation you have to wait for twice is an animation you resent by the tenth. */
+.g[data-design='meridian'] .g-chip {
+  transition: background 140ms var(--g-ease-out), border-color 140ms var(--g-ease-out),
+              transform 140ms var(--g-ease-out), box-shadow 140ms var(--g-ease-out);
+}
+.g[data-design='meridian'] .g-chip:hover {
+  transform: translateY(-1px); border-color: var(--g-line-strong); box-shadow: var(--g-e1);
+}
+.g[data-design='meridian'] .g-chip:active { transform: translateY(0); box-shadow: none; }
+
+.g[data-design='meridian'] .g-send {
+  transition: transform 120ms var(--g-ease-out), background 140ms var(--g-ease-out), box-shadow 140ms var(--g-ease-out);
+}
+.g[data-design='meridian'] .g-send:not(:disabled):hover { transform: translateY(-1.5px); box-shadow: var(--g-e2); }
+.g[data-design='meridian'] .g-send:not(:disabled):active { transform: translateY(0) scale(.94); }
+
+/* The source disclosures in the margin. The marker moves rather than swapping, and the whole row shifts a
+   hair toward the reader - enough to feel, not enough to reflow anything beside it. */
+.g-evidence-entry summary { transition: transform 150ms var(--g-ease-out); }
+.g-evidence-entry summary:hover { transform: translateX(2px); }
+.g-evidence-entry summary::after { transition: transform 220ms var(--g-ease-out), color 150ms var(--g-ease-out); }
+.g-evidence-entry[open] summary::after { transform: rotate(180deg); }
+.g-evidence-entry summary:hover::after { color: var(--g-accent); }
+.g-evidence-entry[open] { border-left: 2px solid var(--g-accent-wash); padding-left: 12px; margin-left: -14px; }
+.g-evidence-id { transition: border-color 150ms var(--g-ease-out), background 150ms var(--g-ease-out); }
+.g-evidence-entry summary:hover .g-evidence-id { border-color: var(--g-accent); background: var(--g-accent-wash); }
+
+/* Copying a value. The control is invisible until the claim is pointed at, and its acknowledgement is the
+   tick alone: no toast, no colour flash, nothing that has to be dismissed. */
+.g[data-design='meridian'] .g-claim-copy {
+  transition: opacity 140ms var(--g-ease-out), transform 140ms var(--g-ease-out), background 140ms var(--g-ease-out);
+}
+.g[data-design='meridian'] .g-claim:hover .g-claim-copy { transform: none; }
+.g[data-design='meridian'] .g-claim-copy:active { transform: scale(.9); }
+
+/* The reader's own question. It arrives from the side it was typed on. */
+.g[data-design='meridian'] .g-you p { animation: meridian-said 240ms var(--g-ease-out) both; }
+@keyframes meridian-said {
+  from { opacity: 0; transform: translateY(5px) scale(.985); }
+  to { opacity: 1; transform: none; }
+}
+
+/* The rail. A row's current state is stated by a rule on its leading edge that grows into place, rather
+   than by a fill that makes every row look pressable. */
+.g[data-design='meridian'] .g-home { position: relative; transition: background 140ms var(--g-ease-out); }
+.g[data-design='meridian'] .g-home::after {
+  content: ''; position: absolute; left: 0; top: 50%; width: 2.5px; height: 0;
+  border-radius: 0 3px 3px 0; background: var(--g-accent);
+  transform: translateY(-50%); transition: height 180ms var(--g-ease-out);
+}
+.g[data-design='meridian'] .g-home[aria-current='page']::after { height: 18px; }
+.g[data-design='meridian'] .g-home:hover::after { height: 10px; }
+.g[data-design='meridian'] .g-home[aria-current='page']:hover::after { height: 18px; }
+
+@media (prefers-reduced-motion: reduce) {
+  .g[data-design='meridian'] :is(.g-chip, .g-send, .g-claim-copy, .g-home, .g-home::after) { transition: none; }
+  .g[data-design='meridian'] .g-you p { animation: none; }
+  .g-evidence-entry summary, .g-evidence-entry summary::after { transition: none; }
+}
+
+/* The supporting claims are a LIST, not a two-up grid.
+   thread.css gives .g-claims two equal columns from 620px, which is right when several small facts of the
+   same shape sit beside each other. It is wrong here. Meridian already draws these as rows with a rule
+   under each, and a row in a half-width column has to wrap its measure, its window, its kind and its place
+   into about thirty characters - measured on the Pune turn, the IMD row came out as three ragged columns
+   with the value stranded in the middle of them. One column, full width, and each row reads in one pass. */
+.g[data-design='meridian'] .g-claims { grid-template-columns: minmax(0, 1fr); gap: 0; }
+.g[data-design='meridian'] .g-claim:not([data-lead='true']) {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
+  padding: 17px 0 18px;
+}
+.g[data-design='meridian'] .g-claim:not([data-lead='true']) .g-claim-eyebrow {
+  font: 11.5px/1.55 var(--g-mono); color: var(--g-mist); max-width: 74ch;
+}
+.g[data-design='meridian'] .g-claim:not([data-lead='true']) .g-claim-note {
+  font-size: 13px; color: var(--g-paper); opacity: .75; max-width: 74ch;
+}
+.g[data-design='meridian'] .g-claim:not([data-lead='true']) .g-claim-value { margin-top: 1px; }
+.g[data-design='meridian'] .g-claim:not([data-lead='true']) .g-claim-unit {
+  font: 400 12px/1 var(--g-mono); color: var(--g-mist);
+}
+.g[data-design='meridian'] .g-claims > .g-claim:last-child { border-bottom: 0; }
+
+/* The two ways to hold a place sit on one line. Stacked, they read as two competing invitations on a
+   screen whose actual invitation is the question box below them. */
+.g[data-design='meridian'] .w-say > .w-place { margin-bottom: 0; }
+.g[data-design='meridian'] .w-say { gap: 0; }
+.g[data-design='meridian'] .w-place + .w-locate { margin-top: 14px; }
+.g[data-design='meridian'] .w-locate .g-chip { font-size: 13px; padding: 7px 14px; }
+
+/* ---- the turn while it is being worked ------------------------------------------------------------------
+   This is where a reader decides whether anything intelligent is happening, and it was the weakest screen
+   in the product: a 40px orb, the current stage set at twelve pixels, and - in the first seconds, when
+   only one stage has been reached - the same three words printed twice, once as the heading and once as
+   the only row of the trail beneath it.
+
+   The stage is now the largest thing on the turn, because it is the only thing the turn has to say. The
+   trail below it is a trail: where the engine has been, in the machine face, quiet. And while exactly one
+   stage has been reached there is no trail to draw, so none is drawn. */
+.g[data-design='meridian'] .g-working-head {
+  display: flex; align-items: center; gap: 14px; min-height: 52px; margin: 0;
+  /* Bounded to the reading measure rather than the column: with `margin-left: auto` on the clock and no
+     bound here, the elapsed time was thrown to the far edge of a 1000px column, a hand's width from the
+     stage it belongs to. */
+  max-width: 620px;
+}
+.g[data-design='meridian'] .g-orb {
+  width: 52px; height: 52px; border: 1px solid var(--g-line); background: var(--g-raise);
+  box-shadow: var(--g-e1); flex-shrink: 0;
+}
+.g[data-design='meridian'] .g-working-stage {
+  font-size: clamp(18px, 1.9vw, 22px); line-height: 1.35; letter-spacing: -.025em;
+  font-weight: 500; color: var(--g-paper);
+}
+.g[data-design='meridian'] .g-working-clock {
+  font: 11.5px/1.6 var(--g-mono); color: var(--g-mist); margin-left: auto; white-space: nowrap;
+}
+
+/* The trail. A dot per stage, the current one ringed rather than filled, and no connecting rule - the
+   stages are not evenly spaced in time and a rule between them would imply that they were. */
+.g[data-design='meridian'] .g-stages-live {
+  display: flex; flex-direction: row; flex-wrap: wrap; gap: 6px 20px;
+  padding: 16px 0 4px; margin-left: 66px; list-style: none;
+}
+.g[data-design='meridian'] .g-stages-live li {
+  display: inline-flex; align-items: center; gap: 8px;
+  font: 11.5px/1.6 var(--g-mono); color: var(--g-mist-2);
+}
+.g[data-design='meridian'] .g-stages-live li::before {
+  content: ''; width: 6px; height: 6px; border-radius: 50%;
+  background: var(--g-line-strong); flex-shrink: 0;
+}
+.g[data-design='meridian'] .g-stages-live li[data-state='now'] { color: var(--g-paper); }
+.g[data-design='meridian'] .g-stages-live li[data-state='now']::before {
+  background: var(--g-accent); box-shadow: 0 0 0 3px var(--g-accent-wash);
+}
+/* One stage reached is not a trail, it is the heading again. */
+.g[data-design='meridian'] .g-stages-live:has(li:only-child) { display: none; }
+
+.g[data-design='meridian'] .g-working-more { margin-left: 66px; margin-top: 10px; }
+.g[data-design='meridian'] .g-working-more > summary {
+  font-size: 13px; color: var(--g-accent-2); padding: 6px 11px 6px 9px; margin-left: -9px;
+  border-radius: 9px; display: inline-flex; align-items: center; gap: 7px;
+  transition: background 150ms var(--g-ease-out);
+}
+.g[data-design='meridian'] .g-working-more > summary:hover { background: var(--g-accent-wash); }
+.g[data-design='meridian'] .g-working-note { font-size: 12.5px; line-height: 1.7; color: var(--g-mist); }
+
+@media (max-width: 620px) {
+  .g[data-design='meridian'] :is(.g-stages-live, .g-working-more) { margin-left: 0; }
+  .g[data-design='meridian'] .g-working-clock { margin-left: 0; }
+}
+
+/* ==========================================================================================================
+   THE FRONT DOOR
+   ==========================================================================================================
+   Rebuilt, third time. A 96px moon in a blurred halo; then a 240px clock face beside a column of type; now
+   a masthead: a line of machine-set fact, today's sun plotted across the full width, and the sentence that
+   says what this thing is. One column, left-aligned, using the width instead of stacking down the middle of
+   it.
+
+   The reason the previous two did not land is the same reason the whole interface did not: no contrast and
+   no scale. Everything was a near-white object on a near-white ground and the largest element was 240px in
+   a 1170px column. This puts one saturated shape across the whole width and sets the greeting at fifty-six
+   pixels, and lets the rest be quiet underneath. */
+.g[data-design='meridian'] .g-welcome { gap: 0; justify-content: center; }
+.g[data-design='meridian'] .w {
+  max-width: 880px; width: 100%; margin-inline: auto;
+  align-items: stretch; text-align: left; gap: 0;
+}
+
+/* The line of fact. The same stamp a receipt carries, so the front door states its clock in the words the
+   evidence does. Letterspaced rather than shouted: nothing in this product is set in capitals. */
+.g[data-design='meridian'] .w-strip {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  font: 500 11.5px/1.6 var(--g-mono); letter-spacing: .1em;
+  color: var(--g-mist); margin: 0 0 22px;
+}
+.w-strip-dot { width: 4px; height: 4px; border-radius: 50%; background: var(--g-line-strong); flex-shrink: 0; }
+.w-strip-place[data-held='true'] { color: var(--g-accent-2); }
+
+/* The plot. It bleeds a little past the type column on both sides, because a horizon that stops short of
+   the edge of its own composition is a horizon nobody believes. */
+.g[data-design='meridian'] .w-glyph {
+  width: 100%; height: auto; margin: 0 0 30px; filter: none; display: block;
+}
+.g[data-design='meridian'] .w-glyph::before,
+.g[data-design='meridian'] .w-glyph::after { display: none; }
+.w-dayarc { display: block; width: 100%; height: auto; overflow: visible; }
+
+.w-arc-horizon { stroke: var(--g-line-strong); stroke-width: 1.25; }
+.w-arc-tick { stroke: var(--g-line-strong); stroke-width: 1; opacity: .55; }
+.w-arc-tick[data-major='true'] { stroke: var(--g-mist-2); stroke-width: 1.4; opacity: .9; }
+.w-arc-hour { font: 500 10.5px/1 var(--g-mono); fill: var(--g-mist-2); letter-spacing: .06em; }
+/* THE ONE LARGE AREA OF COLOUR IN THE PRODUCT. It is the daylight, it is derived from the sun's own
+   altitude, and it is why this screen has any force. */
+.w-daylight-top { stop-color: var(--g-accent); stop-opacity: .30; }
+.w-daylight-base { stop-color: var(--g-accent); stop-opacity: .08; }
+.w-arc-line { fill: none; stroke: var(--g-accent); stroke-width: 2.25; stroke-linecap: round; stroke-linejoin: round; }
+/* Night: present, compressed, and dashed so it cannot be read as being to the same scale. */
+.w-arc-night {
+  fill: none; stroke: var(--g-mist-2); stroke-width: 1.4; opacity: .42;
+  stroke-dasharray: 3 5; stroke-linecap: round;
+}
+.w-arc-cross { stroke: var(--g-accent-2); stroke-width: 1.5; }
+.w-arc-edge { font: 500 11px/1 var(--g-mono); fill: var(--g-accent-2); letter-spacing: .02em; }
+.w-arc-span { font: 500 11px/1 var(--g-mono); fill: var(--g-mist); letter-spacing: .1em; }
+.w-arc-now { stroke: var(--g-paper); stroke-width: 1; opacity: .26; stroke-dasharray: 2 4; }
+.w-arc-sun { fill: var(--g-accent); stroke: var(--g-accent); stroke-width: 2; }
+.w-arc-sun[data-up='false'] { fill: var(--g-bg); }
+/* The one looping animation on the page, on a 9px disc. An instrument that is powered, not a pulse that
+   demands to be watched. */
+.w-arc-halo {
+  fill: var(--g-accent); opacity: .2;
+  transform-box: fill-box; transform-origin: center;
+  animation: w-breath 4.8s var(--g-ease) infinite;
+}
+.w-arc-halo[data-up='false'] { animation-duration: 7.4s; opacity: .12; }
+@keyframes w-breath {
+  0%, 100% { transform: scale(1); opacity: .2; }
+  50% { transform: scale(2.3); opacity: 0; }
+}
+
+/* What the plot stands over. */
+.g[data-design='meridian'] .w-say { display: flex; flex-direction: column; align-items: flex-start; text-align: left; gap: 0; }
+.g[data-design='meridian'] .w-greeting {
+  font-size: clamp(38px, 5vw, 58px); line-height: 1.0; letter-spacing: -.05em;
+  font-weight: 600; margin: 0 0 16px; color: var(--g-paper); text-wrap: balance;
+}
+.g[data-design='meridian'] .w-lede {
+  font-size: 16.5px; line-height: 1.62; color: var(--g-mist); max-width: 54ch; margin: 0 0 22px;
+}
+.g[data-design='meridian'] :is(.w-place, .w-locate) { margin: 0; text-align: left; }
+.g[data-design='meridian'] .w-place + .w-locate { margin-top: 13px; }
+.g[data-design='meridian'] .w-place-button {
+  font-size: 15.5px; font-weight: 500; color: var(--g-accent-2);
+  text-decoration-color: var(--g-line-strong); text-underline-offset: 5px;
+  transition: color 140ms var(--g-ease-out), text-decoration-color 140ms var(--g-ease-out);
+}
+.g[data-design='meridian'] .w-place-button:hover { color: var(--g-paper); text-decoration-color: var(--g-accent); }
+.g[data-design='meridian'] .w-locate .g-chip { font-size: 13px; padding: 7px 14px; }
+
+/* The station's own reading: the one thing on this screen that is weather, set in the machine face because
+   a tool owns every character of it. */
+.g[data-design='meridian'] .w-reading {
+  display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap;
+  margin: 26px 0 6px; color: var(--g-paper);
+}
+.g[data-design='meridian'] .w-reading > svg { align-self: center; color: var(--g-accent); }
+.g[data-design='meridian'] .w-temp {
+  font: 500 42px/1 var(--g-mono); letter-spacing: -.045em; font-variant-numeric: tabular-nums;
+}
+.g[data-design='meridian'] .w-unit { font-size: .34em; color: var(--g-mist); margin-left: 3px; letter-spacing: 0; }
+.g[data-design='meridian'] .w-cond { font-size: 16px; color: var(--g-mist); }
+.g[data-design='meridian'] .w-source { font-size: 11px; line-height: 1.7; color: var(--g-mist); max-width: 64ch; text-align: left; }
+
+/* The verse closes the screen. Aligned to the same left edge as everything above it. */
+.g[data-design='meridian'] .w-quote { width: 100%; text-align: left; margin-top: 30px; opacity: .92; }
+.g[data-design='meridian'] .w-quote blockquote p { max-width: 54ch; margin-inline: 0; }
+.g[data-design='meridian'] .w-quote figcaption { justify-content: flex-start; }
+
+@media (max-width: 720px) {
+  .g[data-design='meridian'] .w-greeting { font-size: clamp(30px, 8vw, 38px); }
+  .g[data-design='meridian'] .w-lede { font-size: 15px; }
+  .w-arc-hour, .w-arc-span { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .w-arc-halo { animation: none; opacity: .18; }
+}
+
+/* ==========================================================================================================
+   FOUR PLANES
+   ==========================================================================================================
+   The complaint that drove this: everything was pale and monotonous. It was - every surface in the product
+   sat inside a tenth of a luminance step of every other, so there was nothing for the eye to rank and
+   nothing for the atmosphere to be drawn against. Rank them, darkest to lightest:
+
+     rail    0.008   near-black. Chrome. It holds navigation and it is not where you read.
+     bar     0.65    grey. Supporting: which conversation this is, and the controls that act on it.
+     ground  0.83    the living surface. This is where the atmosphere is, and it is finally dark enough
+                     for a 1px contour at a fifth of an alpha to be visible on it.
+     sheet   1.00    white. The conversation. The brightest thing on screen, because it is the product.
+
+   The last line is the one that matters. A chat screen whose chat is a layer underneath a decoration has
+   the wrong hero. Putting the turns on white sheets over the living ground promotes the conversation and
+   gives the atmosphere somewhere to live at the same time - it no longer has to be dimmed to a third to
+   stay out of the prose's way, because it is no longer behind the prose. */
+
+/* ---- the rail: near-black, and it carries its own inks -------------------------------------------------
+   Redeclaring the ink tokens here rather than restyling forty descendants: every control, label, count and
+   separator inside the rail resolves through these four, so the plane inverts in one place and nothing
+   below it has to know. */
+.g[data-design='meridian'] .g-rail {
+  background: var(--g-rail-fill);
+  border-right: 0;
+  color-scheme: dark;
+  --g-paper: var(--g-rail-ink);
+  --g-mist: var(--g-rail-mist);
+  --g-mist-2: var(--g-rail-mist-2);
+  --g-accent: var(--g-rail-accent);
+  --g-accent-2: var(--g-rail-accent);
+  --g-accent-wash: rgba(227, 169, 97, .15);
+  --g-line: var(--g-rail-line);
+  --g-line-soft: #241f19;
+  --g-line-strong: #3c382f;
+  --g-raise: #211f19;
+  --g-raise-2: #1b1914;
+  --g-fill: #211f19;
+  --g-t1: rgba(255,255,255,.03);
+  --g-t2: rgba(255,255,255,.05);
+  --g-t3: rgba(255,255,255,.08);
+  --g-t4: rgba(255,255,255,.11);
+  --g-t5: rgba(255,255,255,.15);
+  --g-e1: 0 1px 2px rgba(0,0,0,.4);
+  --g-e2: 0 8px 24px -10px rgba(0,0,0,.6);
+  color: var(--g-rail-ink);
+}
+.g[data-design='meridian'] .g-rail :is(.g-brand-name, .g-home, button, a) { color: inherit; }
+.g[data-design='meridian'] .g-brand-mark { color: var(--g-rail-accent); }
+.g[data-design='meridian'] .g-brand-mark[data-daylight='true'] { color: var(--g-rail-accent); }
+.g[data-design='meridian'] .g-rail .g-home[aria-current='page'] { background: rgba(255,255,255,.07); }
+.g[data-design='meridian'] .g-rail .g-home::after { background: var(--g-rail-accent); }
+/* The one bordered control in the rail, and on a near-black plane it needs a visible edge rather than the
+   hairline it had on paper. */
+.g[data-design='meridian'] .g-rail-actions-lead > button {
+  border-color: rgba(255,255,255,.14); background: rgba(255,255,255,.04);
+}
+.g[data-design='meridian'] .g-rail-actions-lead > button:hover { background: rgba(255,255,255,.09); }
+
+/* ---- the bar: grey, and it states which conversation this is ------------------------------------------ */
+.g[data-design='meridian'] .g-top {
+  background: var(--g-bar-fill);
+  border-bottom: 1px solid rgba(25,26,22,.10);
+  padding: 16px 30px; min-height: 68px;
+}
+.g[data-design='meridian'] .g-act:hover { background: rgba(25,26,22,.07); }
+
+/* ---- the ground: where the atmosphere lives ----------------------------------------------------------- */
+.g[data-design='meridian'] .g-panel { background: transparent; }
+
+/* ---- the sheet: an answer is an object, not a region of the page -------------------------------------- */
+.g[data-design='meridian'] .g-answer {
+  background: var(--g-raise);
+  border: 1px solid var(--g-line-soft);
+  border-radius: 18px;
+  box-shadow: var(--g-e2);
+  padding: 26px 30px 24px;
+}
+@container (min-width: 1000px) {
+  .g[data-design='meridian'] .g-answer[data-has-evidence='true'] { gap: 40px; }
+}
+/* Inside a white sheet the lead claim can no longer be white. It takes the tint instead, which is the same
+   relationship it always had to what was under it - one step up from its ground. */
+.g[data-design='meridian'] .g-claim[data-lead='true'] {
+  background: var(--g-raise-2);
+  border-color: var(--g-line-soft);
+  box-shadow: none;
+}
+/* The reader's own question sits ON the ground, not on a sheet: it is not the thing being read. */
+.g[data-design='meridian'] .g-you p {
+  background: var(--g-bubble-fill);
+  border: 1px solid var(--g-line-soft);
+  box-shadow: var(--g-e1);
+}
+/* The composer is the other lit object on the page, and the only one that is pure white at every hour. */
+.g[data-design='meridian'] .g-composer,
+.g[data-design='meridian'] .g-composer:not(:focus-within) {
+  background: #fff; border-color: var(--g-line);
+  box-shadow: 0 2px 6px rgba(30,28,18,.05), 0 16px 38px -16px rgba(30,28,18,.26);
+}
+.g[data-design='meridian'] .g-composer:focus-within {
+  border-color: var(--g-accent);
+  box-shadow: 0 0 0 3px var(--g-accent-wash), 0 18px 42px -18px rgba(30,28,18,.34);
+}
+/* The dock's own fade has to end in the ground's colour now that the ground is a mid tone, or it draws a
+   pale band across the atmosphere. */
+.g[data-design='meridian'] .g-dock::before {
+  background: linear-gradient(180deg, transparent, var(--g-bg) 62%);
+}
+/* A chip sits on the ground, so it needs a surface of its own to be legible on it. */
+.g[data-design='meridian'] .g-chip {
+  background: var(--g-raise); border-color: var(--g-line); box-shadow: var(--g-e1);
+}
+.g[data-design='meridian'] .g-chip:hover { background: #fff; border-color: var(--g-line-strong); }
+.g[data-design='meridian'] .g-chip-lead { background: var(--g-accent-wash); border-color: #e0c79e; }
+
+/* ==========================================================================================================
+   THE FRONT DOOR, COMPONENT BY COMPONENT
+   ==========================================================================================================
+   Every block on this screen was rethought rather than restyled, because the problem was never the styling
+   of any one of them: it was that there were nine, stacked down the middle, in no particular order, and
+   none of them knew about the others.
+
+   The order now argues: WHERE AND WHEN you are (the masthead), WHAT TODAY'S LIGHT IS (the arc), then two
+   things side by side - WHAT THIS DOES (the invitation) and WHAT IS HAPPENING (the station's own reading) -
+   and then the question box. The verse closes it as a colophon, which is what a verse on a weather product
+   was always doing. */
+
+/* The body: invitation left, the live reading right. */
+.g[data-design='meridian'] .w-body {
+  display: grid; grid-template-columns: minmax(0, 1fr) auto;
+  gap: 48px; align-items: start; width: 100%; margin-bottom: 4px;
+}
+
+/* THE READING, which is the one thing on this screen that is weather, and the only one that carries a
+   source. It used to be three loose paragraphs floating under the greeting with a source line trailing off
+   the end. It is a card now: value, condition, and the receipt that owns it, in one object with an edge
+   round it. Provenance you can point at. */
+.g[data-design='meridian'] .g-claim.w-now {
+  display: flex; flex-direction: column; align-items: flex-start; gap: 0;
+  background: var(--g-raise); border: 1px solid var(--g-line-soft);
+  border-radius: 16px; box-shadow: var(--g-e2);
+  padding: 18px 22px 16px; min-width: 232px; max-width: 320px;
+}
+.g[data-design='meridian'] .g-claim.w-now .w-reading { margin: 0 0 2px; align-items: center; gap: 10px; }
+.g[data-design='meridian'] .g-claim.w-now .w-temp { font-size: 38px; }
+.g[data-design='meridian'] .g-claim.w-now .w-cond { font-size: 15px; }
+.g[data-design='meridian'] .g-claim.w-now .w-source {
+  margin: 12px 0 0; padding-top: 11px; border-top: 1px solid var(--g-line-soft);
+  font-size: 11px; line-height: 1.7; max-width: none;
+}
+
+/* THE VERSE, demoted to what it is. It was set at reading size in the middle of the screen, where it
+   outranked the product. A colophon: one quiet line, its attribution inline, at the very bottom. */
+.g[data-design='meridian'] .w-quote {
+  width: 100%; text-align: left; margin: 30px 0 0; opacity: .8;
+  border-top: 1px solid var(--g-line); padding-top: 16px;
+}
+.g[data-design='meridian'] .w-quote blockquote { margin: 0; }
+.g[data-design='meridian'] .w-quote blockquote p {
+  max-width: 60ch; margin: 0; font-size: 13.5px; line-height: 1.6;
+  font-style: italic; color: var(--g-mist);
+}
+.g[data-design='meridian'] .w-quote figcaption {
+  justify-content: flex-start; margin-top: 5px; font-size: 11.5px; color: var(--g-mist-2);
+}
+
+/* The two ways to hold a place, on one line. Stacked, they read as two competing invitations on a screen
+   whose actual invitation is the question box below them. */
+.g[data-design='meridian'] .w-say > :is(.w-place, .w-locate) { display: inline-flex; margin: 0; }
+.g[data-design='meridian'] .w-place + .w-locate { margin-top: 12px; }
+
+@media (max-width: 1000px) {
+  .g[data-design='meridian'] .w-body { grid-template-columns: minmax(0, 1fr); gap: 26px; }
+  .g[data-design='meridian'] .g-claim.w-now { max-width: none; align-self: stretch; }
+}
+
+/* THE ATMOSPHERE YIELDS WHERE PEOPLE READ.
+   ----------------------------------------------------------------------------------------------------
+   The design brief's rule is that the atmosphere is felt AROUND the reading area, and the two previous
+   attempts at obeying it both dimmed the whole layer - which meant the margins, where there is nothing to
+   read and the field could be at full strength, were dimmed too. Hence a background that was simultaneously
+   too faint to see and still in the way.
+
+   A mask solves both at once: full strength at the edges of the panel, dropping to about a quarter through
+   the central band where the column of text and the sheet sit. Nothing is animated here and nothing is
+   recomputed per frame - it is a static mask on a moving layer. */
+.g-skyfield, .g-skywind {
+  -webkit-mask-image: radial-gradient(ellipse 54% 50% at 50% 46%, rgba(0,0,0,.26) 0%, rgba(0,0,0,.55) 58%, #000 88%);
+  mask-image: radial-gradient(ellipse 54% 50% at 50% 46%, rgba(0,0,0,.26) 0%, rgba(0,0,0,.55) 58%, #000 88%);
+}
+
+/* The arc's daylight carries more now that it sits on a mid-tone ground rather than on near-white paper. */
+.w-daylight-top { stop-opacity: .40; }
+.w-daylight-base { stop-opacity: .10; }
+.w-arc-line { stroke-width: 2.5; }
+
+/* The daylight area's own rule. Its fill is a gradient reference set as an attribute, so without this it
+   is an element the built stylesheet knows nothing about - which is exactly what FE13 exists to catch. */
+.w-arc-fill { stroke: none; }
+
+/* ==========================================================================================================
+   THE BAR, THE PROPORTIONS, AND THE NUMERALS
+   ========================================================================================================== */
+
+/* ---- the bar --------------------------------------------------------------------------------------------
+   Two faults, both visible in one screenshot. It was barely grey - a whisper off the ground, so the plane
+   it was supposed to establish did not exist. And the station chip in the middle of it was trying to carry
+   a place name, a value, a condition AND a full provenance receipt inside one pill, which ellipsised the
+   receipt to "67.…" and left the pill stretched across the bar with a ragged hole in it.
+
+   The receipt is not optional - a reading on this product states where it came from, and a spec pins that
+   it is not hidden in a title attribute. So the chip becomes two lines: the reading on the first, the
+   receipt on the second, at a size that fits what it has to say. */
+.g[data-design='meridian'] .g-top {
+  background: var(--g-bar-fill);
+  border-bottom: 1px solid rgba(25,26,22,.14);
+  box-shadow: inset 0 -1px 0 rgba(255,255,255,.35);
+}
+/* Two rows, laid out as rows. The grid version of this overflowed its own pill - the receipt was given a
+   column span inside a three-column auto grid and pushed the whole element past its max-width, which is
+   how a place name ended up printed outside the box that was supposed to contain it. A flex column with
+   min-width:0 on both rows cannot do that. */
+.g[data-design='meridian'] .g-skyline {
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: 2px 9px;
+  background: var(--g-raise); border: 1px solid var(--g-line-soft); border-radius: 12px;
+  box-shadow: var(--g-e1); padding: 7px 14px 8px;
+  min-width: 0; max-width: min(440px, 38vw); overflow: hidden;
+}
+.g[data-design='meridian'] .g-skyline > svg { flex-shrink: 0; color: var(--g-accent); align-self: center; }
+.g[data-design='meridian'] .g-skyline-place {
+  font-size: 12.5px; color: var(--g-paper); font-weight: 500;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; min-width: 0;
+}
+.g[data-design='meridian'] .g-skyline-value {
+  font: 500 15px/1 var(--g-numeral); letter-spacing: -.03em; color: var(--g-paper); flex-shrink: 0;
+}
+.g[data-design='meridian'] .g-skyline-cond { font-size: 12.5px; color: var(--g-mist); flex-shrink: 0; }
+/* The receipt gets its own row and is allowed to wrap, so it is never the thing that gets ellipsised. */
+.g[data-design='meridian'] .g-skyline-source {
+  font: 11px/1.5 var(--g-mono); color: var(--g-mist);
+  /* Its own line, always: the receipt is the longest thing in the chip and the one that must not be cut. */
+  flex: 1 0 100%; white-space: normal; overflow-wrap: anywhere; margin-top: 2px;
+}
+@media (max-width: 1100px) {
+  .g[data-design='meridian'] .g-skyline-source { display: none; }
+}
+
+/* ---- the proportions -------------------------------------------------------------------------------------
+   The answer's opening sentence was set as display type, which is right when the sentence is "Yes - rain is
+   forecast for Pune tomorrow." and badly wrong when the engine writes "Tomorrow in Anand (24 Sep 2026
+   00:30-25 Sep 2026 00:30 IST) is forecast to be dry, with IMD's multi-model blend putting the temperature
+   range at 27.1-36.1 °C and relative humidity at 39-73%." - which it does, often, because the window and
+   both sources belong in the answer. At 29px in a 620px column that is five lines of wall.
+
+   So the lead scales DOWN as it gets longer, which `clamp` cannot express and a container query can: the
+   size is set for the measure, and a long lead simply is not display type. */
+.g[data-design='meridian'] .answer-lead {
+  font-size: clamp(19px, 1.65vw, 23px); line-height: 1.42; letter-spacing: -.022em;
+  font-weight: 500; max-width: 40ch;
+}
+/* A short lead - the one-line "Yes, it will rain" answer - is allowed its full size, because at that
+   length display type is exactly right. */
+.g[data-design='meridian'] .answer-body:has(.answer-lead) .answer-lead:not(:has(+ *)) { max-width: 34ch; }
+.g[data-design='meridian'] .g-col { padding-inline: 30px; }
+.g[data-design='meridian'] .g-answer { padding: 24px 28px 22px; }
+
+/* ---- the numerals ----------------------------------------------------------------------------------------
+   Every retrieved value, every clock, every axis label on the arc. Martian Mono's digits are squared off
+   and wide-apertured, so a reading looks like something read off an instrument rather than typed - which is
+   what this product's values are. Provenance receipts deliberately stay in JetBrains: it is the more legible
+   of the two at the eleven pixels a source line is set at, and a receipt is for reading, not for effect. */
+.g[data-design='meridian'] :is(.g-claim-number, .g-claim-unit, .w-temp, .w-unit, .g-comparison td) {
+  font-family: var(--g-numeral);
+}
+.w-arc-hour, .w-arc-edge, .w-arc-span { font-family: var(--g-numeral); }
+.g[data-design='meridian'] .w-strip { font-family: var(--g-numeral); letter-spacing: .04em; font-size: 11px; }
+.g[data-design='meridian'] .g-claim[data-lead='true'] .g-claim-number { letter-spacing: -.055em; }
+.g[data-design='meridian'] .w-temp { letter-spacing: -.05em; }
+
+/* The display face, where scale earns it. */
+.g[data-design='meridian'] :is(.w-greeting, .answer-lead, .g-working-stage) {
+  font-family: var(--g-display); font-feature-settings: 'ss01' 1;
+}
+.g[data-design='meridian'] .w-greeting { font-weight: 500; letter-spacing: -.042em; }
+
+/* ==========================================================================================================
+   THE TWO LIGHTS
+   ==========================================================================================================
+   Four attempts at a living background failed before the reference made the shape of it obvious: not a
+   particle system, not a lens, not a matrix. A GLOW. A large soft mass of light behind the content, so the
+   page reads as lit from within rather than printed.
+
+   And then the thing that makes it this product's rather than anyone's: THE GLOW IS THE SUN. Its position
+   is the real solar position at the reader's held place, from the same solver the day arc is plotted from.
+   It rises at screen left, arcs over through the morning, and sets at the right; below the horizon it
+   sinks off the bottom and the warm light goes out, leaving the cool ambient sky alone. The arc at the top
+   of the front door and the light behind the whole page are one fact said twice - one you read, one you
+   only feel - and at four in the afternoon the page is lit from the west, because it is.
+
+   Both are CSS. Two very large radial gradients moved on transform and opacity are composited on the GPU
+   and cost the main thread nothing; the same shapes redrawn per frame on canvas were the most expensive
+   fills in the product. Multiplied rather than laid over, so the page is tinted from within instead of
+   having a translucent disc sitting on it.
+
+   THEY CLAIM NOTHING. Inside the aria-hidden ground, no legend, not derived from any retrieved value, and
+   coloured from the interface's own light rather than from any published scale. */
+.g-bloom {
+  position: absolute; border-radius: 50%; pointer-events: none;
+  mix-blend-mode: multiply; will-change: transform, opacity;
+  /* A minute, because that is how often the sun's position is rewritten. It glides; it never steps. */
+  transition: left 60s linear, top 60s linear, opacity 8s var(--g-ease-out);
+}
+
+/* THE SUN. Where the sun is, on for as long as it is up, fading through civil twilight rather than
+   snapping off at the horizon - which is what the sky does. */
+.g-bloom[data-bloom='sun'] {
+  left: var(--sun-x, 50%); top: var(--sun-y, 30%);
+  width: 104vmax; height: 104vmax; margin: -52vmax 0 0 -52vmax;
+  background: radial-gradient(circle closest-side,
+    color-mix(in srgb, var(--g-solar) 58%, transparent) 0%,
+    color-mix(in srgb, var(--g-solar-soft) 26%, transparent) 38%,
+    transparent 70%);
+  opacity: calc(var(--sun-lit, 1) * 0.92);
+  animation: bloom-breathe 21s var(--g-ease) infinite alternate;
+}
+
+/* THE SKY. The ambient, always there, drifting on its own clock. At night it is the only light on the
+   page, which is why it is cool: a warm room at two in the morning reads as a lamp somebody left on. */
+.g-bloom[data-bloom='sky'] {
+  left: 44%; top: 62%;
+  width: 96vmax; height: 96vmax; margin: -48vmax 0 0 -48vmax;
+  background: radial-gradient(circle closest-side,
+    rgba(122, 132, 144, .34) 0%,
+    rgba(150, 158, 168, .16) 42%,
+    rgba(190, 196, 202, 0) 74%);
+  opacity: calc(0.34 + (1 - var(--sun-lit, 1)) * 0.5);
+  animation: bloom-drift 34s var(--g-ease) infinite alternate;
+}
+
+@keyframes bloom-breathe {
+  from { transform: translate3d(-2%, -1.5%, 0) scale(.94); }
+  to   { transform: translate3d(2%, 2%, 0) scale(1.07); }
+}
+@keyframes bloom-drift {
+  from { transform: translate3d(3%, -2%, 0) scale(1.05); }
+  to   { transform: translate3d(-3%, 2%, 0) scale(.93); }
+}
+
+/* The states they answer to. Working brightens and quickens the sun - the page is visibly thinking.
+   Composing dims both, because a glow pulsing behind a sentence you are writing is one you resent. */
+.g[data-busy='true'] .g-bloom { animation-duration: 7s; }
+.g[data-busy='true'] .g-bloom[data-bloom='sun'] { opacity: calc(var(--sun-lit, 1) * 0.55 + 0.4); }
+.g:has(.g-composer:focus-within) .g-bloom { opacity: .3; }
+.g[data-atmosphere='paused'] .g-bloom { animation-play-state: paused; }
+/* On the front door the light is the subject; in a conversation the sheets are, so it steps back. */
+.g-field[data-expanded='true'] .g-bloom[data-bloom='sun'] { opacity: calc(var(--sun-lit, 1) * 0.6); }
+.g-field[data-expanded='true'] .g-bloom[data-bloom='sky'] { opacity: .28; }
+@media (prefers-reduced-motion: reduce) {
+  .g-bloom { animation: none; transition: none; }
+}
+
+/* The technical layers step back to being texture over it: a glow with a fine matrix on top reads as an
+   instrument, and a glow with a busy matrix on top reads as two backgrounds fighting. */
+.g-skyfield {
+  -webkit-mask-image: radial-gradient(ellipse 56% 52% at 50% 46%, rgba(0,0,0,.14) 0%, rgba(0,0,0,.42) 58%, rgba(0,0,0,.72) 88%);
+  mask-image: radial-gradient(ellipse 56% 52% at 50% 46%, rgba(0,0,0,.14) 0%, rgba(0,0,0,.42) 58%, rgba(0,0,0,.72) 88%);
+}
+
+/* The solar elements take the light, not the ink. This is what was left out of the overhaul: the arc was
+   still drawing its daylight in the UI accent - a deep brown chosen to be legible as text - which is why
+   it read as a stain rather than as sun on the page. */
+.w-daylight-top { stop-color: var(--g-solar); stop-opacity: .46; }
+.w-daylight-base { stop-color: var(--g-solar-soft); stop-opacity: .12; }
+.w-arc-line { stroke: var(--g-solar); stroke-width: 2.6; }
+.w-arc-sun { fill: var(--g-solar); stroke: var(--g-solar); }
+.w-arc-sun[data-up='false'] { fill: var(--g-bg); stroke: var(--g-mist-2); }
+.w-arc-halo { fill: var(--g-solar); }
+.g[data-design='meridian'] .g-skyline > svg,
+.g[data-design='meridian'] .g-claim.w-now .w-reading > svg { color: var(--g-solar); }

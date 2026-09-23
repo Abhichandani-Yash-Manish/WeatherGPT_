@@ -10,6 +10,10 @@
 
 import { useState, useSyncExternalStore } from 'react';
 import type { AnswerPacket, Fact } from '../api/types';
+import { AnswerEvidence } from './AnswerEvidence';
+import { ComparisonTable } from './ComparisonTable';
+import { comparisonOf } from './comparison';
+import { Mark } from '../gpt/Mark';
 import { Claim, type ClaimSpan } from '../flagship/Claim';
 import { Work, type WorkStep } from '../flagship/Work';
 import { ChartBlock } from '../charts/ChartBlock';
@@ -248,6 +252,8 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
   const storedRegister = useSyncExternalStore(subscribeRegister, readRegister, readRegister);
   const register: Register = givenRegister || storedRegister;
   const facts: Fact[] = sequenceFacts(packet);
+  // Never fold a published warning into comparison depth.
+  const comparison = !warningFacts(packet).length && !hasWarningDays(packet) ? comparisonOf(packet) : null;
   const primary = facts[0] || null;
   const otherFacts = facts.slice(1);
   const warnings = warningFacts(packet);
@@ -297,9 +303,10 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
      detaches, and without a second thing to wait for it would photograph an answer caught mid-sentence.
      It is also what a spec asserts against, rather than a timer. */
   return (
-    <article className="g-answer" data-turn-status={packet.status} data-revealing={revealing ? 'true' : undefined}>
+    <article className="g-answer" data-has-evidence={Boolean(packet.citations?.length)} data-multiple-facts={facts.length > 1} data-turn-status={packet.status} data-revealing={revealing ? 'true' : undefined}>
+      <div className="g-answer-main">
       <header className="g-chips" style={{ alignItems: 'baseline', justifyContent: 'space-between' }}>
-        <h2 className="g-eyebrow" style={{ margin: 0 }}>{turnTitle(packet)}</h2>
+        <div className="g-answer-identity"><Mark size={32} className="g-answer-mark" /><h2 className="g-eyebrow" style={{ margin: 0 }}>{turnTitle(packet)}</h2></div>
         <StatusTags packet={packet} />
       </header>
 
@@ -324,6 +331,8 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
              its own rather than inheriting the answer's direction. */
           <p className="g-prose answer-lead" dir="auto">{shape.lead}</p>
         ) : null}
+
+      {comparison ? <ComparisonTable comparison={comparison} packet={packet} /> : null}
 
         {/* The engine's held clauses, printed once. A clause the engine had to put back into the prose is
             printed here and NOT repeated in the flow below it; a model's own paraphrase is the model's
@@ -359,6 +368,11 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
       </div>
       {byline ? <p className="answer-by">{byline}</p> : null}
 
+      {/* For a matched comparison, the matrix leads and these complete original claims
+          remain its depth. With no matrix, the same claims stay open as before. */}
+      <details className="g-claim-details" data-comparison={Boolean(comparison)} open={!comparison}>
+      <summary>{comparison ? 'Individual values, calculations and receipts' : 'Values and receipts'}</summary>
+      <div className="g-claim-details-body">
       {/* The claims the tools own. */}
       {(primary && !conversational) || warnings.length || otherFacts.length ? (
         <div className="g-claims">
@@ -434,6 +448,8 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
       {/* A warning is an official statement with its own period: drawn as the table it is, never a sample. */}
       <WarningPanel packet={packet} />
       <Calculations packet={packet} />
+      </div>
+      </details>
       <AirportReports packet={packet} />
       <Passages packet={packet} />
       {!primary ? (packet.charts || []).map((chart, index) => <ChartBlock key={'chart-' + index} chart={chart} />) : null}
@@ -623,6 +639,8 @@ export function AnswerTurn({ packet, onFollowUp, onRefresh, onAnswer, register: 
           </div>
         </details>
       </div>
+      </div>
+      <AnswerEvidence citations={packet.citations || []} />
     </article>
   );
 }

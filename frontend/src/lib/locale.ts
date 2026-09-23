@@ -38,3 +38,41 @@ export function currentLocale(): string {
 export function isDefaultLocale(): boolean {
   return active === DEFAULT_LOCALE;
 }
+
+/**
+ * A place label as a reader should see it, rather than as the catalogue stores it.
+ *
+ * The catalogue returns the full administrative path - "Anand, Anand, State of Gujarāt" - because it has
+ * to: a city, its district and its state are three different things and two of them share a name. On
+ * screen that reads as a stutter, and the front door was printing it three times over, so a reader met
+ * the word "Anand" five times before they had asked anything.
+ *
+ * This collapses it for DISPLAY ONLY. Every value sent to the engine, every source line and every
+ * citation keeps the catalogue's own label, because that is the thing the resolver matched and the thing
+ * a receipt has to be able to name.
+ *
+ *   Anand, Anand, State of Gujarāt      -> Anand, Gujarāt
+ *   Pune, Pune Division, State of ...   -> Pune, Mahārāshtra
+ *   Surat, Sūrat, State of Gujarāt      -> Surat, Gujarāt      (diacritics do not hide a repeat)
+ *   Ban Sarkāri, Hoshiārpur, Punjab     -> Ban Sarkāri, Punjab
+ */
+export function shortPlace(label: string | null | undefined): string {
+  const full = String(label || '').trim();
+  if (!full) return '';
+  /* Compared without diacritics or case, so "Surat" and "Sūrat" are recognised as the same word. */
+  const bare = (part: string) => part.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+  const parts = full.split(',').map(part => part.trim()).filter(Boolean);
+  if (parts.length < 2) return full;
+  /* The last segment is the state, and its administrative prefix is noise on a screen this small. */
+  const state = parts[parts.length - 1].replace(/^(State of|Union Territory of|National Capital Territory of)\s+/i, '');
+  const kept: string[] = [];
+  for (const part of parts.slice(0, -1)) {
+    const key = bare(part);
+    /* A segment that repeats the one before it, or merely qualifies it ("Pune" then "Pune Division"),
+       adds nothing a reader needs here. */
+    if (kept.some(held => bare(held) === key || key.startsWith(bare(held) + ' ') || bare(held).startsWith(key + ' '))) continue;
+    kept.push(part);
+  }
+  const head = kept.length ? kept[0] : parts[0];
+  return bare(head) === bare(state) ? head : head + ', ' + state;
+}

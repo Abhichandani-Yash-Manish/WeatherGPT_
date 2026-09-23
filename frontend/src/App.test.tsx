@@ -16,19 +16,25 @@ describe('the shell', () => {
     forgetOwner();
   });
 
-  it('shows the front door at an empty address, with one way in and a computed light', () => {
+  it('shows the front door at an empty address, with one way in and the selected light atmosphere', () => {
     render(<App />);
     /* The one way in is the reader's own question box. The front door no longer offers a second door
        beside it: the conversation is the product, so the box is the door. */
     expect(screen.getByLabelText('Your question')).toBeInTheDocument();
-    /* Paper, ink and the published colours: no photograph, no canvas, nothing that needs a disclaimer. */
-    expect(document.querySelector('[data-design="gpt"]')).not.toBeNull();
-    /* The ground is CSS layers keyed to the hour. No image and no canvas is ever fetched or drawn.
-       The horizon hairline was the sixth layer and has been removed: at welcome strength it read as a rule
-       drawn across the middle of the greeting, and the sky gradient carries the depth instead (docs/112). */
-    expect(document.querySelector('img, canvas')).toBeNull();
-    expect(document.querySelector('.g-field-sky')).not.toBeNull();
-    expect(document.querySelector('.g-field-horizon')).toBeNull();
+    /* Meridian supersedes the solar glass direction. The atmosphere is DRAWN now - a contour field and a
+       geostrophic flow on two canvases - rather than a raster of one, so what this pins is the property
+       that mattered about the image and matters more about a moving field: it is decoration, it is inside
+       an aria-hidden subtree, and it offers a screen reader nothing to announce and nothing to mistake for
+       a reading. A canvas with a role or a label would be a weather map, and this is not one. */
+    expect(document.querySelector('[data-design="meridian"]')).not.toBeNull();
+    const atmosphere = [...document.querySelectorAll('canvas.g-skyfield, canvas.g-skywind')];
+    expect(atmosphere.length).toBeGreaterThan(0);
+    atmosphere.forEach(layer => {
+      expect(layer.closest('[aria-hidden="true"]')).not.toBeNull();
+      expect(layer.getAttribute('role')).toBeNull();
+      expect(layer.getAttribute('aria-label')).toBeNull();
+      expect(layer.textContent).toBe('');
+    });
   });
 
   it('hands the front door question to the conversation', async () => {

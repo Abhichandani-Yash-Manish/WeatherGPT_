@@ -25,6 +25,11 @@ import '@fontsource-variable/outfit';
 import '@fontsource-variable/inter';
 import '@fontsource-variable/anek-latin';
 import '@fontsource-variable/jetbrains-mono';
+/* The numeral face. Martian Mono's squared-off, wide-aperture digits give a retrieved value the look of
+   something read off an instrument rather than typed - the one place this product wanted more character.
+   It is used ONLY for numerals and short machine strings; provenance receipts stay in JetBrains, which is
+   the more legible of the two at eleven pixels, and prose never touches either. */
+import '@fontsource-variable/martian-mono';
 
 /* Script faces. Anek's own per-script faces are used where installed; the Tiro/Noto faces already in the
    tree cover the rest. Unknown tags are a no-op, never an error. */

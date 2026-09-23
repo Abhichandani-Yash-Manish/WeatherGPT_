@@ -60,6 +60,7 @@ export function groundThemeFor(hour?: string | null): GroundTheme {
    orb cannot disagree with the page it is drawn on - including in the minutes either side of an hour change. */
 export function currentGroundTheme(): GroundTheme {
   if (typeof document === 'undefined') return 'dark';
+  if (document.documentElement.dataset.design === 'meridian') return 'light';
   return groundThemeFor(document.documentElement.dataset.hour);
 }
 

@@ -50,7 +50,10 @@
     "namePlace": "Name a place and it becomes yours",
     "readingStation": "Reading the nearest station report.",
     "useMyLocation": "Use my location",
-    "locating": "Finding you…"
+    "locating": "Finding you…",
+    "lede": "Ask about anywhere in India. Every answer arrives with the sources behind it, the window it covers, and the minute each one was read.",
+    "ofLight": "of light",
+    "noPlaceHeld": "No place held"
   },
   "working": {
     "default": "Working on it",

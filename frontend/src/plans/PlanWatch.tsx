@@ -501,8 +501,17 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
         </div>
         <button type="button" className="btn" onClick={onClose}>Close</button>
       </header>
+      <nav className="planwatch-nav" aria-label="Watch sections">
+        {[
+          ['plans', 'Saved plans'], ['watches', 'Watches'], ['outbox', 'Delivery'],
+          ['watch-history', 'History'], ['dma', 'By place'], ['health', 'Service status'],
+          ['push', 'Browser push'], ['limits', 'Limits'],
+        ].map(([id, label]) => <button key={id} type="button" onClick={() => {
+          document.getElementById('watch-section-' + id)?.scrollIntoView({ block: 'start', behavior: window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'auto' : 'smooth' });
+        }}>{label}</button>)}
+      </nav>
 
-      <section className="module-section" data-testid="planwatch-plans-section">
+      <section className="module-section" id="watch-section-plans" data-testid="planwatch-plans-section">
         <h3>Saved plans</h3>
         <p className="module-note">
           A plan is written in a conversation and saved here by the workspace. Plan checks run against the official
@@ -634,7 +643,7 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
         ) : null}
       </section>
 
-      <section className="module-section" data-testid="planwatch-watches-section">
+      <section className="module-section" id="watch-section-watches" data-testid="planwatch-watches-section">
         <h3>Watch requests registered here</h3>
         {watches.isPending ? <Reading what="the registered watch requests" /> : null}
         {watches.isError ? <Failure error={watches.error} what="registered watch requests" onRetry={() => { void watches.refetch(); }} /> : null}
@@ -803,7 +812,7 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
         ) : null}
       </section>
 
-      <section className="module-section" data-testid="planwatch-outbox-section">
+      <section className="module-section" id="watch-section-outbox" data-testid="planwatch-outbox-section">
         <h3>The local delivery outbox</h3>
         {outbox.isPending ? <Reading what="the local delivery outbox" /> : null}
         {outbox.isError ? <Failure error={outbox.error} what="local delivery outbox" onRetry={() => { void outbox.refetch(); }} /> : null}
@@ -872,7 +881,7 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
         ) : null}
       </section>
 
-      <section className="module-section" data-testid="planwatch-watch-history-section">
+      <section className="module-section" id="watch-section-watch-history" data-testid="planwatch-watch-history-section">
         <h3>Notifications for each watch</h3>
         <p className="module-note" data-testid="planwatch-watch-history-note">
           The outbox rows this read carries for each registered watch, with the state and the receipt facts recorded on
@@ -903,7 +912,7 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
         ) : null}
       </section>
 
-      <section className="module-section" data-testid="planwatch-dma-section">
+      <section className="module-section" id="watch-section-dma" data-testid="planwatch-dma-section">
         <h3>Delivery by place and source</h3>
         {dma.isPending ? <Reading what="the delivery aggregate" /> : null}
         {dma.isError ? <Failure error={dma.error} what="delivery aggregate" onRetry={() => { void dma.refetch(); }} /> : null}
@@ -958,7 +967,7 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
         ) : null}
       </section>
 
-      <section className="module-section" data-testid="planwatch-health-section">
+      <section className="module-section" id="watch-section-health" data-testid="planwatch-health-section">
         <h3>Supervision truth</h3>
         {health.isPending ? <Reading what="the watch-health read" /> : null}
         {health.isError ? <Failure error={health.error} what="watch health" onRetry={() => { void health.refetch(); }} /> : null}
@@ -1048,7 +1057,7 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
         ) : null}
       </section>
 
-      <section className="module-section" data-testid="planwatch-push-section">
+      <section className="module-section" id="watch-section-push" data-testid="planwatch-push-section">
         <h3>Browser push on this machine</h3>
         <p className="module-note" data-testid="planwatch-push-what-it-is">
           What this is: an opt-in channel for one browser on this machine. The workspace stores one subscription for a
@@ -1133,7 +1142,7 @@ export function PlanWatch({ onClose }: { onClose: () => void }): JSX.Element {
         ) : null}
       </section>
 
-      <section className="module-section" data-testid="planwatch-limits-section">
+      <section className="module-section" id="watch-section-limits" data-testid="planwatch-limits-section">
         <h3>Limits of this panel</h3>
         <p className="module-note">The plans read's own limits, as returned:</p>
         {planView?.limits?.length ? (

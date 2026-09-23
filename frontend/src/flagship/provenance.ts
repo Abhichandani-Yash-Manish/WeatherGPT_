@@ -33,9 +33,17 @@ export type NumberBearing = { text: string; element: Element };
    are each a single packet field with one shape, and the spec that pins that field is named beside the
    entry. */
 export const NOT_A_VALUE: Exclusion[] = [
+  /* meridian.test.tsx pins these regions to the owning packet's citation fields, including
+     multiple editions of one source. They contain identifiers and receipt metadata, never fact values. */
+  { selector: '.g-evidence-id, .g-evidence-receipt', because: 'the source identifier and its receipt: publisher, product, retrieval timestamp, page or row locator, citation id and document hash copied from the owning answer citation; these are provenance metadata rather than weather measurements' },
   { selector: '.g-prose', because: 'the sentence the model wrote around the values; every value it states is a Claim below it' },
   { selector: '.g-claim-note', because: 'prose qualifying a claim; the claim it belongs to is audited on its own' },
   { selector: '.g-chips', because: 'metadata about this turn - when it was answered - not something the turn retrieved' },
+  /* The front door's masthead: the clock this page is being read at, and the name of the place held. A
+     reading has a source and a retrieval time; a clock is neither. It is the same `istStamp` every receipt
+     in the product carries, and the place is the one the reader chose - the station's own reading is a
+     separate region three elements below, with its own source line, and that one IS audited. */
+  { selector: '.w-strip', because: 'the current time and the held place: the reader\'s own clock and their own choice, not a value retrieved from any source' },
   { selector: '.g-work', because: 'how the turn ran: steps, latency, which model planned it. A measurement of this product, not of the weather' },
   { selector: '.g-tally', because: 'what was asked and how much came back; a count of tasks, not a retrieved value' },
   /* card.recorded.test.tsx: "reports the recorded turn as asked, answered and incomplete" asserts this count

@@ -798,6 +798,14 @@ export function spectrumAt(position: SolarPosition, scheme: Scheme = 'system'): 
       : skyAt(position.altitude, position.hourAngle, ascending),
     SKY_CHROMA);
   const rules = scheme === 'dark' ? DARK_RULES : scheme === 'light' ? LIGHT_RULES : rulesFor(position.altitude, ascending);
+  return composeSpectrum(position, c, s, rules);
+}
+
+/* The four groups above choose WHICH hour this is; everything below turns that choice into the thirty-two
+   properties, and is identical whichever set of anchors was walked to reach it. It is a separate function
+   so a second family of anchors - Meridian's own, below - can reach it without restating sixty lines of
+   wash ladder, fill and elevation that have nothing to do with which anchors were chosen. */
+function composeSpectrum(position: SolarPosition, c: CriticalPalette, s: Sky, rules: MaterialRules): Spectrum {
   /* The translucent ladder belongs to whoever decides whether this page is dark or light, and since the
      scheme arrived that is no longer the sun. It used to live only in the `[data-hour]` blocks, which
      still follow the sun - so a reader who forced dark at daybreak got a page painted dark by the
@@ -889,4 +897,112 @@ export function applySpectrum(el: HTMLElement, spectrum: Spectrum): void {
     on the last instant it painted. */
 export function clearSpectrum(el: HTMLElement): void {
   SPECTRUM_PROPERTIES.forEach(name => el.style.removeProperty(name));
+}
+
+/* ---- Meridian: three planes, and a day that goes cool at night ---------------------------------------- */
+/* THE THIRD REVISION, 23 September, and the two corrections that drove it.
+
+   ONE. The second revision made the whole day warm, including midnight, and warm light at midnight is
+   simply wrong - it reads as a lamp left on in an empty room. Real night light is COOL. So the day now
+   travels: a cool slate room at midnight, warm as first light arrives, neutral and bright at high sun,
+   warm umber again at dusk, back to slate. The amber accent does NOT travel with it. An amber lamp in a
+   cool grey room is one of the strongest pairings there is, and keeping the accent fixed is what makes the
+   ground's own temperature legible as a change rather than as a different product.
+
+   TWO. The interface had no structure, only surfaces. Every plane sat inside a tenth of a luminance step of
+   every other, so there was nothing for the eye to rank. It now has four planes with real distance between
+   them, darkest to lightest:
+   
+       rail    0.008   near-black. The chrome.
+       bar     0.64    grey. Supporting.
+       ground  0.81    the living surface the atmosphere is drawn on.
+       sheet   0.99    white. The conversation sits here, and it is the brightest thing on screen.
+   
+   That last line is the point. The chat is not a layer under a decoration; it is the lit object and
+   everything else steps back from it. It also, finally, gives the atmosphere somewhere to live: a contour
+   drawn at a fifth of an alpha is invisible on near-white paper and perfectly legible on a 0.81 ground,
+   which is why the background has read as dead through two revisions of trying to make it move faster.
+   
+   Every ink clears AA on every plane it is set on, worst case 4.5:1, measured before these values were
+   written and swept every fifteen minutes of a day in meridianSpectrum.test.ts. The four published hazard
+   colours are not touched by any of it. */
+
+/* Midnight: a cool slate room. The one hour with no warmth in the ground at all. */
+const MERIDIAN_NIGHT_C: CriticalPalette = {
+  voidHex: '#c9cbca', bg: '#dedfdd', raise: '#fcfcfb', raise2: '#eaebea', line: '#bcbfbe', lineSoft: '#d0d2d1',
+  paper: '#14181a', mist: '#3f464a', mist2: '#464e53',
+  accent: '#74420f', accent2: '#603509', accentWash: 'rgba(116, 66, 15, 0.13)', mark2: '#8e6636',
+  glass: 'rgba(252, 252, 251, 0.90)', glass2: 'rgba(252, 252, 251, 0.76)', scrim: 'rgba(20, 24, 26, 0.44)',
+  railStop1: 'rgba(20, 22, 24, 0.98)', railStop2: 'rgba(16, 18, 20, 1)', grainA: 0.026,
+};
+/* First light: the warmth arrives in the ground, never in the ink. */
+const MERIDIAN_DAYBREAK_C: CriticalPalette = {
+  voidHex: '#ded2c2', bg: '#efe7da', raise: '#fffdf9', raise2: '#f1e9dc', line: '#cdbfab', lineSoft: '#dfd4c4',
+  paper: '#221b12', mist: '#574835', mist2: '#5e503f',
+  accent: '#7f400e', accent2: '#6e360b', accentWash: 'rgba(127, 64, 14, 0.13)', mark2: '#b57339',
+  glass: 'rgba(255, 253, 249, 0.90)', glass2: 'rgba(255, 253, 249, 0.76)', scrim: 'rgba(34, 27, 18, 0.44)',
+  railStop1: 'rgba(26, 22, 17, 0.98)', railStop2: 'rgba(21, 18, 14, 1)', grainA: 0.026,
+};
+/* High sun: neutral and bright. The reference hour. */
+const MERIDIAN_NOON_C: CriticalPalette = {
+  voidHex: '#dcdbd3', bg: '#ecebe4', raise: '#fffffc', raise2: '#f1f0ea', line: '#c7c6bd', lineSoft: '#dcdbd3',
+  paper: '#191a16', mist: '#4b4c44', mist2: '#52534b',
+  accent: '#7c420b', accent2: '#6b3807', accentWash: 'rgba(124, 66, 11, 0.13)', mark2: '#a2762f',
+  glass: 'rgba(255, 255, 252, 0.90)', glass2: 'rgba(255, 255, 252, 0.76)', scrim: 'rgba(25, 26, 22, 0.44)',
+  railStop1: 'rgba(22, 23, 18, 0.98)', railStop2: 'rgba(18, 19, 15, 1)', grainA: 0.026,
+};
+/* Last light: umber, and deeper than the morning. */
+const MERIDIAN_DUSK_C: CriticalPalette = {
+  voidHex: '#ddd0c6', bg: '#ede3d9', raise: '#fefbf7', raise2: '#f0e7de', line: '#cbbaac', lineSoft: '#ded1c5',
+  paper: '#201814', mist: '#544339', mist2: '#5b4a40',
+  accent: '#793a14', accent2: '#673114', accentWash: 'rgba(121, 58, 20, 0.13)', mark2: '#a96844',
+  glass: 'rgba(254, 251, 247, 0.90)', glass2: 'rgba(254, 251, 247, 0.76)', scrim: 'rgba(32, 24, 20, 0.44)',
+  railStop1: 'rgba(24, 19, 16, 0.98)', railStop2: 'rgba(19, 15, 13, 1)', grainA: 0.026,
+};
+
+const MERIDIAN_NIGHT_SKY: Sky = { sky1: '#d4d6d5', sky2: '#e4e5e3', vignette: 'rgba(60, 70, 76, 0.16)' };
+const MERIDIAN_DAWN_SKY: Sky = { sky1: '#e8dcca', sky2: '#f4ece0', vignette: 'rgba(120, 96, 64, 0.16)' };
+const MERIDIAN_NOON_SKY: Sky = { sky1: '#e3e2da', sky2: '#f1f0e9', vignette: 'rgba(84, 86, 74, 0.14)' };
+const MERIDIAN_DUSK_SKY: Sky = { sky1: '#e6d9cd', sky2: '#f2e9df', vignette: 'rgba(116, 88, 68, 0.16)' };
+
+const MERIDIAN_ANCHORS: [number, CriticalPalette][] = [
+  [0, MERIDIAN_NIGHT_C], [0.25, MERIDIAN_DAYBREAK_C], [0.5, MERIDIAN_NOON_C], [0.75, MERIDIAN_DUSK_C],
+  [1, MERIDIAN_NIGHT_C],
+];
+const MERIDIAN_SKY_ANCHORS: [number, Sky][] = [
+  [0, MERIDIAN_NIGHT_SKY], [0.25, MERIDIAN_DAWN_SKY], [0.5, MERIDIAN_NOON_SKY], [0.75, MERIDIAN_DUSK_SKY],
+  [1, MERIDIAN_NIGHT_SKY],
+];
+
+/* THE RAIL AND THE BAR ARE SET, NOT SOLVED. `materialsAt` derives the four materials as translucent films
+   over the ground, which cannot produce a near-black rail under a light page by construction - a film over
+   paper is paper. The two structural planes are therefore given their own tone per hour and interpolated
+   on the same clock as everything else. The rail's own INKS do not drift at all: the chrome is constant and
+   only its temperature moves, which is why they are declared once in meridian.css rather than here. */
+const MERIDIAN_RAIL: [number, string][] = [
+  [0, '#141618'], [0.25, '#1a1611'], [0.5, '#161712'], [0.75, '#181310'], [1, '#141618'],
+];
+const MERIDIAN_BAR: [number, string][] = [
+  [0, '#c9cbca'], [0.25, '#ddd0be'], [0.5, '#d0cfc7'], [0.75, '#d3c6ba'], [1, '#c9cbca'],
+];
+
+/* The ground is a mid tone now, so its own chroma is left almost exactly where it was authored: lifting it
+   the way a dark family needs would tip the warm hours into orange. */
+const MERIDIAN_CHROMA = 0.9;
+
+/** The selected light identity at one solar position. Always light, always the same room, lit differently. */
+export function meridianSpectrumAt(position: SolarPosition): Spectrum {
+  const c = atClock(position.hourAngle, MERIDIAN_ANCHORS, mixCritical);
+  const s = saturatedSky(atClock(position.hourAngle, MERIDIAN_SKY_ANCHORS, mixSky), MERIDIAN_CHROMA);
+  const rail = atClock(position.hourAngle, MERIDIAN_RAIL, mixHexValue);
+  const bar = atClock(position.hourAngle, MERIDIAN_BAR, mixHexValue);
+  return {
+    ...composeSpectrum(position, c, s, LIGHT_RULES),
+    '--g-rail-fill': rail,
+    '--g-rail-bg': rail,
+    /* The rail is near-black at every hour, so its icons are the rail's own light ink rather than the
+       page's dark one. Without this the solved value put charcoal icons on a charcoal rail. */
+    '--g-rail-icon': '#ada599',
+    '--g-bar-fill': bar,
+  };
 }

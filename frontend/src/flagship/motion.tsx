@@ -1,11 +1,20 @@
 /* Motion that answers the reader.
    ============================================================================
-   Three pieces, used once each per answer: a value counts from zero to the number the tool returned; a
-   block rises into place when it lands; the sentence reveals word by word. None of them loops, none of them
-   runs on hover, and every one collapses to a plain render under prefers-reduced-motion and in tests. */
+   Three pieces, used once each per answer: a value arrives; a block rises into place when it lands; the
+   sentence reveals word by word. None of them loops, none of them runs on hover, and every one collapses
+   to a plain render under prefers-reduced-motion and in tests.
+
+   THE VALUE DOES NOT COUNT UP, AND THAT IS A PRODUCT RULE RATHER THAN A TASTE. It used to: it animated
+   from zero to the retrieved number over nine hundred milliseconds, which meant that for most of a second
+   this page displayed measurements at full size, in the machine face, beside a real source and a real
+   window - that the source never published. 0.0, 3.1, 7.4 and forty other readings of Pune's rainfall
+   that no tool ever returned. Every one of them was a false claim with a citation under it, and any
+   screenshot, print or photograph taken inside that window captured one. The engine spends a whole
+   retrieval layer refusing to state what it has not read; the presentation layer may not undo that for a
+   flourish. So the value is exact from its first painted frame and what moves is the PRESENTATION of it. */
 
 import { animate, useReducedMotion } from 'motion/react';
-import { useEffect, useRef, useState, type ReactNode } from 'react';
+import { useEffect, useRef, type ReactNode } from 'react';
 
 /** True when motion should not run: the reader asked for less, or there is no real browser to run it in. */
 export function useStill(): boolean {
@@ -13,34 +22,32 @@ export function useStill(): boolean {
   return Boolean(reduced) || typeof window === 'undefined' || !('requestAnimationFrame' in window) || navigator.userAgent.includes('jsdom');
 }
 
-/** A numeral that counts to the value the tool returned, starting the moment it mounts so it has settled
-    within a second of appearing. The text content is the exact value once settled, so a test or a reader
-    reading the DOM sees the tool's number, never an interpolation. */
+/** The tool's value, exact from the first frame it paints, arriving rather than accumulating.
+
+    The name is kept because this is still the one animated numeral in the product and every call site
+    means the same thing by it; what changed is that the animation is now on the element and never on the
+    number. A reader who photographs this mid-entrance gets a slightly faint, slightly low 9.6 - which is
+    9.6. A reader who photographed the previous version mid-count got 4.1.
+
+    Under prefers-reduced-motion, or anywhere without a real browser, it is a plain span. */
 export function AnimatedNumber({ value, className }: { value: string; className?: string }) {
   const still = useStill();
-  const numeric = /^-?\d+(?:\.\d+)?$/.test(value.trim());
-  const decimals = numeric && value.includes('.') ? value.split('.')[1].length : 0;
-  const target = numeric ? Number(value) : NaN;
-  const [shown, setShown] = useState(still || !numeric ? value : '0');
   const ref = useRef<HTMLSpanElement | null>(null);
 
   useEffect(() => {
-    if (still || !numeric) {
-      setShown(value);
-      return;
-    }
-    const controls = animate(0, target, {
-      duration: 0.9,
-      ease: [0.2, 0.8, 0.2, 1],
-      onUpdate: latest => setShown(latest.toFixed(decimals)),
-      onComplete: () => setShown(value),
-    });
+    const element = ref.current;
+    if (still || !element) return;
+    /* Opacity and transform only: never width, never font-size. Scaling a numeral to animate it is how a
+       reading ends up sub-pixel blurred at exactly the moment a reader is trying to read it. */
+    const controls = animate(element,
+      { opacity: [0, 1], transform: ['translateY(6px)', 'translateY(0px)'] },
+      { duration: 0.42, ease: [0.2, 0.8, 0.2, 1] });
     return () => controls.stop();
-  }, [value, still, numeric, target, decimals]);
+  }, [still, value]);
 
   return (
     <span ref={ref} className={className} data-value={value}>
-      {shown}
+      {value}
     </span>
   );
 }

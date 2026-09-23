@@ -10,12 +10,15 @@
    The panel beside this bar is where a place is changed. */
 
 import { useTranslation } from 'react-i18next';
-import { Download, PanelLeft, SlidersHorizontal } from 'lucide-react';
+import { Download, PanelLeft, SlidersHorizontal, Wind } from 'lucide-react';
 import { SkyGlyphIcon } from '../shell/icons';
 import type { SkyReading } from './sky';
 import { stationSource } from './Welcome';
+import { shortPlace } from '../lib/locale';
 
 export type TopBarProps = {
+  atmosphere?: boolean;
+  onToggleAtmosphere?: () => void;
   /** The question this conversation opened with, which is the only name it has ever had. */
   title: string;
   chatting: boolean;
@@ -27,7 +30,7 @@ export type TopBarProps = {
   onExport: (() => void) | null;
 };
 
-export function TopBar({ title, chatting, sky, panelOpen, onTogglePanel, onToggleRail, onExport }: TopBarProps) {
+export function TopBar({ atmosphere, onToggleAtmosphere, title, chatting, sky, panelOpen, onTogglePanel, onToggleRail, onExport }: TopBarProps) {
   const { t } = useTranslation();
   const hasSky = Boolean(sky?.place || sky?.temperature || sky?.condition);
 
@@ -39,9 +42,11 @@ export function TopBar({ title, chatting, sky, panelOpen, onTogglePanel, onToggl
         </button>
         {/* The page's h1 only once a conversation exists: on the welcome the greeting is the heading, and
             two h1s on one page is a structure a screen reader has to guess at. */}
+        <div className="g-top-identity"><span className="g-wordmark">WeatherGPT</span>
         {chatting
           ? <h1 className="g-top-title" title={title}>{title}</h1>
           : <p className="g-top-title" title={title}>{title}</p>}
+        </div>
       </div>
 
       {/* The value and the line that owns it, in one region the audit checks by content. `data-lead` is the
@@ -57,7 +62,7 @@ export function TopBar({ title, chatting, sky, panelOpen, onTogglePanel, onToggl
           style={{ flexDirection: 'row', flexWrap: 'wrap', justifyContent: 'flex-end', columnGap: '7px', rowGap: '2px', padding: 0 }}
         >
           {sky?.glyph ? <SkyGlyphIcon glyph={sky.glyph} size={15} strokeWidth={1.5} aria-hidden="true" /> : null}
-          {sky?.place ? <span className="g-skyline-place">{sky.place}</span> : null}
+          {sky?.place ? <span className="g-skyline-place" title={sky.place}>{shortPlace(sky.place)}</span> : null}
           {sky?.temperature ? <span className="g-skyline-value">{sky.temperature}{sky.unit || ''}</span> : null}
           {sky?.condition ? <span className="g-skyline-cond">{sky.condition}</span> : null}
           {/* The station's source line, here ONLY while the front door is not on screen.
@@ -82,6 +87,7 @@ export function TopBar({ title, chatting, sky, panelOpen, onTogglePanel, onToggl
       ) : null}
 
       <div className="g-top-left">
+        {onToggleAtmosphere ? <button type="button" className="g-act" onClick={onToggleAtmosphere} aria-pressed={atmosphere} aria-label={atmosphere ? 'Pause background motion' : 'Resume background motion'} title={atmosphere ? 'Pause background motion' : 'Resume background motion'}><Wind size={17} aria-hidden="true" /></button> : null}
         {/* The whole exchange, not one turn: the per-turn actions live under each answer, and a reader
             exporting a conversation should not have to do it one card at a time. */}
         {onExport ? (

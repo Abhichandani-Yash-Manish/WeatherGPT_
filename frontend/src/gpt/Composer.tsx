@@ -6,9 +6,10 @@
 
 import { useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { ArrowUp, Check, Mic, Square, X } from 'lucide-react';
+import { ArrowUp, Check, ChevronDown, MapPin, Mic, Square, X } from 'lucide-react';
 import { transcribe } from '../chat/api';
 import { blobToBase64, startRecording, type Recorder } from '../chat/voice';
+import { shortPlace } from '../lib/locale';
 
 export type ComposerProps = {
   draft: string;
@@ -18,9 +19,11 @@ export type ComposerProps = {
   busy: boolean;
   language: string;
   placeholder?: string;
+  place?: string | null;
+  onContext?: () => void;
 };
 
-export function Composer({ draft, onDraft, onSend, onStop, busy, language, placeholder }: ComposerProps) {
+export function Composer({ draft, onDraft, onSend, onStop, busy, language, placeholder, place, onContext }: ComposerProps) {
   const { t } = useTranslation();
   const box = useRef<HTMLTextAreaElement | null>(null);
   const recorder = useRef<Recorder | null>(null);
@@ -84,6 +87,10 @@ export function Composer({ draft, onDraft, onSend, onStop, busy, language, place
 
   return (
     <div className="g-composer">
+      {onContext ? <div className="g-composer-context">
+        <button type="button" onClick={onContext} title={place ? 'Place held for this conversation: ' + place : 'Choose a place in the reading panel'}><MapPin size={14} aria-hidden="true" /><span>{place ? shortPlace(place) : 'Set a place'}</span></button>
+        <button type="button" onClick={onContext} aria-label="Choose the answer language"><span>{language || 'Auto language'}</span><ChevronDown size={13} aria-hidden="true" /></button>
+      </div> : null}
       {/* What the microphone heard, for correction. Nothing is sent until the reader accepts it. */}
       {heard ? (
         <div className="g-heard" data-testid="transcript-panel">
@@ -111,7 +118,7 @@ export function Composer({ draft, onDraft, onSend, onStop, busy, language, place
         placeholder={placeholder || t('composer.placeholder')}
         onChange={event => onDraft(event.target.value)}
         onKeyDown={event => {
-          if (event.key === 'Enter' && !event.shiftKey) {
+          if (event.key === 'Enter' && !event.shiftKey && !event.nativeEvent.isComposing && event.keyCode !== 229) {
             event.preventDefault();
             submit();
           }

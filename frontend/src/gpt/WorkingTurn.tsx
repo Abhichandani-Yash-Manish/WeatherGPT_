@@ -56,9 +56,9 @@ export function WorkingTurn({ working, current, stages, firstReading, queueLine 
             paused={working.stopRequested}
           />
         </span>
-        <span className="g-working-stage" role="status" aria-live="polite">
+        <span className="g-working-stage" role="status" aria-live="polite"><span key={current || 'started'} className="g-stage-label">
           {current ? stageLabel(current) : t('working.default')}
-        </span>
+        </span></span>
         {/* Outside the live region: a clock that ticks once a second would be announced once a second,
             which is unusable with a screen reader. The DELTA, not the clock — this once read the Unix
             epoch in seconds, so a four-second-old turn reported "497172 h 14 min since you asked". */}
@@ -100,8 +100,7 @@ export function WorkingTurn({ working, current, stages, firstReading, queueLine 
         <summary>{t('working.whatItsDoing')}</summary>
         <div className="g-fold-body">
           <p className="g-working-note">
-            Resolving the place and window, then retrieving evidence. A local model is interpreting your
-            question, so this can take up to about a minute.
+            The stages above are reported by the engine as it works. Source response times and model availability affect how long this takes.
           </p>
           {firstReading ? (
             <p className="g-reading-line" data-testid="reading-line">

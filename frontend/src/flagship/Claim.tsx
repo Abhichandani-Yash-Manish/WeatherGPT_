@@ -6,7 +6,7 @@
    prints its absence; a gap in the window stays hatched. Depth — the receipt, the series, the district
    grid — unfolds under the claim that owns it. Glass over the atmosphere, never a card in a grid. */
 
-import { useState, type CSSProperties, type ReactNode } from 'react';
+import { useEffect, useRef, useState, type CSSProperties, type ReactNode } from 'react';
 import { Check, Copy } from 'lucide-react';
 import { copyText } from '../chat/actions';
 import { AnimatedNumber } from './motion';
@@ -48,6 +48,15 @@ export type ClaimProps = {
 
 export function Claim({ eyebrow, value, unit, hazard, hazardColour, note, source, spans, compact, lead, row, depth, testId, copy, children }: ClaimProps) {
   const [copied, setCopied] = useState('');
+  const copyTimer = useRef<number | null>(null);
+  const mounted = useRef(true);
+  useEffect(() => {
+    mounted.current = true;
+    return () => {
+      mounted.current = false;
+      if (copyTimer.current !== null) window.clearTimeout(copyTimer.current);
+    };
+  }, []);
   const absent = !hazard && (value === undefined || value === null || value === '');
   const text = typeof value === 'string' || typeof value === 'number' ? String(value) : null;
   return (
@@ -74,8 +83,10 @@ export function Claim({ eyebrow, value, unit, hazard, hazardColour, note, source
           title="Copy this value with its place, window and source"
           onClick={async () => {
             const outcome = await copyText(copy);
+            if (!mounted.current) return;
+            if (copyTimer.current !== null) window.clearTimeout(copyTimer.current);
             setCopied(outcome === 'copied' ? 'copied' : 'refused');
-            window.setTimeout(() => setCopied(''), 2400);
+            copyTimer.current = window.setTimeout(() => setCopied(''), 2400);
           }}
         >
           {copied === 'copied' ? <Check size={12} aria-hidden="true" /> : <Copy size={12} aria-hidden="true" />}

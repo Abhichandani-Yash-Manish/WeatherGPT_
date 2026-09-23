@@ -20,13 +20,14 @@
    desktop where the rail carries it already, the hour word under a greeting that states the hour, and
    "name a place and it becomes yours" under a composer whose placeholder asks for exactly that. */
 
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { istStamp } from '../lib/time';
+import { shortPlace } from '../lib/locale';
 import { SkyGlyphIcon } from '../shell/icons';
 import { greetingKey, useSky, type SkyReading } from './sky';
-import { solarPosition, type Hour } from './fieldPaint';
+import { type Hour } from './fieldPaint';
+import { DayArc } from './DayArc';
 import { QuoteLine } from './QuoteLine';
-import { Horizon } from './Horizon';
 import { PlacePicker } from './PlacePicker';
 import { useShellPrefs } from './shellState';
 import { rememberPlace, useWorkingPlace } from '../modules/Evidence';
@@ -100,18 +101,43 @@ export function Welcome({ hour }: { hour: Hour }) {
         WeatherGPT
       </p>
 
-      {/* The glyph is the condition when a station printed one, and the hour otherwise. Both are honest;
-          only one of them is a weather statement, and it is the one that carries a source. */}
-      <div className="w-glyph" data-kind={reading?.glyph ? 'condition' : 'hour'} aria-hidden="true">
-        {reading?.glyph ? (
-          <>
-            <span className="w-bloom" />
-            <SkyGlyphIcon glyph={reading.glyph} size={74} strokeWidth={0.95} />
-          </>
-        ) : (
-          <HourDial at={at} latitude={latitude} longitude={longitude} />
-        )}
+      {/* THE MASTHEAD. Three true things, in the machine face, before anything else: the date and minute
+          this page is being read at, and the place every answer below it will be about. It is the first
+          line an evaluator reads and it is entirely checkable - `istStamp` is the same stamp every claim
+          in the product carries, so the front door states its clock in the same words a receipt does. */}
+      <p className="w-strip">
+        <span>{istStamp(at.toISOString())}</span>
+        <span className="w-strip-dot" aria-hidden="true" />
+        <span className="w-strip-place" data-held={place ? 'true' : 'false'}>
+          {place ? (alias || shortPlace(place)) : t('welcome.noPlaceHeld')}
+        </span>
+      </p>
+
+      {/* THE HERO: today's sun, plotted across the whole width.
+
+          Three versions of this have now stood here. A 96px moon in a blurred halo, which said nothing. A
+          240px clock face, which was true but was a widget in the corner of a wide screen. This is the
+          same astronomy drawn as the plot it always was - the sun's altitude through the day, with the
+          daylight filled in - and the fill is the one large area of saturated colour anywhere in this
+          product. That is deliberate: a front door with no colour on it has no force, and this is the only
+          colour the page can show that is derived from something real.
+
+          `data-kind` still reports which of the two states this screen is in - a station printed a
+          condition, or it did not - because that distinction is real and is checked. The CONDITION itself
+          is not drawn here: a printed condition is a weather statement and it belongs beside the source
+          line that owns it, below, not standing at display size where nothing says where it came from. */}
+      <div className="w-glyph" data-kind={reading?.glyph ? 'condition' : 'hour'}>
+        <DayArc at={at} latitude={latitude} longitude={longitude} lightLabel={t('welcome.ofLight')} />
       </div>
+
+      {/* THE BODY: the invitation on the left, what is happening right now on the right.
+
+          These were two of nine blocks stacked down the middle of the screen. They belong side by side -
+          one is what this product will do for you, the other is the only thing on the front door that is
+          actually weather - and a front door that reads as a list of nine unrelated things is the reason
+          this screen kept feeling like a placeholder. */}
+      <div className="w-body">
+      <div className="w-say">
 
       {/* Keyed on the greeting, so the one thing on this screen that the hour changes is the one thing that
           animates when it changes: "Good afternoon" becomes "Good evening" on the element the reader is
@@ -121,15 +147,15 @@ export function Welcome({ hour }: { hour: Hour }) {
           outgoing text; React replaces the text node in one commit, so what this takes is the entrance. */}
       <h1 className="w-greeting" key={t(greetingKey(at))}>{t(greetingKey(at))}</h1>
 
+      {/* The one sentence a first-time reader - or an evaluator with four minutes - needs, and the only
+          place on this product where it is said. Everything else on screen demonstrates it; this states
+          it. It is a claim about how this workspace behaves, not about the weather, so it carries no
+          source line and needs none. */}
+      <p className="w-lede">{t('welcome.lede')}</p>
+
       {/* The place, and the one control on this screen that can change what everything else is about. A
           reader who has no place is shown the hour and the sun, and this is how they get their own sky. */}
-      {place ? (
-        <p className="w-place">
-          <button type="button" className="w-place-button" onClick={() => setPicking(true)} title={'Change the place — ' + place}>
-            {alias || place}
-          </button>
-        </p>
-      ) : (
+      {place ? null : (
         <>
           <p className="w-place w-place-none">
             <button type="button" className="w-place-button" onClick={() => setPicking(true)}>
@@ -164,6 +190,8 @@ export function Welcome({ hour }: { hour: Hour }) {
         </>
       )}
 
+      </div>
+
       {/* The reading, as the station printed it, and the source line that owns it — ONE region, because a
           number and its provenance printed as two adjacent paragraphs are still a number a reader has to
           take on trust. The region is the shape the audit checks by content (a claim, with its source
@@ -171,7 +199,7 @@ export function Welcome({ hour }: { hour: Hour }) {
           exactly where they were in the column, because on this screen the ground is doing the decorating.
           Absent stays absent: no placeholder value is ever shown where a source said nothing. */}
       {reading && (reading.temperature || reading.condition || source) ? (
-        <div className="g-claim" style={{ display: 'contents' }}>
+        <div className="g-claim w-now">
           {/* THE HERO, and which thing is the hero depends on what the source actually stated.
 
               A number whose unit nobody stated is not a reading, it is a digit. This screen used to set
@@ -190,6 +218,10 @@ export function Welcome({ hour }: { hour: Hour }) {
               caveat belongs. It is not a reason to refuse to show the reading. */}
           {reading.temperature || reading.condition ? (
             <p className="w-reading">
+              {/* The glyph moved here from the top of the screen. It is a picture of a word a station
+                  printed, so it belongs inside the claim, one line above the source that printed it -
+                  not alone at the top of the page where nothing around it says who said so. */}
+              {reading.glyph ? <SkyGlyphIcon glyph={reading.glyph} size={30} strokeWidth={1.1} /> : null}
               {reading.temperature ? (
                 <span className="w-temp">
                   {reading.temperature}
@@ -214,6 +246,8 @@ export function Welcome({ hour }: { hour: Hour }) {
         </div>
       ) : null}
 
+      </div>
+
       {/* No place held means no read was made: the screen says it is reading rather than showing a
           placeholder value, and once it has answered it says nothing at all. */}
       {!reading && sky.isPending ? <p className="w-source">{t('welcome.readingStation')}</p> : null}
@@ -223,72 +257,7 @@ export function Welcome({ hour }: { hour: Hour }) {
           thought rather than the other way round. */}
       <QuoteLine at={at} hour={hour} />
 
-      {/* The city ends the column. It is here rather than in the background layer because a decoration
-          the content is drawn ON TOP OF is not a decoration - the chips used to sit across the roofs and
-          "Today across India" landed in the middle of a tower. As the column's last element it is at the
-          column's own width, nothing is drawn after it, and it cannot collide with anything. */}
-      <Horizon />
-
       {picking ? <PlacePicker onClose={() => setPicking(false)} /> : null}
     </div>
-  );
-}
-
-/* The hour, drawn as the instrument it is: the sun's own position over a horizon at this place and minute —
-   altitude for the height, hour angle for the east–west place, so the disc sits on the line at dawn and dusk
-   and stands high at solar noon. This is astronomy. It says what time of day it is, and nothing at all about
-   the weather, which is why it is drawn quietly and why a station report takes the mark from it.
-
-   There was a semicircular arc here for the sun's path, and it was removed for a reason worth keeping: a
-   half-circle says the sun rises due east, sets due west and passes through the zenith, and at 23°N in
-   December none of that is true. A mark drawn from astronomy does not get to be approximate astronomy, so
-   what is left are the two things that are exactly right — where the sun is, and how high above the line.
-
-   A crescent when the sun is below civil twilight, which is the same edge the ground changes colour at. */
-function HourDial({ at, latitude, longitude }: { at: Date; latitude: number; longitude: number }) {
-  const { altitude, hourAngle } = useMemo(
-    () => solarPosition(latitude, longitude, at),
-    [latitude, longitude, at],
-  );
-  const night = altitude < -6;
-  /* −90°..+90° across the dial and 0°..90° up it, both clamped so a disc never leaves its box. */
-  const x = 32 + (Math.min(90, Math.max(-90, hourAngle)) / 90) * 21;
-  const y = 46 - (Math.min(90, Math.max(0, altitude)) / 90) * 28;
-  /* The glow is a style layer rather than an SVG gradient, because it lights in the ground's own accent
-     token and a gradient stop cannot read a custom property. It is painted 180% of the mark's width,
-     centred on it, so a point at x/64 of the mark sits at ((x/64) + 0.4) / 1.8 of the glow. */
-  const glow = (v: number) => (((v / 64 + 0.4) / 1.8) * 100).toFixed(1) + '%';
-
-  return (
-    <>
-      <span className="w-bloom" style={night ? undefined : ({ '--w-x': glow(x), '--w-y': glow(y) } as React.CSSProperties)} />
-      {/* Ids are literal, not generated: a fragment reference into a generated React id does not resolve,
-          which is how the first version of this mark silently lost its horizon line. */}
-      <svg viewBox="0 0 64 64" width={96} height={96} aria-hidden="true">
-        {/* A horizon, not a rule: it fades out at both ends. userSpaceOnUse, not the default: a
-            horizontal line has a bounding box with no height in it, and a gradient measured on that box is
-            never painted at all — which is how this line went missing without a single error being raised. */}
-        <linearGradient id="w-horizon-fade" gradientUnits="userSpaceOnUse" x1="3" y1="0" x2="61" y2="0">
-          <stop offset="0" stopColor="currentColor" stopOpacity="0.08" />
-          <stop offset="0.22" stopColor="currentColor" stopOpacity="0.5" />
-          <stop offset="0.78" stopColor="currentColor" stopOpacity="0.5" />
-          <stop offset="1" stopColor="currentColor" stopOpacity="0.08" />
-        </linearGradient>
-        <line x1="3" y1="46" x2="61" y2="46" stroke="url(#w-horizon-fade)" strokeWidth="1.4" />
-        {night ? (
-          <>
-            <mask id="w-moon-cut">
-              <rect width="64" height="64" fill="#fff" />
-              <circle cx="37" cy="21.6" r="8.2" fill="#000" />
-            </mask>
-            <circle cx="32" cy="26" r="8.4" style={{ fill: 'var(--g-accent)' }} mask="url(#w-moon-cut)" />
-          </>
-        ) : (
-          /* The disc is the one lit thing on this screen that is not a reading: it is the sun, and it is
-             where the sun is. Nothing else in the mark carries the accent. */
-          <circle cx={x} cy={y} r="7" style={{ fill: 'var(--g-accent)' }} />
-        )}
-      </svg>
-    </>
   );
 }

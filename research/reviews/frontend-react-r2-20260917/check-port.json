@@ -103,7 +103,7 @@
     {
      "spec": "src/App.test.tsx",
      "tests": [
-      "shows the front door at an empty address, with one way in and a computed light",
+      "shows the front door at an empty address, with one way in and the selected light atmosphere",
       "hands the front door question to the conversation",
       "renders the surface the address names, with the conversation still beside it",
       "names the surface in the tab, the history entry and a bookmark",

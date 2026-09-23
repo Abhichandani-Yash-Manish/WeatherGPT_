@@ -38,6 +38,8 @@ import { useSky } from './sky';
 import { stationSource } from './Welcome';
 import { SkyGlyphIcon } from '../shell/icons';
 import { ShortcutDialog } from './Shortcuts';
+import { Mark } from './Mark';
+import { shortPlace } from '../lib/locale';
 
 const DAY = 86_400_000;
 
@@ -262,7 +264,7 @@ export function Rail({
     <aside className="g-rail" aria-label="Workspace" data-collapsed={collapsed ? 'true' : 'false'}>
       <div className="g-rail-head">
         <span className="g-brand">
-          <span className="g-brand-mark" aria-hidden="true" />
+          <Mark size={30} className="g-brand-mark" />
           <span className="g-brand-name">WeatherGPT</span>
         </span>
         <span className="g-rail-controls">
@@ -377,7 +379,9 @@ export function Rail({
           <div className="g-claim" style={{ display: 'contents' }}>
             <div className="g-place" aria-current={place ? 'true' : undefined}>
               <MapPin size={14} aria-hidden="true" />
-              <span className="g-place-name" title={reading ? stationSource(reading) : undefined}>{place?.label || t('rail.noPlace')}</span>
+              {/* Shortened for display only: the catalogue's own label is kept in the title, and every value sent
+                  to the engine or printed on a receipt still uses it in full. */}
+              <span className="g-place-name" title={place?.label || undefined}>{place?.label ? shortPlace(place.label) : t('rail.noPlace')}</span>
               {reading && (reading.temperature || reading.glyph) ? (
                 <span className="g-place-reading">
                   {reading.glyph ? <SkyGlyphIcon glyph={reading.glyph} size={13} strokeWidth={1.6} aria-hidden="true" /> : null}
