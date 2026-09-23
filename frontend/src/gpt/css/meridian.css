@@ -720,9 +720,11 @@
   border-color: var(--g-line-soft);
   box-shadow: none;
 }
-/* The reader's own question sits ON the ground, not on a sheet: it is not the thing being read. */
+/* The reader's own question sits ON the ground, not on a sheet: it is not the thing being read. The
+   solved --g-bubble-fill is a warm film meant to catch a dark sky; over paper it came out a saturated
+   yellow and the question read as a sticky note stuck to the page. Warm, but the ground's own warmth. */
 .g[data-design='meridian'] .g-you p {
-  background: var(--g-bubble-fill);
+  background: color-mix(in srgb, var(--g-raise-2) 88%, var(--g-solar) 12%);
   border: 1px solid var(--g-line-soft);
   box-shadow: var(--g-e1);
 }
@@ -846,11 +848,18 @@
    The receipt is not optional - a reading on this product states where it came from, and a spec pins that
    it is not hidden in a title attribute. So the chip becomes two lines: the reading on the first, the
    receipt on the second, at a size that fits what it has to say. */
+/* The bar SIZES TO ITS CONTENT. The station chip grew a second row for its receipt, which is right - the
+   receipt is the longest thing in it and must never be the thing that gets cut - but the bar was still
+   pinned to a 68px min-height with the chip centred in it, so the chip overflowed and the place name was
+   clipped against the bar's own edge. A header that cannot contain its contents is not a header. */
 .g[data-design='meridian'] .g-top {
   background: var(--g-bar-fill);
   border-bottom: 1px solid rgba(25,26,22,.14);
   box-shadow: inset 0 -1px 0 rgba(255,255,255,.35);
+  align-items: center; min-height: 0; height: auto; overflow: visible;
+  padding-block: 11px;
 }
+.g[data-design='meridian'] .g-skyline { align-self: center; }
 /* Two rows, laid out as rows. The grid version of this overflowed its own pill - the receipt was given a
    column span inside a three-column auto grid and pushed the whole element past its max-width, which is
    how a place name ended up printed outside the box that was supposed to contain it. A flex column with
@@ -950,7 +959,7 @@
    snapping off at the horizon - which is what the sky does. */
 .g-bloom[data-bloom='sun'] {
   left: var(--sun-x, 50%); top: var(--sun-y, 30%);
-  width: 104vmax; height: 104vmax; margin: -52vmax 0 0 -52vmax;
+  width: 88vmax; height: 88vmax; margin: -44vmax 0 0 -44vmax;
   background: radial-gradient(circle closest-side,
     color-mix(in srgb, var(--g-solar) 58%, transparent) 0%,
     color-mix(in srgb, var(--g-solar-soft) 26%, transparent) 38%,
@@ -963,7 +972,7 @@
    page, which is why it is cool: a warm room at two in the morning reads as a lamp somebody left on. */
 .g-bloom[data-bloom='sky'] {
   left: 44%; top: 62%;
-  width: 96vmax; height: 96vmax; margin: -48vmax 0 0 -48vmax;
+  width: 78vmax; height: 78vmax; margin: -39vmax 0 0 -39vmax;
   background: radial-gradient(circle closest-side,
     rgba(122, 132, 144, .34) 0%,
     rgba(150, 158, 168, .16) 42%,

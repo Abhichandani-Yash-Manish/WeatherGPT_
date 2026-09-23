@@ -297,7 +297,7 @@ export function drawSkyfield(
 const SLOW_SCALE = 0.5;
 
 /** Grid spacing in CSS pixels. */
-const GRID = 24;
+const GRID = 27;
 /** The largest a cell gets at rest, before activation. */
 const DOT = 4.2;
 /** How long a fired cell takes to fall back, in seconds. */

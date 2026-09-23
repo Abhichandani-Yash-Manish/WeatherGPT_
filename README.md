@@ -11,7 +11,7 @@ Team **Void Pointer** (18) · Disaster Management
 
 </div>
 
-![An answered turn: the finding in the first sentence, the engine's caveat under it, the rest folded away, then the claim the tools own — 0.0 mm with its window, its place, its kind and its source line](docs/images/readme/answer.png)
+![An answered turn on a white sheet over the living ground: the engine's caveat, the rest of the prose folded away, then the claim the tools own — 0.7 mm set at display size in the machine face, with its window, its place, its kind and the minute its source was read](docs/images/readme/answer.png)
 
 ---
 
@@ -284,16 +284,38 @@ cd frontend && node tools/demo.mjs                   # 10 live turns, recorded, 
 
 <table>
 <tr>
-<td width="50%"><img src="docs/images/readme/door-light.png" alt="The front door on the light hours: the live reading, and a fine-line Indian skyline dividing the sky from the composer"></td>
-<td width="50%"><img src="docs/images/readme/door-dark.png" alt="The same door after dark: deep sea-blue ground, the skyline etched in light ink"></td>
-</tr>
-<tr>
-<td width="50%"><img src="docs/images/readme/surface-warnings.png" alt="The warnings surface: district rows in the publisher's own hazard colours with their day windows"></td>
-<td width="50%"><img src="docs/images/readme/surface-climate.png" alt="The climate surface: a published series with its source line and the years the source could not supply"></td>
+<td width="50%"><img src="docs/images/readme/door.png" alt="The front door: a masthead of date, time and held place; today's sun plotted across the full width with the daylight filled in gold; the greeting, and the station's own reading in a card with its source line"></td>
+<td width="50%"><img src="docs/images/readme/surface-dashboard.png" alt="The dashboard: one place read as a picture — the model hour, the nearest station, an eight-day strip and an hourly trend, each value in the machine face with its own source"></td>
 </tr>
 </table>
 
-**The active React interface now uses Meridian Light.** The screenshots above record the earlier solar direction. The selected 22 September design keeps a matte mineral-white ground, restrained weather contours, answer-owned source margins and compatible comparison tables. Background motion responds to actual work and can be paused. The welcome mark still reads the astronomical hour. See [the implementation and verification record](docs/160-meridian-react-ui.md).
+---
+
+## ⭐ The interface is an instrument, and the light in it is real
+
+Four planes, ranked by darkness, so the eye has something to rank: a **near-black rail**, a **grey bar**, a **living ground**, and the conversation on **white sheets**. The chat is the brightest thing on screen, because it is the product.
+
+**The glow behind the page is the sun.** Not a decoration placed by eye — its position comes from the real solar altitude and hour angle at the place you are holding, from the same solver that plots the arc on the front door. It rises at screen left, arcs over through the morning, sets at the right, and goes out below the horizon leaving only the cool ambient. At four in the afternoon the page is lit from the west, because it is.
+
+The palette moves with it. Meridian has its own four hours — a cool slate room at midnight, warm at first light, neutral and bright at high sun, umber at dusk — drifting continuously on the sun rather than stepping between fixed values, and never once leaving the light family. A full day of it is swept every fifteen minutes at four latitudes in `meridianSpectrum.test.ts`: the ground has to stay pale, the rail near-black, every ink has to clear AA on every plane it is set on, and **the hours have to actually differ from each other**.
+
+| | |
+|---|---|
+| The front door's hero | Today's solar altitude, plotted across the full width. Sunrise and sunset solved from the altitude zero-crossings, checked against published almanac times for five place/date pairs, to within ten minutes — the band the low-precision solar position is honestly good to |
+| Every value | Set in Martian Mono, tabular, so a reading looks read off an instrument rather than typed |
+| A retrieved value | Exact from its first painted frame. It used to count up from zero, which meant a second of display-size measurements no source ever published, with a real citation under each one |
+| The background | A contoured pressure field and a firing cell array, both derived from one scalar field, over two blend-mode light layers. Measured at a **9.8 ms median frame** under headless software rasterisation — inside the 16.7 ms a 60 fps budget allows, before any of the compositing a real GPU does for free. The slow layer is rendered at half resolution six times a second and blitted; the array is the only thing redrawn every frame |
+| Reduced motion | One still frame, no loop, no firing. A trail is motion by construction; there is no still version of one |
+
+The atmosphere is decoration and says so: inside an `aria-hidden` ground, no legend, never derived from a retrieved value, and held far below the contrast at which a reader would try to read it.
+
+<table>
+<tr>
+<td width="100%"><img src="docs/images/readme/surface-warnings.png" alt="The warnings surface: the finding stated first — 756 districts, 3,780 district-day rows, and how many days the product printed red, orange and yellow — then the filter and the district-by-day matrix in the publisher's own colours"></td>
+</tr>
+</table>
+
+Every one of the nineteen surfaces leads with **what this read states** — the finding, in the evidence's own terms — before the controls and the tables that prove it. The way back to the conversation sits at the end, where an offer belongs.
 
 ---
 

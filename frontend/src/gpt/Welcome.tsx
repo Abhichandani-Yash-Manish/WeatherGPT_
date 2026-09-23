@@ -87,9 +87,9 @@ export function Welcome({ hour }: { hour: Hour }) {
 
   const reading = sky.data;
   const place = reading?.place ?? null;
-  /* The reader's own name for this place, if they gave it one. A display name only: what is sent to the
-     engine is the label the catalogue returned, and the title above says so. */
-  const alias = place ? prefs.aliases[place] : '';
+  /* The reader's own name for a place, if they gave it one, is read from `prefs.aliases` at each use:
+     the masthead names the HELD place and the reading below names the STATION's, and those are two
+     different places whenever the nearest station is in the next district. */
   const source = reading ? stationSource(reading) : '';
 
   return (
@@ -108,8 +108,13 @@ export function Welcome({ hour }: { hour: Hour }) {
       <p className="w-strip">
         <span>{istStamp(at.toISOString())}</span>
         <span className="w-strip-dot" aria-hidden="true" />
-        <span className="w-strip-place" data-held={place ? 'true' : 'false'}>
-          {place ? (alias || shortPlace(place)) : t('welcome.noPlaceHeld')}
+        {/* THE READER'S OWN HELD PLACE, not the station's.
+            `place` below is the place the nearest-station read came back about, which is not known until
+            that read lands - so for the first second or two of every visit the masthead said "No place
+            held" while the composer two elements down already named the place. The held place is known
+            immediately, it is the reader's own choice, and it is what "where you are" means here. */}
+        <span className="w-strip-place" data-held={held?.label ? 'true' : 'false'}>
+          {held?.label ? (prefs.aliases[held.label] || shortPlace(held.label)) : t('welcome.noPlaceHeld')}
         </span>
       </p>
 
