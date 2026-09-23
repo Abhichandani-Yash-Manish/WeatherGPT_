@@ -21,9 +21,20 @@ export type ComposerProps = {
   placeholder?: string;
   place?: string | null;
   onContext?: () => void;
+  /** Open the place picker. The place control used to call `onContext`, which opened the reading panel -
+      a side panel about sources - so the one control labelled "Set a place" did not set a place. */
+  onPlace?: () => void;
+  /** Set the answer language. The language control used to call `onContext` too, while wearing a chevron
+      that promises a menu; it now opens one. */
+  onLanguage?: (code: string) => void;
+  /** The languages the server says it can answer in, newest read first. */
+  languages?: { code: string; label: string }[];
 };
 
-export function Composer({ draft, onDraft, onSend, onStop, busy, language, placeholder, place, onContext }: ComposerProps) {
+export function Composer({
+  draft, onDraft, onSend, onStop, busy, language, placeholder, place, onContext, onPlace, onLanguage, languages,
+}: ComposerProps) {
+  const [pickingLanguage, setPickingLanguage] = useState(false);
   const { t } = useTranslation();
   const box = useRef<HTMLTextAreaElement | null>(null);
   const recorder = useRef<Recorder | null>(null);
@@ -87,10 +98,6 @@ export function Composer({ draft, onDraft, onSend, onStop, busy, language, place
 
   return (
     <div className="g-composer">
-      {onContext ? <div className="g-composer-context">
-        <button type="button" onClick={onContext} title={place ? 'Place held for this conversation: ' + place : 'Choose a place in the reading panel'}><MapPin size={14} aria-hidden="true" /><span>{place ? shortPlace(place) : 'Set a place'}</span></button>
-        <button type="button" onClick={onContext} aria-label="Choose the answer language"><span>{language || 'Auto language'}</span><ChevronDown size={13} aria-hidden="true" /></button>
-      </div> : null}
       {/* What the microphone heard, for correction. Nothing is sent until the reader accepts it. */}
       {heard ? (
         <div className="g-heard" data-testid="transcript-panel">
@@ -127,6 +134,51 @@ export function Composer({ draft, onDraft, onSend, onStop, busy, language, place
       />
 
       <div className="g-composer-row">
+      {/* THE TWO CONTROLS THAT SAY WHAT THIS ANSWER WILL BE ABOUT, and both of them now do what they say.
+            Until this batch they called one handler between them, which opened the reading panel: pressing
+            "Set a place" opened a list of sources, and pressing a control wearing a dropdown chevron opened
+            the same panel rather than a menu. A control that does not do the thing on its label is worse
+            than no control, because a reader stops trusting the rest of them. */}
+        {onContext ? <div className="g-composer-context">
+          <button
+            type="button"
+            onClick={() => (onPlace ? onPlace() : onContext())}
+            title={place ? 'Change the place this conversation is about — ' + place : 'Choose the place this conversation is about'}
+          >
+            <MapPin size={14} aria-hidden="true" />
+            <span>{place ? shortPlace(place) : 'Set a place'}</span>
+          </button>
+          <div className="g-composer-language">
+            <button
+              type="button"
+              onClick={() => setPickingLanguage(open => !open)}
+              aria-expanded={pickingLanguage}
+              aria-haspopup="menu"
+              title="Choose the language answers are written in"
+            >
+              {/* Short by design: this sits in a row with the place, the microphone and the send, and the
+                full name of the option belongs in the menu rather than on the control that opens it. */}
+            <span>{languages?.find(entry => entry.code === language)?.label || (language ? language : 'Auto')}</span>
+              <ChevronDown size={13} aria-hidden="true" />
+            </button>
+            {pickingLanguage && onLanguage ? (
+              <ul className="g-menu g-language-menu" role="menu" aria-label="Answer language">
+                {[{ code: '', label: 'Auto — match the question' }, ...(languages || [])].map(entry => (
+                  <li key={entry.code || 'auto'}>
+                    <button
+                      type="button"
+                      role="menuitemradio"
+                      aria-checked={(language || '') === entry.code}
+                      onClick={() => { onLanguage(entry.code); setPickingLanguage(false); }}
+                    >
+                      {entry.label}
+                    </button>
+                  </li>
+                ))}
+              </ul>
+            ) : null}
+          </div>
+        </div> : null}
         <button
           type="button"
           className="g-tool"

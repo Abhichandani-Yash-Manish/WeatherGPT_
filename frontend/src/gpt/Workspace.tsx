@@ -9,6 +9,9 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState, useSyncExternalStore } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
+import { getJson } from '../api/client';
+import type { Languages } from '../api/types';
+import { writableLanguages } from '../chat/voice';
 import { ArrowDown, ArrowLeft, MapPin } from 'lucide-react';
 
 import { collectEvidence, personas as readPersonas, searchPlaces, type PlaceMatch } from '../chat/api';
@@ -23,6 +26,7 @@ import { AnswerTurn } from '../chat/AnswerTurn';
 import { Composer } from './Composer';
 import { Field } from './Field';
 import { useAtmosphere } from './atmosphere';
+import { PlacePicker } from './PlacePicker';
 import { hourOf, lightAt } from './fieldPaint';
 import { chromeFor, i18n } from '../i18n';
 import { readSiteLanguage, subscribeSiteLanguage } from '../i18n/siteLanguage';
@@ -500,6 +504,31 @@ export function Workspace({
   };
 
   const atmosphere = useAtmosphere();
+  /* THE PLACE PICKER LIVES HERE NOW.
+     Every "Change" and "Set a place" control in the shell called `onFindPlace`, an OPTIONAL prop that no
+     caller has ever supplied - so `onFindPlace?.()` ran, did nothing, and three separate controls in the
+     rail and the composer did nothing when pressed. Owning the picker in the shell that owns those
+     controls means they work on their own; the optional prop is still called, for a host that wants to
+     know, but nothing depends on it any more. */
+  const [pickingPlace, setPickingPlace] = useState(false);
+  const openPlacePicker = useCallback(() => {
+    setPickingPlace(true);
+    onFindPlace?.();
+  }, [onFindPlace]);
+  /* The languages the server says it can answer in. The reading panel already reads this endpoint; asking
+     for it here costs nothing because React Query returns the same cached entry, and it means the
+     composer's menu and the panel's list can never disagree about what is on offer. */
+  const languageList = useQuery({
+    queryKey: ['languages'],
+    queryFn: () => getJson<Languages>('/api/languages'),
+    staleTime: 300_000,
+  });
+  /* `writableLanguages` is the existing rule for this and it is the right one: only a language whose
+     WRITING this project has actually measured may be offered as an answer language. The first version of
+     this menu read a `answer` key off the payload that has never existed, so it always found nothing and
+     offered "Auto" alone - which is exactly what a reader reported. */
+  const answerLanguages = writableLanguages(languageList.data)
+    .map(entry => ({ code: entry.code, label: entry.native_name || entry.english_name || entry.code }));
   const working = conversation.working;
   const progress = working?.progress;
   /* The stages the engine has been through, with the one it is on marked. A single stage is shown as a single
@@ -534,6 +563,9 @@ export function Workspace({
         language={language}
         place={workingPlace?.label}
         onContext={() => setPrefs({ panel: true })}
+        onPlace={openPlacePicker}
+        onLanguage={onLanguage}
+        languages={answerLanguages}
       />
       {chatting ? (
         <p className="g-hint" id="composer-hint">
@@ -584,6 +616,7 @@ export function Workspace({
       data-busy={Boolean(working && !working.stopRequested)}
     >
       <Field expanded={chatting} sky={mood} />
+      {pickingPlace ? <PlacePicker onClose={() => setPickingPlace(false)} /> : null}
       <button type="button" className="g-scrim" aria-label="Close the conversation list" onClick={() => setRailOpen(false)} />
       {/* One rail for the whole product: the four homes, the place the answers are about, and the reader's
           own conversations. It replaces a 56px strip and a 264px list standing side by side. */}
@@ -611,7 +644,7 @@ export function Workspace({
             ? { ...prefs.aliases, [label]: name }
             : Object.fromEntries(Object.entries(prefs.aliases).filter(([key]) => key !== label)),
         })}
-        onFindPlace={() => onFindPlace?.()}
+        onFindPlace={openPlacePicker}
         onPlans={() => onPlans?.()}
         onOwner={() => onOwner?.()}
       />
@@ -881,7 +914,7 @@ export function Workspace({
           persona={persona}
           onPersona={onPersona}
           personas={personaOptions}
-          onFindPlace={() => onFindPlace?.()}
+          onFindPlace={openPlacePicker}
           onOpenView={id => onOpen(id)}
           onClose={() => setPrefs({ panel: false })}
         />

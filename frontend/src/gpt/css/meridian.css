@@ -14,77 +14,76 @@
    code to see, because everything works. */
 :root[data-design='meridian'] {
   color-scheme: light;
-  /* FOUR PLANES, darkest to lightest: rail, bar, ground, sheet. The high-sun anchor of the four hours in
-     spectrum.ts - what a reader gets before the first paint and with JavaScript off. */
-  --g-void: #dcdbd3;
-  --g-bg: #ecebe4;
-  --g-raise: #fffffc;
-  --g-raise-2: #f1f0ea;
-  --g-line: #c7c6bd;
-  --g-line-soft: #dcdbd3;
-  --g-line-strong: #b0aea3;
-  --g-paper: #191a16;
-  --g-mist: #4b4c44;
-  --g-mist-2: #52534b;
-  --g-accent: #7c420b;
-  --g-accent-2: #6b3807;
-  --g-accent-wash: #f6e9d7;
-  /* The four published hazard colours. Untouched by any of this: a bulletin's red is the publisher's. */
+  /* STATION. A white room, a black rail, and the conversation as the lit instrument in the middle of it.
+     The DEFAULT tokens describe THE ROOM, because that is what most of the page is. The instrument - the
+     composer, an answer, every card - redeclares its own inks in the block below, so a label inside one
+     resolves through the same four tokens the room uses and nothing beneath has to know which side of the
+     product it is on. High sun is the anchor; spectrum.ts drifts the room around it and never touches the
+     instrument. */
+  --g-void: #e9edf2;
+  --g-bg: #f6f8fa;
+  --g-raise: #ffffff;
+  --g-raise-2: #eef1f5;
+  --g-line: #dde2e9;
+  --g-line-soft: #e8ecf1;
+  --g-line-strong: #c3cbd6;
+  --g-paper: #0b0e13;
+  --g-mist: #49556a;
+  --g-mist-2: #5b6779;
+  --g-accent: #0c6e5c;
+  --g-accent-2: #08574a;
+  --g-accent-wash: #e2f1ed;
+  /* The four published hazard colours. Untouched: a bulletin's red is the publisher's. */
   --g-red: #a9223d;
   --g-orange: #934413;
-  /* Deepened from #735900. The card these are measured on moved from near-white to the mid-tone ground,
-     and yellow was the one of the four that no longer cleared AA on its own wash over it: 4.47 against a
-     floor of 4.50. This is the product's rendering of a published severity, not the publisher's own hex,
-     so it is the rendering that moves. 4.88 now, in line with the other three. */
   --g-yellow: #6b5300;
   --g-green: #256443;
-  --g-mark-2: #a2762f;
-  /* THE ACCENT IS TWO THINGS NOW, because it was being asked to be two things and doing neither well.
-     --g-accent is INK: links, controls, the send button, the rule on a claim. It has to clear AA against
-     four planes, which forces it deep and brown, and a deep brown is a poor colour for light.
-     --g-solar is LIGHT: the arc's daylight, the sun on it, the bloom behind the page. It is never set as
-     text and never has to be read, so it is free to be the luminous gold those things actually want. */
-  --g-solar: #c9862e;
-  --g-solar-soft: #dfae67;
-  /* The rail is near-black at every hour, so it carries its own inks. They are declared here rather than
-     only inside .g-rail so the contrast audit can find and measure them against the plane they sit on -
-     a rail ink measured against the page ground is a number about nothing. */
-  --g-rail-fill: #161712;
-  --g-rail-bg: #161712;
-  --g-rail-ink: #f2efe7;
-  --g-rail-mist: #ada599;
-  --g-rail-mist-2: #948c80;
-  --g-rail-accent: #e3a961;
-  --g-rail-line: #2f2d26;
-  --g-bar-fill: #d0cfc7;
-  --g-bubble-fill: #e3e2da;
-  --g-pane-fill: #fffffc;
-  --g-rail-icon: #ada599;
-  --g-bar-icon: #4b4c44;
-  --g-glass: #fffffc;
-  --g-glass-2: #f1f0ea;
-  --g-scrim: rgba(25,26,22,.44);
-  --g-t1: rgba(25,26,22,.03);
-  --g-t2: rgba(25,26,22,.05);
-  --g-t3: rgba(25,26,22,.08);
-  --g-t4: rgba(25,26,22,.11);
-  --g-t5: rgba(25,26,22,.15);
-  --g-fill: #fffffc;
-  --g-e1: 0 1px 2px rgba(30,28,18,.06);
-  --g-e2: 0 2px 6px rgba(30,28,18,.05), 0 14px 34px -14px rgba(30,28,18,.20);
-  --g-e3: 0 6px 16px rgba(30,28,18,.07), 0 34px 76px -28px rgba(30,28,18,.30);
-  /* One saturated control on the page, on the one action the page exists for. */
-  --g-send-bg: #7c420b;
-  --g-send-ink: #fffdf7;
-  /* Narrowed from 1140. With the conversation on a sheet, the column IS the sheet, and at 1140 it filled
-     the panel edge to edge and left the living ground nowhere to show. */
+  /* THE ONE WARM THING IN THE PRODUCT, and it is the sun. */
+  --g-solar: #e0912a;
+  --g-solar-soft: #f0b96a;
+  --g-mark-2: #7f8b9c;
+  /* THE INSTRUMENT. The conversation, the composer and every readout. Never drifts. */
+  --g-panel: #151b24;
+  --g-panel-2: #1d2531;
+  --g-panel-line: #2a3440;
+  --g-panel-ink: #eef2f7;
+  --g-panel-mist: #9aa9bb;
+  --g-panel-mist-2: #8a98ab;
+  --g-panel-accent: #4de1c1;
+  /* The rail: the instrument's case, and the darkest plane in the product. */
+  --g-rail-fill: #0c1017;
+  --g-rail-bg: #0c1017;
+  --g-rail-ink: #eef2f7;
+  --g-rail-mist: #9aa9bb;
+  --g-rail-mist-2: #8a98ab;
+  --g-rail-accent: #4de1c1;
+  --g-rail-line: #222a36;
+  --g-bar-fill: #eef1f5;
+  --g-bubble-fill: #151b24;
+  --g-pane-fill: #151b24;
+  --g-rail-icon: #9aa9bb;
+  --g-bar-icon: #49556a;
+  --g-glass: #ffffff;
+  --g-glass-2: #eef1f5;
+  --g-scrim: rgba(11,14,19,.5);
+  --g-t1: rgba(11,14,19,.025);
+  --g-t2: rgba(11,14,19,.04);
+  --g-t3: rgba(11,14,19,.065);
+  --g-t4: rgba(11,14,19,.09);
+  --g-t5: rgba(11,14,19,.13);
+  --g-fill: #ffffff;
+  /* Shadows are for the instrument, which sits ON the room. Nothing in the room casts. */
+  --g-e1: 0 1px 2px rgba(17,24,39,.06);
+  --g-e2: 0 2px 8px rgba(17,24,39,.08), 0 18px 44px -20px rgba(17,24,39,.3);
+  --g-e3: 0 8px 20px rgba(17,24,39,.1), 0 44px 92px -36px rgba(17,24,39,.38);
+  --g-send-bg: #4de1c1;
+  --g-send-ink: #0b1014;
   --g-col: 1000px;
-  /* Meridian had flattened the display face to the body face, which is why every heading on the product
-     was Inter at a larger size. Outfit is the geometric one: sharper apertures, tighter joins, and it
-     holds up at fifty-eight pixels where a UI face just looks enlarged. */
-  --g-display: 'Outfit Variable', var(--g-sans);
-  /* The numeral face: squared-off and wide, so a reading looks read off an instrument. Receipts keep
-     JetBrains - it is the more legible of the two at the eleven pixels a source line is set at. */
+  /* ONE FAMILY. A geometric grotesque doing display, body and interface, worked with weight and size
+     rather than by bringing in a second face. Numerals keep their own technical face, because a reading
+     is a different kind of thing from a sentence and should not pretend otherwise. */
+  --g-sans: 'Outfit Variable', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --g-display: 'Outfit Variable', ui-sans-serif, system-ui, sans-serif;
   --g-numeral: 'Martian Mono Variable', 'JetBrains Mono Variable', ui-monospace, monospace;
   --g-pane-blur: 0px;
 }
@@ -429,14 +428,14 @@
    into about thirty characters - measured on the Pune turn, the IMD row came out as three ragged columns
    with the value stranded in the middle of them. One column, full width, and each row reads in one pass. */
 .g[data-design='meridian'] .g-claims { grid-template-columns: minmax(0, 1fr); gap: 0; }
-.g[data-design='meridian'] .g-claim:not([data-lead='true']) {
+.g[data-design='meridian'] .g-claim:not([data-lead='true']):not(.w-now) {
   display: flex; flex-direction: column; align-items: flex-start; gap: 6px;
   padding: 17px 0 18px;
 }
-.g[data-design='meridian'] .g-claim:not([data-lead='true']) .g-claim-eyebrow {
+.g[data-design='meridian'] .g-claim:not([data-lead='true']):not(.w-now) .g-claim-eyebrow {
   font: 11.5px/1.55 var(--g-mono); color: var(--g-mist); max-width: 74ch;
 }
-.g[data-design='meridian'] .g-claim:not([data-lead='true']) .g-claim-note {
+.g[data-design='meridian'] .g-claim:not([data-lead='true']):not(.w-now) .g-claim-note {
   font-size: 13px; color: var(--g-paper); opacity: .75; max-width: 74ch;
 }
 .g[data-design='meridian'] .g-claim:not([data-lead='true']) .g-claim-value { margin-top: 1px; }
@@ -633,122 +632,102 @@
 }
 
 /* ==========================================================================================================
-   FOUR PLANES
+   A WHITE ROOM, A BLACK RAIL, AND ONE LIT INSTRUMENT
    ==========================================================================================================
-   The complaint that drove this: everything was pale and monotonous. It was - every surface in the product
-   sat inside a tenth of a luminance step of every other, so there was nothing for the eye to rank and
-   nothing for the atmosphere to be drawn against. Rank them, darkest to lightest:
+   Three revisions of warm near-white were rejected as the commonest tell of machine-made design. The
+   fourth inverted the whole product - dark shell, white pages - which got the ranking right and the
+   emphasis wrong: it made the ROOM the subject and left the conversation lying in it.
 
-     rail    0.008   near-black. Chrome. It holds navigation and it is not where you read.
-     bar     0.65    grey. Supporting: which conversation this is, and the controls that act on it.
-     ground  0.83    the living surface. This is where the atmosphere is, and it is finally dark enough
-                     for a 1px contour at a fifth of an alpha to be visible on it.
-     sheet   1.00    white. The conversation. The brightest thing on screen, because it is the product.
+   This is the settled shape. The room is white and quiet. The rail is black. The conversation is the dark
+   instrument in the middle of it: the composer you type into, the answer that comes back, and every
+   readout on every surface. In a white room the lit thing is the thing you are working with, and on this
+   product that is the conversation. */
 
-   The last line is the one that matters. A chat screen whose chat is a layer underneath a decoration has
-   the wrong hero. Putting the turns on white sheets over the living ground promotes the conversation and
-   gives the atmosphere somewhere to live at the same time - it no longer has to be dimmed to a third to
-   stay out of the prose's way, because it is no longer behind the prose. */
+.g[data-design='meridian'] { background: var(--g-bg); color: var(--g-paper); }
 
-/* ---- the rail: near-black, and it carries its own inks -------------------------------------------------
-   Redeclaring the ink tokens here rather than restyling forty descendants: every control, label, count and
-   separator inside the rail resolves through these four, so the plane inverts in one place and nothing
-   below it has to know. */
+/* ---- the rail: the instrument's case ------------------------------------------------------------------- */
 .g[data-design='meridian'] .g-rail {
-  background: var(--g-rail-fill);
-  border-right: 0;
-  color-scheme: dark;
+  background: var(--g-rail-fill); border-right: 0; color-scheme: dark;
   --g-paper: var(--g-rail-ink);
   --g-mist: var(--g-rail-mist);
   --g-mist-2: var(--g-rail-mist-2);
   --g-accent: var(--g-rail-accent);
   --g-accent-2: var(--g-rail-accent);
-  --g-accent-wash: rgba(227, 169, 97, .15);
+  --g-accent-wash: rgba(77, 225, 193, .13);
   --g-line: var(--g-rail-line);
-  --g-line-soft: #241f19;
-  --g-line-strong: #3c382f;
-  --g-raise: #211f19;
-  --g-raise-2: #1b1914;
-  --g-fill: #211f19;
-  --g-t1: rgba(255,255,255,.03);
-  --g-t2: rgba(255,255,255,.05);
-  --g-t3: rgba(255,255,255,.08);
-  --g-t4: rgba(255,255,255,.11);
-  --g-t5: rgba(255,255,255,.15);
-  --g-e1: 0 1px 2px rgba(0,0,0,.4);
-  --g-e2: 0 8px 24px -10px rgba(0,0,0,.6);
+  --g-line-soft: #1a212b;
+  --g-line-strong: #34404e;
+  --g-raise: #1a212b;
+  --g-raise-2: #141a23;
+  --g-fill: #1a212b;
+  --g-t1: rgba(255,255,255,.03); --g-t2: rgba(255,255,255,.05); --g-t3: rgba(255,255,255,.08);
+  --g-t4: rgba(255,255,255,.11); --g-t5: rgba(255,255,255,.15);
+  --g-e1: 0 1px 2px rgba(0,0,0,.45); --g-e2: 0 10px 28px -12px rgba(0,0,0,.7);
   color: var(--g-rail-ink);
 }
 .g[data-design='meridian'] .g-rail :is(.g-brand-name, .g-home, button, a) { color: inherit; }
 .g[data-design='meridian'] .g-brand-mark { color: var(--g-rail-accent); }
-.g[data-design='meridian'] .g-brand-mark[data-daylight='true'] { color: var(--g-rail-accent); }
 .g[data-design='meridian'] .g-rail .g-home[aria-current='page'] { background: rgba(255,255,255,.07); }
 .g[data-design='meridian'] .g-rail .g-home::after { background: var(--g-rail-accent); }
-/* The one bordered control in the rail, and on a near-black plane it needs a visible edge rather than the
-   hairline it had on paper. */
 .g[data-design='meridian'] .g-rail-actions-lead > button {
   border-color: rgba(255,255,255,.14); background: rgba(255,255,255,.04);
 }
 .g[data-design='meridian'] .g-rail-actions-lead > button:hover { background: rgba(255,255,255,.09); }
 
-/* ---- the bar: grey, and it states which conversation this is ------------------------------------------ */
-.g[data-design='meridian'] .g-top {
-  background: var(--g-bar-fill);
-  border-bottom: 1px solid rgba(25,26,22,.10);
-  padding: 16px 30px; min-height: 68px;
+/* ---- the instrument -------------------------------------------------------------------------------------
+   Every surface a reader works with. Redeclaring the four ink tokens here inverts the whole subtree in one
+   place: a source line, a fold, a chip or a table inside one of these resolves correctly without knowing
+   it is on the dark side. */
+.g[data-design='meridian'] :is(.g-answer, .g-composer, .card, .card-raised, .g-claim.w-now, .g-you p) {
+  background: var(--g-panel);
+  --g-paper: var(--g-panel-ink);
+  --g-mist: var(--g-panel-mist);
+  --g-mist-2: var(--g-panel-mist-2);
+  --g-accent: var(--g-panel-accent);
+  --g-accent-2: var(--g-panel-accent);
+  --g-accent-wash: rgba(77, 225, 193, .13);
+  --g-line: var(--g-panel-line);
+  --g-line-soft: #222b36;
+  --g-line-strong: #3a4654;
+  --g-raise: var(--g-panel-2);
+  --g-raise-2: #11161e;
+  --g-fill: var(--g-panel-2);
+  --g-t1: rgba(255,255,255,.03); --g-t2: rgba(255,255,255,.05); --g-t3: rgba(255,255,255,.08);
+  --g-t4: rgba(255,255,255,.11); --g-t5: rgba(255,255,255,.15);
+  color: var(--g-panel-ink);
+  border: 0; border-radius: 6px; box-shadow: var(--g-e2);
 }
-.g[data-design='meridian'] .g-act:hover { background: rgba(25,26,22,.07); }
+.g[data-design='meridian'] .g-answer { padding: 34px 38px 30px; }
+.g[data-design='meridian'] .g-composer,
+.g[data-design='meridian'] .g-composer:not(:focus-within) { border-radius: 6px; }
+.g[data-design='meridian'] .g-composer:focus-within {
+  box-shadow: 0 0 0 2px var(--g-panel-accent), var(--g-e2);
+}
+.g[data-design='meridian'] .receipt { background: #11161e; border: 0; border-radius: 4px; }
+/* The reader's own question: the same instrument, smaller, and it does not cast - it is something said in
+   the room rather than a readout laid on it. */
+.g[data-design='meridian'] .g-you p {
+  box-shadow: none; padding: 13px 17px; font-size: 14.5px; border-radius: 6px 6px 6px 2px;
+}
 
-/* ---- the ground: where the atmosphere lives ----------------------------------------------------------- */
+/* ---- the bar: the room's own lightest step ------------------------------------------------------------- */
+.g[data-design='meridian'] .g-top {
+  background: var(--g-bar-fill); border-bottom: 1px solid var(--g-line);
+  align-items: center; min-height: 0; height: auto; overflow: visible; padding: 11px 30px;
+}
+.g[data-design='meridian'] .g-act:hover { background: var(--g-t3); }
 .g[data-design='meridian'] .g-panel { background: transparent; }
 
-/* ---- the sheet: an answer is an object, not a region of the page -------------------------------------- */
-.g[data-design='meridian'] .g-answer {
-  background: var(--g-raise);
-  border: 1px solid var(--g-line-soft);
-  border-radius: 18px;
-  box-shadow: var(--g-e2);
-  padding: 26px 30px 24px;
+/* A chip sits in the room, so it is a light control with a real edge. */
+.g[data-design='meridian'] .g-chip {
+  background: #fff; border: 1px solid var(--g-line); color: var(--g-paper);
+  box-shadow: var(--g-e1); border-radius: 5px;
 }
-@container (min-width: 1000px) {
-  .g[data-design='meridian'] .g-answer[data-has-evidence='true'] { gap: 40px; }
-}
-/* Inside a white sheet the lead claim can no longer be white. It takes the tint instead, which is the same
-   relationship it always had to what was under it - one step up from its ground. */
-.g[data-design='meridian'] .g-claim[data-lead='true'] {
-  background: var(--g-raise-2);
-  border-color: var(--g-line-soft);
-  box-shadow: none;
-}
-/* The reader's own question sits ON the ground, not on a sheet: it is not the thing being read. The
-   solved --g-bubble-fill is a warm film meant to catch a dark sky; over paper it came out a saturated
-   yellow and the question read as a sticky note stuck to the page. Warm, but the ground's own warmth. */
-.g[data-design='meridian'] .g-you p {
-  background: color-mix(in srgb, var(--g-raise-2) 88%, var(--g-solar) 12%);
-  border: 1px solid var(--g-line-soft);
-  box-shadow: var(--g-e1);
-}
-/* The composer is the other lit object on the page, and the only one that is pure white at every hour. */
-.g[data-design='meridian'] .g-composer,
-.g[data-design='meridian'] .g-composer:not(:focus-within) {
-  background: #fff; border-color: var(--g-line);
-  box-shadow: 0 2px 6px rgba(30,28,18,.05), 0 16px 38px -16px rgba(30,28,18,.26);
-}
-.g[data-design='meridian'] .g-composer:focus-within {
-  border-color: var(--g-accent);
-  box-shadow: 0 0 0 3px var(--g-accent-wash), 0 18px 42px -18px rgba(30,28,18,.34);
-}
-/* The dock's own fade has to end in the ground's colour now that the ground is a mid tone, or it draws a
-   pale band across the atmosphere. */
+.g[data-design='meridian'] .g-chip:hover { border-color: var(--g-line-strong); background: #fff; }
+.g[data-design='meridian'] .g-chip-lead { background: var(--g-accent-wash); border-color: #9fd3c6; }
 .g[data-design='meridian'] .g-dock::before {
   background: linear-gradient(180deg, transparent, var(--g-bg) 62%);
 }
-/* A chip sits on the ground, so it needs a surface of its own to be legible on it. */
-.g[data-design='meridian'] .g-chip {
-  background: var(--g-raise); border-color: var(--g-line); box-shadow: var(--g-e1);
-}
-.g[data-design='meridian'] .g-chip:hover { background: #fff; border-color: var(--g-line-strong); }
-.g[data-design='meridian'] .g-chip-lead { background: var(--g-accent-wash); border-color: #e0c79e; }
 
 /* ==========================================================================================================
    THE FRONT DOOR, COMPONENT BY COMPONENT
@@ -772,11 +751,14 @@
    source. It used to be three loose paragraphs floating under the greeting with a source line trailing off
    the end. It is a card now: value, condition, and the receipt that owns it, in one object with an edge
    round it. Provenance you can point at. */
+/* The station's own reading. It takes the instrument treatment from the block above - the background,
+   the inks and the cast are all declared there - so this rule only says how it is shaped. It used to
+   restate `background: var(--g-raise)` here, which at equal specificity beat the instrument block's own
+   background and left light ink sitting on a white card. */
 .g[data-design='meridian'] .g-claim.w-now {
   display: flex; flex-direction: column; align-items: flex-start; gap: 0;
-  background: var(--g-raise); border: 1px solid var(--g-line-soft);
-  border-radius: 16px; box-shadow: var(--g-e2);
-  padding: 18px 22px 16px; min-width: 232px; max-width: 320px;
+  border: 0; border-radius: 6px;
+  padding: 18px 22px 16px; min-width: 232px; max-width: 330px;
 }
 .g[data-design='meridian'] .g-claim.w-now .w-reading { margin: 0 0 2px; align-items: center; gap: 10px; }
 .g[data-design='meridian'] .g-claim.w-now .w-temp { font-size: 38px; }
@@ -1037,3 +1019,211 @@
 /* A module card is the same sheet the conversation uses. */
 .g[data-design='meridian'] :is(.card, .card-raised) { background: var(--g-raise); box-shadow: var(--g-e1); }
 .g[data-design='meridian'] .receipt { background: var(--g-raise-2); }
+
+/* ==========================================================================================================
+   ONE OBJECT PER ANSWER
+   ==========================================================================================================
+   The previous version put a card around the answer, a card around the claim inside it, and a tint behind
+   the receipt inside that. Three nested boxes to say one thing, which is the card kit every generated
+   interface reaches for and the reason this read as boxy.
+
+   An answer is a page. On that page the prose is loose type - no rule, no fill, no border - and exactly
+   ONE thing is an object: the value the tools returned. That is the thing the product exists to deliver,
+   so it is the thing that gets a shape. */
+.g[data-design='meridian'] .g-claim[data-lead='true'] {
+  background: var(--g-raise-2);
+  border: 0;
+  border-left: 3px solid var(--g-accent);
+  border-radius: 0 3px 3px 0;
+  box-shadow: none;
+  padding: 20px 24px 18px;
+  margin: 6px 0 4px;
+}
+/* A published hazard colour replaces the accent on that edge - the one place in this stylesheet where a
+   bulletin's own palette wins. */
+.g[data-design='meridian'] .g-claim[data-lead='true'][data-lit] { border-left-color: var(--g-lit); }
+.g[data-design='meridian'] .g-claim[data-lead='true']::after { display: none; }
+
+/* Everything else ON A PAGE is loose. `.w-now` is excluded by name: it is the welcome's station reading,
+   not a claim inside an answer, and it is an instrument panel in its own right. Without the exclusion this
+   rule stripped its background at equal specificity and left light ink on the white room. */
+.g[data-design='meridian'] .g-claim:not([data-lead='true']):not(.w-now) {
+  background: transparent; border: 0; border-bottom: 1px solid var(--g-line-soft);
+  box-shadow: none; border-radius: 0; padding: 16px 0 17px;
+}
+.g[data-design='meridian'] .g-claims { border-top: 1px solid var(--g-line-soft); }
+.g[data-design='meridian'] .g-claims > .g-claim:last-child { border-bottom: 0; }
+.g[data-design='meridian'] .g-fold { background: transparent; border: 0; box-shadow: none; padding: 0; }
+
+/* The colophon about who wrote the prose. True, worth keeping, and not worth a rule down its side: it is
+   the smallest thing on the page and it should look like it. */
+.g[data-design='meridian'] .answer-by {
+  font: 11px/1.7 var(--g-mono); color: var(--g-mist-2);
+  margin: 18px 0 0; padding: 0; border: 0; max-width: 72ch; opacity: .85;
+}
+
+/* The prose. One measure, one rhythm, nothing around it. */
+.g[data-design='meridian'] .answer-lead {
+  font-size: clamp(20px, 1.8vw, 25px); line-height: 1.38; letter-spacing: -.02em;
+  font-weight: 500; max-width: 34ch; margin-bottom: 4px;
+}
+.g[data-design='meridian'] .g-prose { font-size: 15px; line-height: 1.68; max-width: 68ch; }
+/* A held caveat keeps its edge, because the edge is carrying information: the engine put this sentence
+   back and it may not be folded away. */
+.g[data-design='meridian'] .answer-caveat {
+  border-left: 2px solid var(--g-line-strong); padding: 1px 0 1px 14px;
+  color: var(--g-mist); font-size: 14px; max-width: 64ch;
+}
+.g[data-design='meridian'] .g-answer { gap: 34px; }
+.g[data-design='meridian'] .g-evidence-margin { border-left-color: var(--g-line-soft); }
+
+/* ==========================================================================================================
+   PROPORTIONS
+   ==========================================================================================================
+   Measured against a reference the client supplied: a thin bar, a conversation that owns almost all the
+   vertical space, and one wide pill at the bottom with every control inside it. What this product had was
+   a ninety-pixel bar, a header block above every answer, and a composer with its controls stacked in two
+   rows - so the answer, which is the only thing anybody came for, was getting the least room on screen.
+
+   THE BAR. It states which conversation this is and the station's own reading, and it does both in the
+   height of one line each. The reading is not removed - a spec caught that deletion once already, because
+   during a conversation the front door is gone and the bar is the only surface left stating the source
+   that owns the value - it is made small. */
+.g[data-design='meridian'] .g-top { padding: 7px 24px; gap: 16px; }
+.g[data-design='meridian'] .g-wordmark { font-size: 15px; line-height: 1.25; }
+.g[data-design='meridian'] .g-top-title { font-size: 11.5px; line-height: 1.35; margin-top: 1px; max-width: 60ch; }
+.g[data-design='meridian'] .g-skyline {
+  gap: 1px 8px; padding: 0; background: none; border: 0; box-shadow: none; max-width: 42ch;
+}
+.g[data-design='meridian'] .g-skyline-place { font-size: 11.5px; }
+.g[data-design='meridian'] .g-skyline-value { font-size: 13px; }
+.g[data-design='meridian'] .g-skyline-cond { font-size: 11.5px; }
+.g[data-design='meridian'] .g-skyline-source { font-size: 11px; line-height: 1.4; margin: 0; }
+.g[data-design='meridian'] .g-act { min-height: 32px; min-width: 32px; border-radius: 8px; }
+
+/* THE COMPOSER IS ONE PILL, and everything it needs is inside it: the question, the place it is about, the
+   language it will be answered in, the microphone and the send. It had the place and the language stacked
+   in a row of their own above the field, which cost a whole line of height and separated two controls
+   from the action they qualify. */
+.g[data-design='meridian'] .g-composer,
+.g[data-design='meridian'] .g-composer:not(:focus-within) {
+  border-radius: 26px; padding: 15px 20px 11px;
+}
+.g[data-design='meridian'] .g-composer:focus-within { border-radius: 26px; }
+.g[data-design='meridian'] .g-composer-row {
+  display: flex; align-items: center; gap: 10px; margin-top: 8px; min-height: 34px;
+}
+.g[data-design='meridian'] .g-composer-context {
+  display: flex; align-items: center; gap: 14px; margin: 0 auto 0 0; padding: 0; border: 0;
+  min-width: 0; flex: 0 1 auto;
+}
+.g[data-design='meridian'] .g-composer-context > button,
+.g[data-design='meridian'] .g-composer-language > button {
+  display: inline-flex; align-items: center; gap: 6px; background: transparent; border: 0;
+  padding: 4px 8px; margin-left: -8px; border-radius: 7px; cursor: pointer;
+  color: var(--g-mist); font-size: 12.5px; min-width: 0; transition: background 140ms var(--g-ease-out), color 140ms var(--g-ease-out);
+}
+.g[data-design='meridian'] .g-composer-context > button:hover,
+.g[data-design='meridian'] .g-composer-language > button:hover { background: var(--g-t3); color: var(--g-paper); }
+.g[data-design='meridian'] .g-composer-context span {
+  overflow: hidden; white-space: nowrap; text-overflow: ellipsis; max-width: 24ch;
+}
+.g[data-design='meridian'] .g-composer textarea { font-size: 15.5px; line-height: 1.55; }
+
+/* The language menu opens from the control that owns it, upward, because the composer is at the foot of
+   the page and a menu that opened downward would be off-screen. */
+.g-composer-language { position: relative; }
+.g[data-design='meridian'] .g-language-menu {
+  position: absolute; bottom: calc(100% + 8px); left: 0; z-index: 30; min-width: 210px;
+  margin: 0; padding: 6px; list-style: none;
+  background: var(--g-raise); border: 1px solid var(--g-line); border-radius: 10px; box-shadow: var(--g-e3);
+}
+.g[data-design='meridian'] .g-language-menu li { margin: 0; }
+.g[data-design='meridian'] .g-language-menu button {
+  display: flex; width: 100%; text-align: left; gap: 8px; align-items: center;
+  background: transparent; border: 0; border-radius: 7px; cursor: pointer;
+  padding: 8px 10px; font-size: 13px; color: var(--g-paper);
+}
+.g[data-design='meridian'] .g-language-menu button:hover { background: var(--g-t3); }
+.g[data-design='meridian'] .g-language-menu button[aria-checked='true'] { color: var(--g-accent); font-weight: 500; }
+.g[data-design='meridian'] .g-language-menu button[aria-checked='true']::after { content: '✓'; margin-left: auto; }
+
+/* THE ANSWER GETS THE ROOM BACK. */
+.g[data-design='meridian'] .g-answer { padding: 26px 30px 24px; gap: 28px; }
+.g[data-design='meridian'] .g-answer-main > .g-chips { margin-bottom: 2px; }
+.g[data-design='meridian'] .g-col { padding-block: 18px; }
+.g[data-design='meridian'] .g-dock { padding-top: 10px; padding-bottom: 12px; }
+
+/* The follow-ups a turn offers are the last thing in the column, and the dock's own fade was drawn over
+   them - so the questions the answer suggests were half-erased by the box you would type them into. The
+   fade is shortened to the height it actually needs and the last row is given clearance above it. */
+.g[data-design='meridian'] .g-dock::before { height: 26px; }
+.g[data-design='meridian'] .g-turn > .g-chips:last-child { margin-bottom: 26px; }
+.g[data-design='meridian'] .g-composer-language > button > span { max-width: 14ch; }
+
+/* ==========================================================================================================
+   THE HORIZON
+   ==========================================================================================================
+   Five moving backgrounds were built and rejected. The ground is still now; a drawn horizon stands across
+   the foot of it, and the only thing that moves on this page is the light. */
+.g-skyline-art {
+  position: absolute; left: 0; right: 0; bottom: 0; width: 100%;
+  height: clamp(170px, 26vh, 300px); pointer-events: none;
+}
+.g-skyline-fill { fill: var(--g-paper); opacity: .045; }
+.g-skyline-edge { fill: none; stroke: var(--g-paper); stroke-width: 1.1; opacity: .1; vector-effect: non-scaling-stroke; }
+/* Behind an answer the horizon steps back further: the conversation is the subject and a skyline behind a
+   paragraph is a skyline in the way. */
+.g-field[data-expanded='true'] .g-skyline-fill { opacity: .028; }
+.g-field[data-expanded='true'] .g-skyline-edge { opacity: .06; }
+@media (max-width: 760px) { .g-skyline-art { height: 130px; } }
+
+/* ==========================================================================================================
+   THE CONVERSATION
+   ==========================================================================================================
+   The front door settled into a shape worth keeping: a white room, one dark instrument in it, generous
+   type, and nothing decorative that is not derived from something real. This brings the same rules to the
+   surface the product actually spends its time on.
+
+   1. THE BAR'S STATION CHIP IS NOT A CLAIM IN AN ANSWER. It is marked `data-lead` so the provenance audit
+      finds it, and that attribute was also picking up the lead claim's own treatment - so the top bar grew
+      a three-pixel accent rule down the middle of itself. The audit needs the attribute; the styling does
+      not follow from it. */
+.g[data-design='meridian'] .g-skyline[data-lead='true'] {
+  background: none; border: 0; border-radius: 0; box-shadow: none; padding: 0; margin: 0;
+}
+.g[data-design='meridian'] .g-skyline[data-lead='true']::after,
+.g[data-design='meridian'] .g-skyline[data-lead='true']::before { display: none; }
+.g[data-design='meridian'] .g-skyline .g-claim-source { margin: 0; padding: 0; border: 0; }
+
+/* 2. THE PANEL SIZES TO WHAT IT HOLDS. A two-line greeting was getting the same four hundred pixels as a
+      full retrieval, because the gaps were set for an answer with claims, evidence and folds in it. */
+.g[data-design='meridian'] .g-answer { gap: 22px; }
+.g[data-design='meridian'] .g-answer-main { gap: 12px; }
+.g[data-design='meridian'] .g-answer[data-turn-status='conversation'] { padding: 22px 28px 20px; }
+.g[data-design='meridian'] .g-answer[data-turn-status='conversation'] .answer-by { margin-top: 10px; }
+
+/* 3. THE READER'S OWN QUESTION SITS ON THEIR SIDE. It is the one thing on the page that is theirs rather
+      than the instrument's, and putting it opposite the answer is the oldest and clearest way to say so. */
+.g[data-design='meridian'] .g-you { justify-content: flex-end; }
+.g[data-design='meridian'] .g-you p { max-width: 46ch; border-radius: 6px 6px 2px 6px; }
+.g[data-design='meridian'] .g-turn:has(> .g-you) > .g-chips { justify-content: flex-end; }
+
+/* 4. The turn's own header line: identity, status and time, on one row and none of it loud. */
+.g[data-design='meridian'] .g-answer-main > .g-chips { margin: 0 0 2px; }
+.g[data-design='meridian'] .g-eyebrow { font-size: 12.5px; letter-spacing: 0; }
+.g[data-design='meridian'] .g-answer-mark { width: 26px; height: 26px; }
+.g[data-design='meridian'] .g-answer-identity { gap: 8px; }
+
+/* A VALUE TAKES THE INK OF THE SURFACE IT IS PRINTED ON.
+   `.fact-value` carries `color: var(--ink)` from transcript.css - an older token system whose --ink is
+   the room's near-black. Inside the instrument that put a near-black numeral on a near-black panel:
+   measured at rgb(11,14,19) on rgb(21,27,36), which is a reading nobody could read. The lead claim
+   escaped it only because `.lead-value` never set a colour. Inheriting is the correct rule for both: the
+   surface decides, and a claim that moves between them stays legible. */
+.g[data-design='meridian'] :is(.fact-value, .lead-value, .g-claim-number) { color: inherit; }
+.g[data-design='meridian'] .g-claim-unit { color: var(--g-mist); }
+
+/* The follow-ups a turn offers must clear the composer. The dock is sticky and its fade sits over the end
+   of the column, so the last row needs real clearance rather than a few pixels. */
+.g[data-design='meridian'] .g-turn > .g-chips:last-child { margin-bottom: 40px; }

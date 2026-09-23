@@ -21,20 +21,20 @@ describe('the shell', () => {
     /* The one way in is the reader's own question box. The front door no longer offers a second door
        beside it: the conversation is the product, so the box is the door. */
     expect(screen.getByLabelText('Your question')).toBeInTheDocument();
-    /* Meridian supersedes the solar glass direction. The atmosphere is DRAWN now - a contour field and a
-       geostrophic flow on two canvases - rather than a raster of one, so what this pins is the property
-       that mattered about the image and matters more about a moving field: it is decoration, it is inside
-       an aria-hidden subtree, and it offers a screen reader nothing to announce and nothing to mistake for
-       a reading. A canvas with a role or a label would be a weather map, and this is not one. */
+    /* The ground is STILL now. Five moving backgrounds were built for this product and all five were
+       rejected - the last of them, a firing cell array, read as grey dust scattered over the reading. What
+       stands there is a drawn horizon, and what this pins is the property that mattered about every one of
+       them: it is decoration, it sits inside an aria-hidden subtree, and it offers a screen reader nothing
+       to announce and nothing to mistake for a reading. */
     expect(document.querySelector('[data-design="meridian"]')).not.toBeNull();
-    const atmosphere = [...document.querySelectorAll('canvas.g-skyfield, canvas.g-skywind')];
-    expect(atmosphere.length).toBeGreaterThan(0);
-    atmosphere.forEach(layer => {
-      expect(layer.closest('[aria-hidden="true"]')).not.toBeNull();
-      expect(layer.getAttribute('role')).toBeNull();
-      expect(layer.getAttribute('aria-label')).toBeNull();
-      expect(layer.textContent).toBe('');
-    });
+    const horizon = document.querySelector('.g-skyline-art');
+    expect(horizon).not.toBeNull();
+    expect(horizon!.closest('[aria-hidden="true"]')).not.toBeNull();
+    expect(horizon!.getAttribute('role')).toBeNull();
+    expect(horizon!.getAttribute('aria-label')).toBeNull();
+    expect(horizon!.textContent).toBe('');
+    /* And nothing on the ground animates any more. */
+    expect(document.querySelector('canvas.g-skyfield, canvas.g-skywind')).toBeNull();
   });
 
   it('hands the front door question to the conversation', async () => {
