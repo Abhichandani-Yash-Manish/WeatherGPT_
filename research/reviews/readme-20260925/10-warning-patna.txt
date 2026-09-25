@@ -1,0 +1,49 @@
+Answer
+Evidence retrieved
+25 Sep 2026, 16:11 IST
+
+IMD has published an orange warning colour for Patna district for today, 25 Sep 2026, covering heavy rain, thunderstorm/lightning/squall and strong surface winds.
+
+An absence of matching official guidance is not an all-clear.
+
+This reports official product state, not an instruction to act.
+
+The rest of the answer
+(2 sentences)
+
+Official warning · PATNA (Patna, Patna, State of Bihar)
+
+orange
+
+source S15 · imd-district:364 · read 25 Sep 2026, 08:00 IST
+
+where this came from
+IMD district warning · PATNA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+Day 3 · 27 Sep 2026	green	No warning in this product	27 Sep 2026, 00:00-28 Sep 2026, 00:00 IST
+Day 4 · 28 Sep 2026	green	No warning in this product	28 Sep 2026, 00:00-29 Sep 2026, 00:00 IST
+Day 5 · 29 Sep 2026	green	No warning in this product	29 Sep 2026, 00:00-30 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+A day marked "No warning in this product" means IMD published no warning hazard for that district-day in this product. It is not an all-clear, and not a statement that nothing will happen.
+
+What this answer does not cover
+How this was answered · 6 steps · 18.105 s · nothing refused
+
+Written by a model from the retrieved facts and checked against them; values, windows and source lines remain tool-owned.
+
+How much this card unfolds: Conversational
+Copy the answer
+More ways to use this answer
+Evidence
+2
+S06
+IMD-labelled CAP relay; origin authentication unverified
+Retrieved CAP feed state
+S15
+India Meteorological Department
+District-wise warning product (GeoServer district_warnings_india)

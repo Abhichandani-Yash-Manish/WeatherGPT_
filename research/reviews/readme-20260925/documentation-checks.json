@@ -1,0 +1,52 @@
+{
+  "local_links_checked": 29,
+  "missing": [],
+  "images": [
+    {
+      "file": "docs/images/submission/conversation.png",
+      "sha256": "966d4b514366ea9196296bcf41d2cf855d075c2fce12114405087c03256ba5df",
+      "bytes": 722998
+    },
+    {
+      "file": "docs/images/submission/dashboard.png",
+      "sha256": "98336b196f9284748f5d34d549b0749c7b4336777544598ddafe81490d775f2f",
+      "bytes": 1001580
+    },
+    {
+      "file": "docs/images/submission/farmer-source.png",
+      "sha256": "0ed244b9231b349ee4d6007a0c156e5bcc1fae2417282c3bd44e6cbfb81076b0",
+      "bytes": 47917
+    },
+    {
+      "file": "docs/images/submission/gujarati.png",
+      "sha256": "b3f3ea6b14e6ceb8ca3f978c0aef42f9f19b4f50ca6ac1fb5b7b5d4881d58b80",
+      "bytes": 707115
+    },
+    {
+      "file": "docs/images/submission/hindi-temperature.png",
+      "sha256": "72dcdb6ce67c2b75cd8e31494c63183cff2564d15f09bacdac5653715b70aea7",
+      "bytes": 756292
+    },
+    {
+      "file": "docs/images/submission/home.png",
+      "sha256": "4fa9e57bcbe5f5db74919c55b8b4ba0fa8897c8a9f61c1516eae47902e464f1e",
+      "bytes": 973496
+    },
+    {
+      "file": "docs/images/submission/receipt.png",
+      "sha256": "fdc05a1b98a5272ccac2174b699934853d98cf613b2092c70d0d4af9ea993b71",
+      "bytes": 76561
+    },
+    {
+      "file": "docs/images/submission/warning-answer.png",
+      "sha256": "133d51e97119da3e1ecb6a7fd98f81fdbc26900d88394b1f6d8c2d82d4417faf",
+      "bytes": 811089
+    },
+    {
+      "file": "docs/images/submission/warnings.png",
+      "sha256": "1f5444152310512e5999d4a0f87f2486652d4ea8d1c3d5ea3c54ce8cecec5538",
+      "bytes": 1083354
+    }
+  ],
+  "scope": "README/assets only; external links not fetched; setup commands checked against code and CI, not reinstalled in a clean checkout"
+}

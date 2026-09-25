@@ -1,0 +1,51 @@
+Answer
+Evidence retrieved
+Requested output: gu
+25 સપ્ટે, 2026, 15:48 IST
+
+પસંદ કરેલા સ્થળ માટે મોડેલની આગાહી: Ahmedabad, Ahmadābād, State of Gujarāt · 2026-09-26 00:30 → 2026-09-27 00:30 IST વરસાદની અંદાજિત માત્રા: 0.0 mm [t1-f1] Precipitation total over the window · IMD: 0.0 mm [t1-imd-f1] આ પસંદ કરેલા સ્થળ-બિંદુ માટે મોડેલની આગાહી છે, સ્થળ પરનું અવલોકન કે આખા જિલ્લાની સરેરાશ નથી.
+
+The rest of the answer
+(1 sentence)
+
+Forecast rainfall · 26 સપ્ટે, 2026, 00:30-27 સપ્ટે, 2026, 00:30 IST
+
+0.0
+mm
+
+Model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S21 · geonames:1279233 · read 25 સપ્ટે, 2026, 15:48 IST
+
+how much of the window this covers · every part of it covered
+where this came from
+
+Precipitation total over the window · IMD · 26 સપ્ટે, 2026, 00:30-27 સપ્ટે, 2026, 00:30 IST
+
+0.0
+mm
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 સપ્ટે, 2026, 15:48 IST
+
+Any warnings for Ahmedabad?
+What this answer does not cover
+How this was answered · 7 steps · 11.376 s · 1 refused
+
+A model drafted this reply and the checks refused it, so the tools' own wording stands as the answer. The engine names what it refused in the notes.
+
+How much this card unfolds: Conversational
+Copy the answer
+More ways to use this answer
+Evidence
+3
+S21
+Open-Meteo
+GFS forecast delivery
+S61
+GeoNames
+India place catalogue
+S16
+India Meteorological Department
+IMD Mausamgram multi-model ensemble

@@ -1,0 +1,54 @@
+Answer
+Evidence retrieved
+25 Sep 2026, 15:46 IST
+
+Carried from the previous turn: parameters, time, operation · changed here: places.
+
+Mumbai: rainfall of 0.0–1.0 mm is forecast on Sunday.
+
+These are model forecasts for the selected points, not observed conditions or district averages.
+
+The rest of the answer
+(3 sentences)
+
+Forecast rainfall · 27 Sep 2026, 00:30-28 Sep 2026, 00:30 IST
+
+0.0
+mm
+
+Model forecast · Mumbai, State of Mahārāshtra
+
+source S21 · geonames:1275339 · read 25 Sep 2026, 15:46 IST
+
+how much of the window this covers · every part of it covered
+where this came from
+
+Precipitation total over the window · IMD · 27 Sep 2026, 00:30-28 Sep 2026, 00:30 IST
+
+1.0
+mm
+
+imd multi model forecast · Mumbai, State of Mahārāshtra
+
+source S16 · geonames:1275339 · read 25 Sep 2026, 15:46 IST
+
+Any warnings for Mumbai?
+What this answer does not cover
+How this was answered · 7 steps · 12.17 s · 1 refused
+
+A model drafted this reply and the checks refused it, so the tools' own wording stands as the answer. The engine names what it refused in the notes.
+
+How much this card unfolds: Conversational
+Copy the answer
+More ways to use this answer
+Evidence
+3
+S21
+Open-Meteo
+GFS forecast delivery
+S61
+GeoNames
+India place catalogue
+S16
+India Meteorological Department
+IMD Mausamgram multi-model ensemble

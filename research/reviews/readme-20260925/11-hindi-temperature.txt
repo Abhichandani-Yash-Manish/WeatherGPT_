@@ -1,0 +1,186 @@
+Answer
+Evidence retrieved
+Requested output: hi
+25 सित॰ 2026, 16:12 IST
+
+Ahmedabad · 26 Sep, 00:30–27 Sep, 00:30 IST: तापमान: 25.4–35.9 °C. स्रोत: GFS पूर्वानुमान; मौसम बदल सकता है।
+
+The rest of the answer
+(1 sentence)
+
+Temperature samples · 26 सित॰ 2026, 00:30-27 सित॰ 2026, 00:30 IST
+
+25.4–35.9
+°C
+
+Model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S21 · geonames:1279233 · read 25 सित॰ 2026, 15:48 IST
+
+how much of the window this covers · every part of it covered
+where this came from
+
+Temperature · IMD · 26 सित॰ 2026, 02:30 IST
+
+28.0
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature · IMD · 26 सित॰ 2026, 05:30 IST
+
+26.7
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature · IMD · 26 सित॰ 2026, 08:30 IST
+
+27.6
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature · IMD · 26 सित॰ 2026, 11:30 IST
+
+30.2
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature · IMD · 26 सित॰ 2026, 14:30 IST
+
+34.7
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature · IMD · 26 सित॰ 2026, 17:30 IST
+
+35.3
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature · IMD · 26 सित॰ 2026, 20:30 IST
+
+32.3
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature · IMD · 26 सित॰ 2026, 23:30 IST
+
+29.5
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature (bias-corrected) · IMD · 26 सित॰ 2026, 02:30 IST
+
+29.2
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature (bias-corrected) · IMD · 26 सित॰ 2026, 05:30 IST
+
+27.4
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature (bias-corrected) · IMD · 26 सित॰ 2026, 08:30 IST
+
+29.2
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature (bias-corrected) · IMD · 26 सित॰ 2026, 11:30 IST
+
+34.0
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature (bias-corrected) · IMD · 26 सित॰ 2026, 14:30 IST
+
+37.0
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature (bias-corrected) · IMD · 26 सित॰ 2026, 17:30 IST
+
+35.6
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature (bias-corrected) · IMD · 26 सित॰ 2026, 20:30 IST
+
+31.8
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Temperature (bias-corrected) · IMD · 26 सित॰ 2026, 23:30 IST
+
+30.4
+°C
+
+imd multi model forecast · Ahmedabad, Ahmadābād, State of Gujarāt
+
+source S16 · geonames:1279233 · read 25 सित॰ 2026, 16:13 IST
+
+Any warnings for Ahmedabad?
+What this answer does not cover
+How this was answered · 7 steps · 14.456 s · 1 refused
+
+A model drafted this reply and the checks refused it, so the tools' own wording stands as the answer. The engine names what it refused in the notes.
+
+How much this card unfolds: Conversational
+Copy the answer
+More ways to use this answer
+Evidence
+3
+S21
+Open-Meteo
+GFS forecast delivery
+S61
+GeoNames
+India place catalogue
+S16
+India Meteorological Department
+IMD Mausamgram multi-model ensemble

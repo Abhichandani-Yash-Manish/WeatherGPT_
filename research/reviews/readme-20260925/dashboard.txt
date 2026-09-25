@@ -1,0 +1,420 @@
+Dashboard
+
+Your place, read as one picture: the model hour and the nearest station, the district day in force, the next days and hours, the India warning map, air quality and the district record. Every value keeps its own source and read time; nothing is sent from here until you ask.
+
+now.composed
+status ok
+read 25 Sep 2026, 15:55 IST
+
+Right now
+
+Pune
+Model output · more readings and source
+Change place
+28.4
+°C
+
+Model hour · 15:30 IST
+
+scattered clouds at 2500 feet; broken clouds at 25000 feet
+as PUNE printed it
+Feels like
+29.4 °C
+Humidity
+57 %
+Wind
+19.5 km/h
+Updated
+read just now
+AI Assistant
+
+અમદાવાદ, ગુજરાતમાં આવતીકાલે કેટલો વરસાદ પડશે?
+
+પસંદ કરેલા સ્થળ માટે મોડેલની આગાહી: Ahmedabad, Ahmadābād, State of Gujarāt · 2026-09-26 00:30 → 2026-09-27 00:30 IST વરસાદની અંદાજિત માત્રા: 0.0 mm [t1-f1] Precipitation total over the window · IMD: 0.0 mm [t1-imd-f1] આ પસંદ કરેલા સ્થળ-બિંદુ માટે મોડેલની આગાહી છે, સ્થળ પરનું અવલો…
+
+Continue this conversation
+→
+
+Suggested for Pune:
+
+“What is it like right now in Pune, Pune Division, Mahārāshtra?”
+“Will it rain in Pune, Pune Division, Mahārāshtra tomorrow morning?”
+“Is any warning in force for Pune, Pune Division, Mahārāshtra today?”
+“Show the hourly forecast for Pune, Pune Division, Mahārāshtra tomorrow.”
+W
+Your question
+
+Nothing has been written yet. The box is empty and editable; the builder writes only the values you enter.
+
+Time window, and how this box works
+Forecast
+8-day forecast · IST dates · warmest | coolest hour (°C)
+Every parameter
+→
+25 Sep
+29.7
+|
+22.2
+22%
+26 Sep
+29.4
+|
+21.8
+18%
+27 Sep
+29.9
+|
+21.1
+49%
+28 Sep
+31.5
+|
+20.3
+80%
+29 Sep
+31.9
+|
+21.4
+92%
+30 Sep
+30.5
+|
+21
+75%
+01 Oct
+28.6
+|
+20.6
+39%
+02 Oct
+22.4
+|
+21.4
+7%
+›
+
+Warmest | coolest returned hour (°C) · droplet: highest hourly rain chance · dot: published district colour · choose a day for its hours
+
+Hourly Temperature Trend
+(next 24h)
+21.8
+25.6
+29.4
+°C
+25 Sep 15:30
+26 Sep 14:30
+
+Select a point to inspect its exact source value. Missing intervals remain gaps.
+
+View exact values and evidence IDs
+Hourly Precipitation Probability
+(next 24h)
+0.0
+10.0
+20.0
+%
+25 Sep 15:30
+26 Sep 14:30
+
+Select a point to inspect its exact source value. Missing intervals remain gaps.
+
+View exact values and evidence IDs
+Observed nearby
+
+At PUNE (VAPO), 9.57 km away
+
+temperature 31 · humidity 62.0 · wind speed 15.0 · wind from 290.0 · visibility 6000.0
+
+reported 25 Sep 2026, 15:00 IST · current · units as the station layer printed them
+
+District day in force
+
+green PUNE, MAHARASHTRA
+
+IMD district product: No warning in this product for this district-day (green).
+
+issued 25 Sep 2026, 11:30 IST
+
+India
+
+District warnings across India
+
+The colour each district bulletin published for the chosen date, drawn on the district geometry of the same basemap build.
+
+Every district day
+→
+
+The national warning table and the district geometry is read when this section comes into view. Read it now
+
+Air
+
+Modelled air quality
+Hourly air quality
+→
+US AQI
+80 USAQI
+European AQI
+70 EAQI
+PM2.5
+23.2 μg/m³
+PM10
+29.8 μg/m³
+Ozone
+140 μg/m³
+NO₂
+3.4 μg/m³
+
+Current values as CAMS via Open-Meteo returned them for its grid (CAMS global (Open-Meteo automatic domain)). Modelled concentrations and the source’s own indices: not a ground monitor and not a health assessment.
+
+Record
+
+The district rainfall record
+Climate records
+→
+
+The district record is read when this section comes into view. Read it now
+
+Tools
+
+What do you want to do?
+
+Each tool writes a question into the box beside the reading, or opens the surface that answers it.
+
+All tools
+Daily weather
+Models & history
+Warnings & plans
+Published advice
+Specialist weather
+Find a tool
+
+Daily weather
+
+Understand right now
+
+Nearby station reports, the published warning day and the next model hours.
+
+Current-condition reading
+Write question
+
+Daily weather
+
+Plan a weather window
+
+Rain, temperature, humidity and wind for a place and part of the day.
+
+Forecast with exact hours
+Write question
+
+Daily weather
+
+Read modelled air quality
+
+CAMS pollutant concentrations and the source’s own indices. Model output, not a ground monitor or health assessment.
+
+Hourly air-quality evidence
+Write question
+
+Models & history
+
+Compare forecast models
+
+Put GFS and the best-match product side by side. Their model lineage can overlap.
+
+Source comparison
+Write question
+
+Models & history
+
+Explore ensemble spread
+
+Read the range and spread of model members. Spread is not confidence or forecast skill.
+
+Member statistics
+Write question
+
+Models & history
+
+Check a model’s recent errors
+
+Match archived model runs to ERA5 reanalysis by lead time. A measurement against reanalysis, not a skill score.
+
+Error table by lead time
+Open
+→
+
+Warnings & plans
+
+Read the warning brief
+
+The district day, published hazards, issue time and what the product does not establish.
+
+Brief to save or export
+Open
+→
+
+Warnings & plans
+
+Watch a plan
+
+Describe an activity and when it happens. Check official district guidance while the workspace runs.
+
+Plan and local inbox
+Write question
+
+Published advice
+
+Read a crop advisory
+
+Find published passages for your district and crop, with their issue date and original PDF.
+
+Cited advisory passages
+Write question
+
+Published advice
+
+Search published bulletins
+
+Read the indexed national weather bulletin by topic. Published wording stays reference material.
+
+Passages and source pages
+Write question
+
+Models & history
+
+Explore rainfall history
+
+Read the published district series and its descriptive trend, within the available years.
+
+Chart and source records
+Write question
+
+Models & history
+
+Look back at a weather week
+
+Ask for daily modelled reanalysis for a chosen past date. This is not a station record.
+
+Historical daily series
+Write question
+
+Specialist weather
+
+Read an airport report
+
+METAR observations or a TAF forecast for the airport code you choose.
+
+Station report and explanation
+Write question
+
+Specialist weather
+
+Explore waves offshore
+
+Modelled wave height, direction and period, with the answering cell and distance.
+
+Wave forecast
+Write question
+
+Specialist weather
+
+Explore river discharge
+
+Modelled discharge near a point. No observed water level, danger level or flood extent.
+
+Discharge forecast
+Write question
+
+Warnings & plans
+
+Keep a place briefing
+
+Keep a dated reading of warnings and forecast context in the briefcase.
+
+Dated local briefing
+Open
+→
+
+16 tools · a tool writes the question box beside the reading and sends nothing.
+
+Kept
+
+Pick up where you left off
+
+The briefcase and the plans is read when this section comes into view. Read it now
+
+Evidence
+
+Right now where you are
+
+Naming a place reads GET /api/now for that point and nothing else: the station report, the published district product line and the model hours are kept apart, each with its own status, instant and limits.
+
+Point the read returned
+18.51957, 73.85535
+Label as returned
+label not recorded in this read
+Place you picked
+Pune, Pune Division, State of Mahārāshtra
+Observed
+Station rows this read returned, each with its own distance, instant and age; a station is not a district average.
+Station	Network	Distance	Observed at	Age at retrieval	Staleness
+PUNE · VAPO	metar	9.57 km	25 Sep 2026, 15:00 IST	55.2 minutes before retrieval	current
+MUMBAI · VABB	metar	121.57 km	25 Sep 2026, 15:30 IST	25.2 minutes before retrieval	current
+In force
+District
+PUNE, MAHARASHTRA
+Day
+25 Sep 2026
+Issued
+25 Sep 2026, 11:30 IST
+Quiet flag as published
+true
+
+green No warning in this product for this district-day (green).
+
+Next hours
+
+Model hours for the grid cell, not observations. An hour the product did not return is a gap in this table, never a zero.
+
+Next hours as returned, source S62 · Open-Meteo best match; variable-specific upstream model/run unspecified
+Hour (IST)	temperature_2m (°C)	precipitation_probability (%)	precipitation (mm)	wind_speed_10m (km/h)
+25 Sep 2026, 15:30 IST	28.4	20	0.6	19.5
+25 Sep 2026, 16:30 IST	27.4	15	0.1	17.7
+25 Sep 2026, 17:30 IST	26.2	10	0	17
+25 Sep 2026, 18:30 IST	24.9	6	0	15.4
+25 Sep 2026, 19:30 IST	23.9	3	0	14.6
+25 Sep 2026, 20:30 IST	23.3	0	0	13.5
+Ask instead:
+What is it like right now in Ahmedabad?
+Write a question for a place and a window, and read what is happening there right now.
+What this read returned
+Coverage as this read returned it
+Stations
+2
+Day
+1
+Hours
+6
+Limits of this read
+A station observation describes its station, not the surrounding district or city.
+No unit is asserted for any value: this layer does not state units, so values are reported verbatim.
+A missing station near a point means no connected station reported there, not that no weather occurred.
+Observations and forecasts are separate products; a forecast value is never shown as an observation.
+Station identity here comes from the source layer and has not been matched to an official station register.
+Day windows are derived from the bulletin date and the IMD day selector, not from a validity field published per day.
+Source geometry is not an LGD village crosswalk.
+Absence or quarantine is not an all-clear.
+The headline severity is derived from the published day colours and hazards, not a new IMD field.
+radar and satellite imagery
+sub-hourly refresh between source hours
+any push or notification: this workspace answers when it is asked
+Not established here
+A station report is one station at one instant: it is not a district average, not a field reading and not a forecast.
+A quiet day in the official district product is not an all-clear, and it says nothing about hazards that product does not carry.
+Model hours are grid-cell output, not observations, and no skill or impact is claimed for them.
+The CAP relay and the sea-area, coastal, radar and satellite products are not part of this reading.
+Sources
+Every source row this read attached, as the registry returned it.
+Source	Product	Retrieved	sha256 prefix
+S63	IMD GeoServer basemap, station and basin layers	25 Sep 2026, 15:45 IST	not recorded
+S62	Open-Meteo best-match extended hourly forecast	25 Sep 2026, 15:46 IST	not recorded

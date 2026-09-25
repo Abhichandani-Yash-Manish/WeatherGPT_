@@ -1,0 +1,37 @@
+Evidence receipt
+
+Copy this receipt
+Measure
+Forecast rainfall (precipitation)
+Value
+0.0 mm · method preceding_hour_sum
+Place
+Pune, Pune Division, State of Mahārāshtra
+Entity
+1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8
+Window
+26 Sep 2026, 00:30-27 Sep 2026, 00:30 IST
+Evidence
+not recorded
+Source
+S21
+Source product
+GFS forecast delivery
+Retrieved
+25 Sep 2026, 15:46 IST
+Address
+https://api.open-meteo.com/v1/gfs?latitude=18.51957&longitude=73.85535&hourly=temperature_2m%2Crelative_humidity_2m%2Cprecipitation%2Cwind_speed_10m&forecast_days=3&timezone=UTC&timeformat=unixtime&temperature_unit=celsius&wind_speed_unit=kmh&precipitation_unit=mm
+Locator
+$.hourly.precipitation[20]
+Evidence id
+6d74208a3459ee0e…
+Task
+t1
+
+S21
+→
+retrieved 25 Sep 2026, 15:46 IST
+→
+preceding_hour_sum
+
+A receipt for the moment it was retrieved, not a standing fact. Model output is not an observation and not a district average.

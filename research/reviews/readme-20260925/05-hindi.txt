@@ -1,0 +1,51 @@
+Answer
+Evidence retrieved
+Requested output: hi
+25 Sep 2026, 15:47 IST
+
+Mumbai · 26 Sep, 00:30–27 Sep, 00:30 IST: अनुमानित वर्षा की मात्रा: 0.0 mm.
+
+The rest of the answer
+(2 sentences)
+
+Forecast rainfall · 26 Sep 2026, 00:30-27 Sep 2026, 00:30 IST
+
+0.0
+mm
+
+Model forecast · Mumbai, State of Mahārāshtra
+
+source S21 · geonames:1275339 · read 25 Sep 2026, 15:46 IST
+
+how much of the window this covers · every part of it covered
+where this came from
+
+Precipitation total over the window · IMD · 26 Sep 2026, 00:30-27 Sep 2026, 00:30 IST
+
+1.0
+mm
+
+imd multi model forecast · Mumbai, State of Mahārāshtra
+
+source S16 · geonames:1275339 · read 25 Sep 2026, 15:46 IST
+
+Any warnings for Mumbai?
+What this answer does not cover
+How this was answered · 6 steps · 8.04 s · 1 refused
+
+A model drafted this reply and the checks refused it, so the tools' own wording stands as the answer. The engine names what it refused in the notes.
+
+How much this card unfolds: Conversational
+Copy the answer
+More ways to use this answer
+Evidence
+3
+S21
+Open-Meteo
+GFS forecast delivery
+S61
+GeoNames
+India place catalogue
+S16
+India Meteorological Department
+IMD Mausamgram multi-model ensemble

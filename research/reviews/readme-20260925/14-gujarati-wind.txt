@@ -1,0 +1,187 @@
+Answer
+Partly answered
+Requested output: gu
+25 સપ્ટે, 2026, 16:15 IST
+
+The answer below is not in the language you asked for.
+
+The requested output language could not be rendered because the translation service was unavailable. The evidence above remains in its source language.
+
+પસંદ કરેલા સ્થળ માટે મોડેલની આગાહી: Pune, Pune Division, State of Mahārāshtra · 2026-09-26 00:30 → 2026-09-27 00:30 IST પવનની ઝડપ: 10.0–25.3 km/h [t1-f1] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 02:30 → 2026-09-26 02:30 IST Wind speed at 10 m · IMD: 4.7 m/s [t1-imd-f1] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 05:30 → 2026-09-26 05:30 IST Wind speed at 10 m · IMD: 4.6 m/s [t1-imd-f2] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 08:30 → 2026-09-26 08:30 IST Wind speed at 10 m · IMD: 5.0 m/s [t1-imd-f3] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 11:30 → 2026-09-26 11:30 IST Wind speed at 10 m · IMD: 5.9 m/s [t1-imd-f4] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 14:30 → 2026-09-26 14:30 IST Wind speed at 10 m · IMD: 6.5 m/s [t1-imd-f5] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 17:30 → 2026-09-26 17:30 IST Wind speed at 10 m · IMD: 5.6 m/s [t1-imd-f6] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 20:30 → 2026-09-26 20:30 IST Wind speed at 10 m · IMD: 4.1 m/s [t1-imd-f7] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 23:30 → 2026-09-26 23:30 IST Wind speed at 10 m · IMD: 3.5 m/s [t1-imd-f8] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 02:30 → 2026-09-26 02:30 IST Wind gusts at 10 m · IMD: 12.3 m/s [t1-imd-f9] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 05:30 → 2026-09-26 05:30 IST Wind gusts at 10 m · IMD: 11.8 m/s [t1-imd-f10] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 08:30 → 2026-09-26 08:30 IST Wind gusts at 10 m · IMD: 10.6 m/s [t1-imd-f11] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 11:30 → 2026-09-26 11:30 IST Wind gusts at 10 m · IMD: 10.0 m/s [t1-imd-f12] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 14:30 → 2026-09-26 14:30 IST Wind gusts at 10 m · IMD: 10.1 m/s [t1-imd-f13] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 17:30 → 2026-09-26 17:30 IST Wind gusts at 10 m · IMD: 10.3 m/s [t1-imd-f14] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 20:30 → 2026-09-26 20:30 IST Wind gusts at 10 m · IMD: 9.7 m/s [t1-imd-f15] Pune, Pune Division, State of Mahārāshtra · 2026-09-26 23:30 → 2026-09-26 23:30 IST Wind gusts at 10 m · IMD: 9.2 m/s [t1-imd-f16] આ પસંદ કરેલા સ્થળ-બિંદુ માટે મોડેલની આગાહી છે, સ્થળ પરનું અવલોકન કે આખા જિલ્લાની સરેરાશ નથી.
+
+The rest of the answer
+(1 sentence)
+
+Wind samples · 26 સપ્ટે, 2026, 00:30-27 સપ્ટે, 2026, 00:30 IST
+
+10.0–25.3
+km/h
+
+Model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S21 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 15:46 IST
+
+how much of the window this covers · every part of it covered
+where this came from
+
+Wind speed at 10 m · IMD · 26 સપ્ટે, 2026, 02:30 IST
+
+4.7
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind speed at 10 m · IMD · 26 સપ્ટે, 2026, 05:30 IST
+
+4.6
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind speed at 10 m · IMD · 26 સપ્ટે, 2026, 08:30 IST
+
+5.0
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind speed at 10 m · IMD · 26 સપ્ટે, 2026, 11:30 IST
+
+5.9
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind speed at 10 m · IMD · 26 સપ્ટે, 2026, 14:30 IST
+
+6.5
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind speed at 10 m · IMD · 26 સપ્ટે, 2026, 17:30 IST
+
+5.6
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind speed at 10 m · IMD · 26 સપ્ટે, 2026, 20:30 IST
+
+4.1
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind speed at 10 m · IMD · 26 સપ્ટે, 2026, 23:30 IST
+
+3.5
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind gusts at 10 m · IMD · 26 સપ્ટે, 2026, 02:30 IST
+
+12.3
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind gusts at 10 m · IMD · 26 સપ્ટે, 2026, 05:30 IST
+
+11.8
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind gusts at 10 m · IMD · 26 સપ્ટે, 2026, 08:30 IST
+
+10.6
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind gusts at 10 m · IMD · 26 સપ્ટે, 2026, 11:30 IST
+
+10.0
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind gusts at 10 m · IMD · 26 સપ્ટે, 2026, 14:30 IST
+
+10.1
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind gusts at 10 m · IMD · 26 સપ્ટે, 2026, 17:30 IST
+
+10.3
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind gusts at 10 m · IMD · 26 સપ્ટે, 2026, 20:30 IST
+
+9.7
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Wind gusts at 10 m · IMD · 26 સપ્ટે, 2026, 23:30 IST
+
+9.2
+m/s
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 સપ્ટે, 2026, 16:01 IST
+
+Any warnings for Pune?
+What this answer does not cover
+How this was answered · 8 steps · 9.725 s · 1 refused
+
+A model drafted this reply and the checks refused it, so the tools' own wording stands as the answer. The engine names what it refused in the notes.
+
+How much this card unfolds: Conversational
+Copy the answer
+More ways to use this answer
+Evidence
+2
+S21
+Open-Meteo
+GFS forecast delivery
+S16
+India Meteorological Department
+IMD Mausamgram multi-model ensemble

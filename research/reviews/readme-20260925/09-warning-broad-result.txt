@@ -1,0 +1,321 @@
+Answer
+Evidence retrieved
+25 Sep 2026, 16:07 IST
+
+36 districts in Bihar carry any hazard colour (red, orange or yellow) in the current IMD district bulletin: ARWAL (orange; yellow), KISHANGANJ (yellow), BEGUSARAI (orange; yellow), BANKA (yellow), ARARIA (yellow), BHAGALPUR (yellow), KAIMUR (orange; yellow), BHOJPUR (orange; yellow), BUXAR (orange; yellow), DARBHANGA (yellow), GAYA (orange; yellow), GOPALGANJ (orange; yellow), JEHANABAD (orange; yellow), LAKHISARAI (orange; yellow), JAMUI (yellow), KATIHAR (yellow), KHAGARIA (yellow), MADHEPURA (yellow), MADHUBANI (yellow), MUNGER (yellow), NALANDA (orange; yellow), NAWADA (orange; yellow), SITAMARHI (yellow), SIWAN (orange; yellow), WEST CHAMPARAN (orange; yellow), EAST CHAMPARAN (orange; yellow), ROHTAS (orange; yellow), PATNA (orange; yellow), SAHARSA (yellow), PURNEA (yellow), SAMASTIPUR (yellow), SARAN (orange; yellow), SHEIKHPURA (orange; yellow), SHEOHAR (yellow), SUPAUL (yellow), VAISHALI (yellow).
+
+An absence of matching official guidance is not an all-clear.
+
+This reports official product state, not an instruction to act.
+
+The rest of the answer
+(5 sentences)
+
+Official warning · ARWAL
+
+orange
+
+source S15 · imd-district:339 · read 25 Sep 2026, 08:00 IST
+
+where this came from
+IMD district warning · ARWAL
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+Day 3 · 27 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	27 Sep 2026, 00:00-28 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · KISHANGANJ
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · BEGUSARAI
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · BANKA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · ARARIA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · BHAGALPUR
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · KAIMUR
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Very heavy rain, Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+Day 3 · 27 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	27 Sep 2026, 00:00-28 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · BHOJPUR
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+Day 3 · 27 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	27 Sep 2026, 00:00-28 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · BUXAR
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Very heavy rain, Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+Day 3 · 27 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	27 Sep 2026, 00:00-28 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · DARBHANGA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · GAYA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · GOPALGANJ
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Very heavy rain, Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+Day 3 · 27 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	27 Sep 2026, 00:00-28 Sep 2026, 00:00 IST
+Day 4 · 28 Sep 2026	yellow	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	28 Sep 2026, 00:00-29 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · JEHANABAD
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · LAKHISARAI
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · JAMUI
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · KATIHAR
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · KHAGARIA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · MADHEPURA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · MADHUBANI
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · MUNGER
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · NALANDA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · NAWADA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · SITAMARHI
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · SIWAN
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Very heavy rain, Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+Day 3 · 27 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	27 Sep 2026, 00:00-28 Sep 2026, 00:00 IST
+Day 4 · 28 Sep 2026	yellow	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	28 Sep 2026, 00:00-29 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · WEST CHAMPARAN
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+Day 3 · 27 Sep 2026	yellow	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	27 Sep 2026, 00:00-28 Sep 2026, 00:00 IST
+Day 4 · 28 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	28 Sep 2026, 00:00-29 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · EAST CHAMPARAN
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+Day 3 · 27 Sep 2026	yellow	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	27 Sep 2026, 00:00-28 Sep 2026, 00:00 IST
+Day 4 · 28 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	28 Sep 2026, 00:00-29 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · ROHTAS
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+Day 3 · 27 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	27 Sep 2026, 00:00-28 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · PATNA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · SAHARSA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · PURNEA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · SAMASTIPUR
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · SARAN
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Heavy rain, Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+Day 3 · 27 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	27 Sep 2026, 00:00-28 Sep 2026, 00:00 IST
+Day 4 · 28 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	28 Sep 2026, 00:00-29 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · SHEIKHPURA
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	orange	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+Day 2 · 26 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	26 Sep 2026, 00:00-27 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · SHEOHAR
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · SUPAUL
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+IMD district warning · VAISHALI
+Bulletin 25 Sep 2026, 05:30 IST
+Day	IMD colour	Official hazard	Window (IST)
+Day 1 · 25 Sep 2026	yellow	Thunderstorm/lightning/squall, Strong surface winds	25 Sep 2026, 00:00-26 Sep 2026, 00:00 IST
+
+Read from IMD district-level warning guidance. Day 1 is the bulletin date, and each following day is the next IST calendar day. IMD publishes no per-day validity field in this product, so these windows are derived from the bulletin date and IMD's own day selector. The colour is IMD's product colour for that district-day, and the hazard text is IMD's own wording.
+
+What this answer does not cover
+How this was answered · 6 steps · 39.626 s · nothing refused
+
+No model wrote this reply; it is the tools' own wording over the retrieved facts.
+
+How much this card unfolds: Conversational
+Copy the answer
+More ways to use this answer
+Evidence
+2
+S06
+IMD-labelled CAP relay; origin authentication unverified
+Retrieved CAP feed state
+S15
+India Meteorological Department
+District-wise warning product (GeoServer district_warnings_india)

@@ -1,0 +1,51 @@
+Answer
+Evidence retrieved
+25 Sep 2026, 15:46 IST
+
+Carried from the previous turn: places, parameters, operation · changed here: time.
+
+Pune is forecast to stay dry on 27 Sep 2026, with 0.0 mm of rainfall over the 00:30–00:30 IST window.
+
+These are model forecasts for the selected points, not observed conditions or district averages.
+
+The rest of the answer
+(3 sentences)
+
+Forecast rainfall · 27 Sep 2026, 00:30-28 Sep 2026, 00:30 IST
+
+0.0
+mm
+
+Model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S21 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 Sep 2026, 15:46 IST
+
+how much of the window this covers · every part of it covered
+where this came from
+
+Precipitation total over the window · IMD · 27 Sep 2026, 00:30-28 Sep 2026, 00:30 IST
+
+0.0
+mm
+
+imd multi model forecast · Pune, Pune Division, State of Mahārāshtra
+
+source S16 · 1d3dfd2d4e474226c09d6932f8f332ff47588792eda7750fa9c1dc64d2f8f0c8 · read 25 Sep 2026, 15:46 IST
+
+Any warnings for Pune?
+What this answer does not cover
+How this was answered · 8 steps · 13.518 s · nothing refused
+
+Written by a model from the retrieved facts and checked against them; values, windows and source lines remain tool-owned.
+
+How much this card unfolds: Conversational
+Copy the answer
+More ways to use this answer
+Evidence
+2
+S21
+Open-Meteo
+GFS forecast delivery
+S16
+India Meteorological Department
+IMD Mausamgram multi-model ensemble
