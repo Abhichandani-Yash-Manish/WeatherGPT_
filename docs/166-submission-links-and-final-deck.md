@@ -6,16 +6,17 @@
 - [Submission PDF](../WeatherGPT_SIH26068_VoidPointers_FINAL.pdf).
 - [Editable PowerPoint](../WeatherGPT_SIH26068_VoidPointers_FINAL.pptx).
 
-The PowerPoint supplied by the user is the editable source for this revision. The six-slide design, diagrams, concept screen, storyboard and cited references remain. Both QR codes now encode the published video and are clickable, as are their visible “Scan or click” labels. The last slide keeps a separate link to the GitHub source and evidence. The README places the video beside the deck and provides timestamped shortcuts to the demonstrated journeys.
+The current presentation is a link-only update of the user's original PowerPoint and approved PDF. Both QR codes encode the published video and are clickable, as are their visible “Scan or click” labels. The original source-code line remains. The README places the video beside the deck and provides timestamped shortcuts to the demonstrated journeys.
 
-The final copy also separates demonstrated prototype behavior from proposed deployment. India-only hosting, complete language/voice coverage, production scale and future dissemination channels are not presented as accepted current capabilities. The atlas figure is 273/306 **outcomes passed** in the retained 22 September account, including honest refusals; it is not forecast accuracy. Regression counts are the recorded 23 September result, not a new test run. See [the full product account](140-the-full-account.md), [chat verification](163-chat-reading-and-selected-controls.md) and the README's current scope table.
+The earlier packaging revision in commit `87089c4` also revised slide copy and used an exporter that replaced document metadata and speaker notes. The user requested preservation of the original presentation's internal tuning, so that revision is superseded. This correction restores the original content and package structure, with only the demo links, QR artwork and two labels changed. It does not re-evaluate or extend product acceptance; the README's current scope table and [full product account](140-the-full-account.md) retain those distinctions.
 
 ## Packaging checks
 
-- PowerPoint package integrity, declared six-slide geometry, reference-font policy and re-import checks pass.
-- The PDF was exported from the updated PowerPoint; all six slides were rendered and visually inspected.
-- Both rendered QR codes decode to the final video URL. PDF annotations and PowerPoint hyperlink relationships point to the same destination.
-- The video links and separate GitHub link have non-overlapping click targets.
+- All 128 original PPTX package parts remain. Only five parts differ: the two relevant slide XML files, their hyperlink relationships, and their shared QR image. The other 123 parts are byte-identical, including document properties, notes, masters and themes. Unrelated objects within the two changed slides are also unchanged.
+- The PDF was patched directly from the approved original, preserving its metadata and existing document structure. Extracted text differs only in the two QR labels. Rendered pixels outside the QR and label areas are identical on all six pages.
+- Both rendered QR codes decode to the final video URL. PDF annotations and PowerPoint hyperlink relationships point to the same destination. Label click targets stay clear of the original source-code line.
+- PowerPoint package, six-slide geometry and re-import checks pass. The rendered PowerPoint labels and their links were checked as well.
+- These are preservation and packaging checks, not a rerun of the user's original ATS tests or a claim of an ATS score.
 - The new YouTube page opens while signed out and sampled playback was verified. Browser playback encountered intermittent player errors, so this does not claim uninterrupted playback on every device.
 - README relative links resolve; its original architecture diagrams and map are preserved.
 
