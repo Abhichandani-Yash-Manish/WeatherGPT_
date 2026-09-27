@@ -9,11 +9,20 @@
 
 [Product tour](#from-a-place-to-a-conversation) · [Farmer advisories](#for-the-farmer-the-crop-the-stage-the-source) · [Architecture](#architecture-and-the-evidence-store) · [PS coverage](#against-the-problem-statement) · [Run locally](#run-locally)
 
-[View the presentation](WeatherGPT_SIH26068_VoidPointers_FINAL.pdf) · Submission video in preparation
+**[▶ Watch the submission demo · 7:15](https://youtu.be/NVT6EnklEVQ)** · [Presentation PDF](WeatherGPT_SIH26068_VoidPointers_FINAL.pdf) · [Editable PowerPoint](WeatherGPT_SIH26068_VoidPointers_FINAL.pptx)
 
 </div>
 
 ![WeatherGPT's home: a place-aware daylight arc, source-labelled station reading and a question composer with language and microphone controls.](docs/images/submission/home.png)
+
+<div align="center">
+
+[First answer · 1:01](https://youtu.be/NVT6EnklEVQ?t=61) · [Conversation & receipt · 1:38](https://youtu.be/NVT6EnklEVQ?t=98) · [Technical proof · 2:46](https://youtu.be/NVT6EnklEVQ?t=166) · [Architecture · 3:12](https://youtu.be/NVT6EnklEVQ?t=192)<br>
+[Warnings · 3:59](https://youtu.be/NVT6EnklEVQ?t=239) · [Farmer guidance · 4:33](https://youtu.be/NVT6EnklEVQ?t=273) · [Hindi, voice & Gujarati · 5:06](https://youtu.be/NVT6EnklEVQ?t=306) · [Mobile view · 5:47](https://youtu.be/NVT6EnklEVQ?t=347)
+
+<sub>Recorded prototype demonstrations; the farmer segment labels its prepared, source-grounded summary. Mobile is a responsive browser demonstration.</sub>
+
+</div>
 
 Weather information lives across forecast charts, station reports, warning maps and agricultural bulletins. **WeatherGPT brings it into one conversation—with the source still attached.** A farmer can find crop guidance, a citizen can read a district warning, and a researcher can explore a historical record.
 
